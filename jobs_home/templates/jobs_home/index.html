@@ -1,9 +1,28 @@
 <!DOCTYPE html>
     <head>
         <title>CML HOMEPAGE</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     </head>
     <body>
-        <h1>HOMEPAGE</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+            <a class="navbar-brand" >
+                <img id="brand_icon" scr="https://cusworth.net/wp-content/uploads/logo-1.png">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="#">Inbox<span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="#">Current Jobs</a>
+                <a class="nav-item nav-link" href="#">Archived Jobs</a>
+              </div>
+            </div>
+          </nav>
+        <h1 id = "bob">HOMEPAGE</h1>
         <a href="{% url 'html_form:form' %}">Submit Form</a>
+        
 
     </body>
