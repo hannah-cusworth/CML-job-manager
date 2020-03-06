@@ -21,3 +21,9 @@ li {
     font-weight: 550; 
 }
 
+.thead {
+    background-color: black;
+    color: white;
+    font-weight: 400px;
+}
+
