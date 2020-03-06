@@ -6,6 +6,8 @@ app_name = 'jobs_home'
 
 urlpatterns = [
 
-    path("", views.index, name='home')
+    path("", views.current, name='current'),
+    path("inbox", views.inbox, name="inbox"),
+    path("archive", views.archive, name="archive"),
 
 ]

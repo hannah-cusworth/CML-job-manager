@@ -1,6 +1,6 @@
 <!DOCTYPE html>
     <head>
-        <title>{% title block %} {% end titleblock %}</title>
+        <title>{% block title %} {% endblock %}</title>
         {% load static %}
         <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?20181209">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -10,14 +10,14 @@
         <div class="navbar-header" id="logo_div">
         </div>
         <ul class="nav navbar-nav">
-          <li><a href="#">Inbox</a></li>
-          <li><a href="#">Current Jobs</a></li>
-          <li><a href="#">Archive</a></li>
+          <li><a href="{% url 'jobs_home:inbox' %}">Inbox</a></li>
+          <li><a href="{% url 'jobs_home:current' %}">Current Jobs</a></li>
+          <li><a href="{% url 'jobs_home:archive' %}">Archive</a></li>
         </ul>
       </div>
     </nav>
     <body>
       
-        {% block body %} {% end body %}
+        {% block body %} {% endblock %}
 
     </body>
