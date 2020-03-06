@@ -1,6 +1,6 @@
 <!DOCTYPE html>
     <head>
-        <title>CML HOMEPAGE</title>
+        <title>{% title block %} {% end titleblock %}</title>
         {% load static %}
         <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?20181209">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -18,8 +18,6 @@
     </nav>
     <body>
       
-        <h1>HOMEPAGE</h1>
-        <a href="{% url 'html_form:form' %}">Submit Form</a>
-        
+        {% block body %} {% end body %}
 
     </body>
