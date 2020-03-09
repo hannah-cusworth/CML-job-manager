@@ -6,29 +6,71 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
      </head>
-     <body>
+     <body id="formBody">
         
-         <div class="container" id="banner">
-
-
-         </div>
+         <div class="logos" id="banner">
+            <img id="CMLlogo" class="img-thumbnail float-right" src="https://cusworth.net/wp-content/uploads/Which-trusted-traders-logo-locksmith-wilmslow.jpg" alt="Which? Trusted trader">
+            <img id="MLAlogo" class="img-thumbnail float-right" src="https://cusworth.net/wp-content/uploads/logo-1.png" alt="Cusworth Master Locksmiths Logo">
+            <img id="Whichlogo" class="img-thumbnail float-right" src="https://cusworth.net/wp-content/uploads/2010/07/mla1.gif" alt="Master Locksmiths Association Approved Company Logo">
+        </div>
          <div class="container"> 
-             <h1 id="bob">CML TEST FORM</h1>
              <form>
-                <label for="fname">First name:</label><br>
-                <input type="text" id="fname" name="fname"><br>
-                <label for="lname">Last name:</label><br>
-                <input type="text" id="lname" name="lname"><br>
-                <br>
-                <label for="address">Address:</label><br>
-                <input type="text" id="address" name="address"><br>
-                <label for="postcode">Postcode:</label><br>
-                <input type="text" id="postcode" name="postcode"><br>
-                <br>
-                <label for="Description">Please provide a brief description of the job:</label><br>
-                <input type="text" id="job_des" name="job_des"><br>
+                <div class="form-row form">
+                    <div class="form-group col-md-6">
+                      <label for="fname">First Name</label>
+                      <input type="text" class="form-control" id="fname" placeholder="fname">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="lname">Last Name</label>
+                      <input type="lname" class="form-control" id="lname" placeholder="lname">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail">Email</label>
+                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputNumber">Mobile</label>
+                        <input type="number" class="form-control" id="inputNumber" placeholder="Mobile">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">Address</label>
+                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress2">Address 2</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">City</label>
+                      <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="inputCounty">County</label>
+                      <select id="inputCounty" class="form-control">
+                        <option selected>Choose...</option>
+                        <option>Cheshire</option>
+                        <option>Derbyshire</option>
+                        <option>Greater Manchester</option>
+                        <option>Staffordshire</option>
+                      </select>
+                    </div>    
+                    <div class="form-group col-md-2">
+                      <label for="inputpostcode">Postcode</label>
+                      <input type="text" class="form-control" id="inputpostcode">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Description">Please provide a brief description of the job:</label>
+                    <textarea class="form-control" rows=3 id="job_des" ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
              </form>
          </div>
+        
 
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
