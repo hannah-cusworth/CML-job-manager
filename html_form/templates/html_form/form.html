@@ -2,17 +2,20 @@
     <head>
         <title>New Form</title>
         {% load static %}
+        {% load crispy_forms_tags %}
         <link rel="stylesheet" href="{% static 'form_style/mystyle.css'%}?{% now 'u' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 
      </head>
      <body id="formBody">
         <div class="container">
+            <h1>Cusworth Master Locksmiths Form</h1>
+            
             <form method="post">
                 {% csrf_token %}
-                {{ client.as_p }} 
-                {{ address.as_p }}
-                {{ job.as_p }}
+                {{ client|crispy }} 
+                {{ address|crispy }}
+                {{ job|crispy }}
                 <button type="submit"  class="btn btn-primary">Submit</button>
             </form>
         </div>

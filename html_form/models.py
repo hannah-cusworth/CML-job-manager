@@ -30,7 +30,7 @@ class Job(models.Model):
     INBOX = 'IN'
     CURRENT = 'CU'
     ARCHIVE = 'AR'
-    Status_Choices = [
+    status_choices = [
         (INBOX, 'Inbox'),
         (CURRENT, 'Current'),
         (ARCHIVE, 'Archive'),
@@ -38,7 +38,7 @@ class Job(models.Model):
 
     creation_date = models.DateTimeField
     description = models.CharField(max_length=500)
-    status = models.CharField(max_length=2, choices=Status_Choices, default=INBOX)
+    status = models.CharField(max_length=2, choices=status_choices, default=INBOX)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 

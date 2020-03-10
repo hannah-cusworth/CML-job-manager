@@ -15,6 +15,8 @@ class ClientForm(forms.ModelForm):
         exclude = ['address']
 
 class JobForm(forms.ModelForm):
+   
+    
     class Meta:
         model = Job
         fields = ['description']
