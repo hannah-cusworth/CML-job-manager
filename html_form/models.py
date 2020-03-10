@@ -36,7 +36,7 @@ class Job(models.Model):
         (ARCHIVE, 'Archive'),
     ]
 
-    creation_date = models.DateField
+    creation_date = models.DateTimeField
     description = models.CharField(max_length=500)
     status = models.CharField(max_length=2, choices=Status_Choices, default=INBOX)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)

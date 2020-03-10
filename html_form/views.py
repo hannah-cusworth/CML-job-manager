@@ -37,15 +37,13 @@ class FormView(TemplateView):
             new_address = addressform.save()
             new_address.client.add(new_client.id)
             new_client.address.add(new_address.id)
-            print("#############################################################################")
-            print(new_address.id)
-
+        
         if jobform.is_valid():
             description = jobform.cleaned_data['description']
             new_job = jobform.save(commit=False)
-            address_id = new_address.id
-            client_id = new_client.id
-            status = 'Inbox'
+            new_job.address_id = new_address.id
+            new_job.client_id = new_client.id
+            new_job.status = "AB"
             creation_date = datetime.now()
             new_job.save()
 
