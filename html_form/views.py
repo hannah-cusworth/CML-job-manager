@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from html_form.forms import AddressForm, ClientForm, JobForm
+from datetime import datetime
 
 def index(request):
         return render(request, "html_form/index.html")
@@ -22,24 +23,36 @@ class FormView(TemplateView):
 
         if clientform.is_valid():
             #maybe write a function here later
-            first = form.cleaned_data['first']
-            last = form.cleaned_data['last']
-            email = form.cleaned_data['email']
-            number = form.cleaned_data['number']
-            clientform.save()
+            first = clientform.cleaned_data['first']
+            last = clientform.cleaned_data['last']
+            email = clientform.cleaned_data['email']
+            number = clientform.cleaned_data['number']
+            new_client = clientform.save()
         if addressform.is_valid():
-            line_one = form.cleaned_data['line_one']
-            line_two = form.cleaned_data['line_two']
-            city = form.cleaned_data['city']
-            county = form.cleaned_data['county']
-            postcode = form.cleaned_data['postcode']
-            addressform.save()
-        if jobform.is_valid():
-            description = form.cleaned_data['description']
+            line_one = addressform.cleaned_data['line_one']
+            line_two = addressform.cleaned_data['line_two']
+            city = addressform.cleaned_data['city']
+            county = addressform.cleaned_data['county']
+            postcode = addressform.cleaned_data['postcode']
+            new_address = addressform.save()
+            new_address.client.add(new_client.id)
+            new_client.address.add(new_address.id)
+            print("#############################################################################")
+            print(new_address.id)
 
-        
-        
-        return redirect('jobs_home/')
+        if jobform.is_valid():
+            description = jobform.cleaned_data['description']
+            new_job = jobform.save(commit=False)
+            address_id = new_address.id
+            client_id = new_client.id
+            status = 'Inbox'
+            creation_date = datetime.now()
+            new_job.save()
+
+
+
+
+        return redirect('/')
 
 
         

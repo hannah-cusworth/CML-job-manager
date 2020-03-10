@@ -8,11 +8,12 @@
      </head>
      <body id="formBody">
         <div class="container">
-            <form>
+            <form method="post">
+                {% csrf_token %}
                 {{ client.as_p }} 
                 {{ address.as_p }}
                 {{ job.as_p }}
-                <button type="submit" method="POST" class="btn btn-primary">Submit</button>
+                <button type="submit"  class="btn btn-primary">Submit</button>
             </form>
         </div>
        
