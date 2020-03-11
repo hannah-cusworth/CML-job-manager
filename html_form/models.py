@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.core.validators import validate_email
 
 
 
@@ -20,7 +21,9 @@ class Address(models.Model):
 class Client(models.Model):
     first = models.CharField(max_length=64)
     last = models.CharField(max_length=64)
-    email = models.EmailField(max_length=64)
+    email = models.EmailField(
+        max_length=64, 
+        validators=[validate_email])
     number = models.CharField(max_length=64)
     address = models.ManyToManyField(Address, related_name="address")
 
