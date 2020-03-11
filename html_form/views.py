@@ -2,7 +2,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from html_form.forms import AddressForm, ClientForm, JobForm
-from datetime import datetime
+from django.forms import ValidationError
+
 
 def index(request):
         return render(request, "html_form/index.html")
@@ -20,32 +21,26 @@ class FormView(TemplateView):
         addressform = AddressForm(request.POST)
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
-
-        if clientform.is_valid():
-            #maybe write a function here later
-            first = clientform.cleaned_data['first']
-            last = clientform.cleaned_data['last']
-            email = clientform.cleaned_data['email']
-            number = clientform.cleaned_data['number']
-            new_client = clientform.save()
-        if addressform.is_valid():
-            line_one = addressform.cleaned_data['line_one']
-            line_two = addressform.cleaned_data['line_two']
-            city = addressform.cleaned_data['city']
-            county = addressform.cleaned_data['county']
-            postcode = addressform.cleaned_data['postcode']
-            new_address = addressform.save()
-            new_address.client.add(new_client.id)
-            new_client.address.add(new_address.id)
         
-        if jobform.is_valid():
-            description = jobform.cleaned_data['description']
-            new_job = jobform.save(commit=False)
-            new_job.address_id = new_address.id
-            new_job.client_id = new_client.id
-            new_job.status = "AB"
-            creation_date = datetime.now()
-            new_job.save()
+        if clientform.is_valid():
+            
+            new_client = clientform.save()
+            if addressform.is_valid():
+                
+                new_address = addressform.save()
+                new_address.client.add(new_client.id)
+                new_client.address.add(new_address.id)
+            
+                if jobform.is_valid():
+                    description = jobform.cleaned_data['description']
+                    new_job = jobform.save(commit=False)
+                    new_job.address_id = new_address.id
+                    new_job.client_id = new_client.id
+                
+                    new_job.save()
+
+        
+        
 
 
 

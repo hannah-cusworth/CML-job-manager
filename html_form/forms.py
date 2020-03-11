@@ -1,6 +1,8 @@
 from django import forms 
 from html_form.models import Address, Client, Job
-
+#from crispy_forms.helper import FormHelper
+from phonenumber_field.modelfields import PhoneNumberField
+from crispy_forms.layout import Field
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -21,3 +23,11 @@ class JobForm(forms.ModelForm):
         model = Job
         fields = ['description']
         exclude = ['creation_date', 'status', 'address_id', 'client_id']
+        widgets = {
+            'description': forms.Textarea
+        }
+
+
+
+
+
