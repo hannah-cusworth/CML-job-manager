@@ -131,3 +131,6 @@ STATIC_URL = '/static/'
 
 #added crispy setting here myself 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+#added UK region
+PHONENUMBER_DEFAULT_REGION = 'GB'

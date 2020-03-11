@@ -23,7 +23,6 @@ class FormView(TemplateView):
         jobform = JobForm(request.POST)
         
         if clientform.is_valid():
-            
             new_client = clientform.save()
             if addressform.is_valid():
                 
@@ -38,13 +37,7 @@ class FormView(TemplateView):
                     new_job.client_id = new_client.id
                 
                     new_job.save()
-
         
-        
-
-
-
-
         return redirect('/')
 
 

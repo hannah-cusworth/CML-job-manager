@@ -1,7 +1,7 @@
 from django import forms 
 from html_form.models import Address, Client, Job
-#from crispy_forms.helper import FormHelper
-from phonenumber_field.modelfields import PhoneNumberField
+from crispy_forms.helper import FormHelper
+from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
 from crispy_forms.layout import Field
 
 class AddressForm(forms.ModelForm):
@@ -11,11 +11,15 @@ class AddressForm(forms.ModelForm):
         exclude = ['client']
 
 class ClientForm(forms.ModelForm):
+
     class Meta:
         model = Client
         fields = ['first', 'last', 'email', 'number']
         exclude = ['address']
-
+        widgets = {
+            'number': PhoneNumberInternationalFallbackWidget
+        }
+       
 class JobForm(forms.ModelForm):
    
     
