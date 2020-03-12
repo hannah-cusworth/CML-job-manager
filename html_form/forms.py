@@ -3,12 +3,19 @@ from html_form.models import Address, Client, Job
 from crispy_forms.helper import FormHelper
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
 from crispy_forms.layout import Field
+from localflavor.gb.forms import GBCountySelect, GBPostcodeField
+
 
 class AddressForm(forms.ModelForm):
+    postcode = GBPostcodeField()
     class Meta:
         model = Address
         fields = ['line_one', 'line_two', 'city', 'county', 'postcode',]
         exclude = ['client']
+        widgets = {
+            'county': GBCountySelect
+        }
+        
 
 class ClientForm(forms.ModelForm):
 
@@ -17,7 +24,7 @@ class ClientForm(forms.ModelForm):
         fields = ['first', 'last', 'email', 'number']
         exclude = ['address']
         widgets = {
-            'number': PhoneNumberInternationalFallbackWidget
+            'number': PhoneNumberInternationalFallbackWidget,
         }
        
 class JobForm(forms.ModelForm):

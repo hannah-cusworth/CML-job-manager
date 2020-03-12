@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'jobs_home',
     'crispy_forms',
     'phonenumber_field',
+    'localflavor',
 ]
 
 MIDDLEWARE = [
