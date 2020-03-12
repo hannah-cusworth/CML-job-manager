@@ -24,13 +24,11 @@ class FormView(TemplateView):
         
         if clientform.is_valid():
             new_client = clientform.save()
-            print("1!!!!!!!!!!!!!!!!!1")
             if addressform.is_valid():
                 
                 new_address = addressform.save()
                 new_address.client.add(new_client.id)
                 new_client.address.add(new_address.id)
-                print("0000000000000000000000000")
                 if jobform.is_valid():
                     description = jobform.cleaned_data['description']
                     new_job = jobform.save(commit=False)

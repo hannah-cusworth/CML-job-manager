@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.core.validators import validate_email
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 
@@ -24,7 +24,7 @@ class Client(models.Model):
     email = models.EmailField(
         max_length=64, 
         validators=[validate_email])
-    number = models.CharField(max_length=64)
+    number = PhoneNumberField()
     address = models.ManyToManyField(Address, related_name="address")
 
     #def __str__(self):
