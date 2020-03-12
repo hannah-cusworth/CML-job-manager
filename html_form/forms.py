@@ -13,9 +13,12 @@ class AddressForm(forms.ModelForm):
         fields = ['line_one', 'line_two', 'city', 'county', 'postcode',]
         exclude = ['client']
         widgets = {
-            'county': GBCountySelect
+            'county': GBCountySelect()
         }
-        
+        labels = {
+            'line_one': "Address 1",
+            'line_two': "Address 2",
+        }
 
 class ClientForm(forms.ModelForm):
 
@@ -25,6 +28,11 @@ class ClientForm(forms.ModelForm):
         exclude = ['address']
         widgets = {
             'number': PhoneNumberInternationalFallbackWidget,
+        }
+        labels = {
+            "first": "First Name",
+            'last': "Last Name",
+            "number": "Contact Number"
         }
        
 class JobForm(forms.ModelForm):

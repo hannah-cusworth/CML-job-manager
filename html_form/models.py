@@ -9,7 +9,7 @@ from localflavor.gb.forms import GBCountySelect, GBPostcodeField
 class Address(models.Model):
     client = models.ManyToManyField('Client', related_name="client")
     line_one = models.CharField(max_length=64)
-    line_two = models.CharField(max_length=64, null=True)
+    line_two = models.CharField(max_length=64, blank=True)
     city = models.CharField(max_length=64)
     county = models.CharField(max_length=64)
     postcode = models.CharField(max_length=64)
