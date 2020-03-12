@@ -20,7 +20,19 @@ class AddressForm(forms.ModelForm):
             'line_two': "Address 2",
         }
 
-    
+    def __init__(self) :
+        super(AddressForm, self).__init__()
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            'line_one',
+            'line_two',
+            Row(
+                Column('city', css_class='form-group col-md-6 mb-0'),
+                Column('county', css_class='form-group col-md-4 mb-0'),
+                Column('postcode', css_class='form-group col-md-2 mb-0'),
+                css_class='form-row'
+            )
+        )
 
 
 
@@ -48,9 +60,12 @@ class ClientForm(forms.ModelForm):
                 Column('first', css_class='form-group col-md-6 mb-0'),
                 Column('last', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
-            )
-            
-
+            ),
+            Row(
+                Column('email', css_class='form-group col-md-6 mb-0'),
+                Column('number', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ) 
         )
        
 class JobForm(forms.ModelForm):
@@ -61,7 +76,7 @@ class JobForm(forms.ModelForm):
         fields = ['description']
         exclude = ['creation_date', 'status', 'address_id', 'client_id']
         widgets = {
-            'description': forms.Textarea
+            'description': forms.Textarea(attrs={'rows':4})
         }
 
 
