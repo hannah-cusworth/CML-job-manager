@@ -61,12 +61,17 @@ class Job(models.Model):
         choices=status_choices, 
         default=INBOX
         )
-    address = models.ForeignKey(
-        Address, on_delete=models.CASCADE
+    job_address = models.ForeignKey(
+        Address, on_delete=models.CASCADE, related_name="job_address"
         )
+    billing_address =  models.ForeignKey(
+        Address, on_delete=models.CASCADE, related_name="billing_address",
+        )
+
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE
         )
+    
 
     def __str__(self):
         return

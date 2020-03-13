@@ -9,18 +9,24 @@
             function display_billing(){
                 var check = document.getElementById("billing_address_select");
                 var billing = document.getElementById("billing_address_form");
-                var bob = document.getElementById("bob")
                 if (check.checked == false){
                     billing.style.display = "block";
+                    document.getElementById("id_line_one").required = false;
+                    document.getElementById("id_city").required = false;
+                    document.getElementById("id_county").required = false;
+                    document.getElementById("id_postcode").required = false;
                 }
                 else {
                     billing.style.display = "none";
+                    document.getElementById("id_line_one").required = true;
+                    document.getElementById("id_city").required = true;
+                    document.getElementById("id_county").required = true;
+                    document.getElementById("id_postcode").required = true;
                 }
             }
         </script>
      </head>
      <body id="formBody">
-         <p id="bob"> asdfsd </p>
         <div class="container">
             <h1>Cusworth Master Locksmiths Form</h1>
             
@@ -30,13 +36,13 @@
                 <br>
                 {% crispy client %} 
                 <h2>Job Details</h2>
-                {% crispy address %}
+                {% crispy jobaddress %}
                 {{ job|crispy }}
                 <h2>Billing Information</h2>
                 <input type="checkbox" class="form-check-label" id="billing_address_select" name="billing_address_select" default=True onclick="display_billing()">
                 <label>Is your billing address the same as the job address?</label>
                 <div id="billing_address_form">
-                {% crispy address %}
+                {% crispy billingaddress %}
                 </div>
                 <br>
                 <button type="submit" name="submit" class="btn btn-primary" id='submit'>Submit</button>

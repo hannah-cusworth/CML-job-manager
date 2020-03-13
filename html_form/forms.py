@@ -24,7 +24,6 @@ class AddressForm(forms.ModelForm):
         super(AddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
-        #self.helper.add_input(Submit('submit', 'submit'))
         self.helper.layout = Layout(
             'line_one',
             'line_two',
@@ -58,7 +57,6 @@ class ClientForm(forms.ModelForm):
         super(ClientForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
-        #self.helper.add_input(Submit('submit', 'submit'))
         self.helper.layout = Layout(
             Row(
                 Column('first', css_class='form-group col-md-6 mb-0'),
