@@ -2,7 +2,7 @@ from django import forms
 from html_form.models import Address, Client, Job
 from crispy_forms.helper import FormHelper
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
-from crispy_forms.layout import Layout, Row, Column
+from crispy_forms.layout import Layout, Row, Column, Submit
 from localflavor.gb.forms import GBCountySelect, GBPostcodeField
 
 
@@ -23,6 +23,8 @@ class AddressForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        #self.helper.add_input(Submit('submit', 'submit'))
         self.helper.layout = Layout(
             'line_one',
             'line_two',
@@ -55,6 +57,8 @@ class ClientForm(forms.ModelForm):
     def __init__(self, *args, **kwargs) :
         super(ClientForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        #self.helper.add_input(Submit('submit', 'submit'))
         self.helper.layout = Layout(
             Row(
                 Column('first', css_class='form-group col-md-6 mb-0'),

@@ -5,22 +5,41 @@
         {% load crispy_forms_tags %}
         <link rel="stylesheet" href="{% static 'form_style/mystyle.css'%}?{% now 'u' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
+        <script>
+            function display_billing(){
+                var check = document.getElementById("billing_address_select");
+                var billing = document.getElementById("billing_address_form");
+                var bob = document.getElementById("bob")
+                if (check.checked == false){
+                    billing.style.display = "block";
+                }
+                else {
+                    billing.style.display = "none";
+                }
+            }
+        </script>
      </head>
      <body id="formBody">
+         <p id="bob"> asdfsd </p>
         <div class="container">
             <h1>Cusworth Master Locksmiths Form</h1>
             
-            <form method="post">
+            <form  method="post">
                 {% csrf_token %}
                 <h2>Personal details</h2>
                 <br>
-                {{client|crispy}} 
-                <h2>Address</h2>
-                <br>
-                {{ address |crispy}}
+                {% crispy client %} 
+                <h2>Job Details</h2>
+                {% crispy address %}
                 {{ job|crispy }}
-                <button type="submit"  class="btn btn-primary">Submit</button>
+                <h2>Billing Information</h2>
+                <input type="checkbox" class="form-check-label" id="billing_address_select" name="billing_address_select" default=True onclick="display_billing()">
+                <label>Is your billing address the same as the job address?</label>
+                <div id="billing_address_form">
+                {% crispy address %}
+                </div>
+                <br>
+                <button type="submit" name="submit" class="btn btn-primary" id='submit'>Submit</button>
             </form>
         </div>
        
