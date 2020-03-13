@@ -20,8 +20,8 @@ class AddressForm(forms.ModelForm):
             'line_two': "Address 2",
         }
 
-    def __init__(self) :
-        super(AddressForm, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(AddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             'line_one',
@@ -52,8 +52,8 @@ class ClientForm(forms.ModelForm):
             "number": "Contact Number"
         }
 
-    def __init__(self) :
-        super(ClientForm, self).__init__()
+    def __init__(self, *args, **kwargs) :
+        super(ClientForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Row(

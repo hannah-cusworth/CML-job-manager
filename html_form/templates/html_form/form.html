@@ -13,8 +13,12 @@
             
             <form method="post">
                 {% csrf_token %}
-                {% crispy client %} 
-                {% crispy address %}
+                <h2>Personal details</h2>
+                <br>
+                {{client|crispy}} 
+                <h2>Address</h2>
+                <br>
+                {{ address |crispy}}
                 {{ job|crispy }}
                 <button type="submit"  class="btn btn-primary">Submit</button>
             </form>

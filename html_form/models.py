@@ -3,6 +3,7 @@ from datetime import datetime
 from django.core.validators import validate_email
 from phonenumber_field.modelfields import PhoneNumberField
 from localflavor.gb.forms import GBCountySelect, GBPostcodeField
+from .validators import validate_alpha
 
 
 
@@ -20,11 +21,18 @@ class Address(models.Model):
 
 
 class Client(models.Model):
-    first = models.CharField(max_length=64)
-    last = models.CharField(max_length=64)
+    first = models.CharField(
+        max_length=64,
+        validators=[validate_alpha],
+        )
+    last = models.CharField(
+        max_length=64,
+        validators=[validate_alpha],
+        )
     email = models.EmailField(
         max_length=64, 
-        validators=[validate_email])
+        validators=[validate_email]
+        )
     number = PhoneNumberField()
     address = models.ManyToManyField(Address, related_name="address")
 

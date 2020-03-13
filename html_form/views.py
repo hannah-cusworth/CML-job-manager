@@ -36,6 +36,7 @@ class FormView(TemplateView):
                     new_job.client_id = new_client.id
                 
                     new_job.save()
+                    
                     return render(request, "html_form/success.html")
         
         return render(request, self.template_name, {'address': addressform, 'client': clientform, 'job': jobform})
