@@ -1,3 +1,2 @@
-from django.db import models
+import jobs_home.models
 
-# Create your models here.

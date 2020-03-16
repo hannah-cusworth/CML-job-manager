@@ -12,28 +12,21 @@ Inbox
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Added</th>
+            <th scope="col">Job Address</th>
+            <th scope="col">Description</th>
+            <th scope="col">Creation</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            {% for job in current_jobs %}
+        <tr onclick="window.open({{job.id}})">
+            <th scope="row">{{job.id}}</th>
+            <td>{{job.client_id}}</td>
+            <td>{{job.job_address_id}}</td>
+            <td>{{job.description}}</td>
+            <td>{{job.creation_date}}</td>
         </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+        {% endfor %}
         </tr>
         </tbody>
     </table>
