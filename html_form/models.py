@@ -71,7 +71,7 @@ class Job(models.Model):
         Address, on_delete=models.CASCADE, related_name="job_address"
         )
     billing_address =  models.ForeignKey(
-        Address, on_delete=models.CASCADE, related_name="billing_address",
+        Address, on_delete=models.CASCADE, related_name="billing_address"
         )
 
     client = models.ForeignKey(

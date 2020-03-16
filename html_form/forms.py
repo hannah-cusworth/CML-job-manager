@@ -11,7 +11,7 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ['line_one', 'line_two', 'city', 'county', 'postcode',]
-        exclude = ['client']
+        exclude = ['client', 'creation_date']
         widgets = {
             'county': GBCountySelect()
         }
@@ -19,7 +19,7 @@ class AddressForm(forms.ModelForm):
             'line_one': "Address 1",
             'line_two': "Address 2",
         }
-
+        
     def __init__(self, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -34,6 +34,11 @@ class AddressForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
+        if self.prefix == 'billing':
+            self.fields['line_one'].required = False
+            self.fields['city'].required = False
+            self.fields['postcode'].required = False
+            self.fields['county'].required = False
 
 class BillingForm(AddressForm):
     def __init__(self, *args, **kwargs):
@@ -59,7 +64,7 @@ class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ['first', 'last', 'email', 'number']
-        exclude = ['address']
+        exclude = ['address', 'creation_date']
         widgets = {
             'number': PhoneNumberInternationalFallbackWidget,
         }

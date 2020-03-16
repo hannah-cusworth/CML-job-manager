@@ -37,19 +37,19 @@
                 if (check.checked == false){
                     billing.style.display = "block";
                     
-                    document.getElementById("billing_line_one").required = true;
-                    document.getElementById("billing_city").required = true;
-                    document.getElementById("billing_county").required = true;
-                    document.getElementById("billing_postcode").required = true;
+                    document.getElementById("id_billing-line_one").innerHTML = true;
+                    document.getElementById("id_billing-city").required = true;
+                    document.getElementById("id_billing-county").required = true;
+                    document.getElementById("id_billing-postcode").required = true;
                     
                 }
                 else {
                     billing.style.display = "none";
                     
-                    document.getElementById("billing_line_one").required = false;
-                    document.getElementById("billing_city").required = false;
-                    document.getElementById("billing_county").required = false;
-                    document.getElementById("billing_postcode").required = false;
+                    document.getElementById("id_billing-line_one").required = false;
+                    document.getElementById("id_billing-city").required = false;
+                    document.getElementById("id_billing-county").required = false;
+                    document.getElementById("id_billing-postcode").required = false;
                 }
             }
         </script>
