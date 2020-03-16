@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from html_form.forms import AddressForm, ClientForm, JobForm
+from html_form.forms import AddressForm, ClientForm, JobForm, BillingForm
 from django.forms import ValidationError
 
 
@@ -13,23 +13,23 @@ class FormView(TemplateView):
     
     def get(self, request):
         jobaddressform = AddressForm()
-        billingaddressform = AddressForm()
+        billingaddressform = BillingForm(auto_id = 'billing_%s')
         clientform = ClientForm()
         jobform = JobForm()
         return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
     
     def post(self, request):
         jobaddressform = AddressForm(request.POST)
-        billingaddressform = AddressForm(request.POST)
+        billingaddressform = BillingForm(request.POST, auto_id = 'billing_%s')
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
         
         if clientform.is_valid():
-            new_client = clientform.save()
+            new_client = clientform.save(commit=False)
             if jobaddressform.is_valid():
-                
-                new_address_job = jobaddressform.save()
-                new_address.client.add(new_client.id)
+                new_address_job = jobaddressform.save(commit=False)
+
+                new_address_job.client.add(new_client.id)
                 new_client.address.add(new_address_job.id)
                 if jobform.is_valid():
                     description = jobform.cleaned_data['description']
@@ -41,6 +41,8 @@ class FormView(TemplateView):
                     if billingaddressform is None:
                         new_job.billing_address = new_address_job.id
                         new_job.save()
+                        new_address_job.save()
+                        new_client_save()
                         return render(request, "html_form/success.html")
                     elif billingaddressform.is_valid():
                 
@@ -50,6 +52,8 @@ class FormView(TemplateView):
                         new_job.billing_address = new_address_billing.id
                     
                         new_job.save()
+                        new_address_job.save()
+                        new_client_save()
                         return render(request, "html_form/success.html")
         
         return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})

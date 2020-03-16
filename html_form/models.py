@@ -14,6 +14,9 @@ class Address(models.Model):
     city = models.CharField(max_length=64)
     county = models.CharField(max_length=64)
     postcode = models.CharField(max_length=64)
+    creation_date = models.DateTimeField(
+        auto_now_add=True
+        )
 
     #def __str__(self):
         #return f"{client.first} {client.last}\n{self.line_one}\n{self.line_two}\n{self.city}\n{self.county}\n{self.postcode}"
@@ -34,6 +37,9 @@ class Client(models.Model):
         validators=[validate_email]
         )
     number = PhoneNumberField()
+    creation_date = models.DateTimeField(
+        auto_now_add=True
+        )
     address = models.ManyToManyField(Address, related_name="address")
 
     #def __str__(self):

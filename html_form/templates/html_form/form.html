@@ -5,26 +5,6 @@
         {% load crispy_forms_tags %}
         <link rel="stylesheet" href="{% static 'form_style/mystyle.css'%}?{% now 'u' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-        <script>
-            function display_billing(){
-                var check = document.getElementById("billing_address_select");
-                var billing = document.getElementById("billing_address_form");
-                if (check.checked == false){
-                    billing.style.display = "block";
-                    document.getElementById("id_line_one").required = false;
-                    document.getElementById("id_city").required = false;
-                    document.getElementById("id_county").required = false;
-                    document.getElementById("id_postcode").required = false;
-                }
-                else {
-                    billing.style.display = "none";
-                    document.getElementById("id_line_one").required = true;
-                    document.getElementById("id_city").required = true;
-                    document.getElementById("id_county").required = true;
-                    document.getElementById("id_postcode").required = true;
-                }
-            }
-        </script>
      </head>
      <body id="formBody">
         <div class="container">
@@ -39,7 +19,7 @@
                 {% crispy jobaddress %}
                 {{ job|crispy }}
                 <h2>Billing Information</h2>
-                <input type="checkbox" class="form-check-label" id="billing_address_select" name="billing_address_select" default=True onclick="display_billing()">
+                <input type="checkbox" class="form-check-label" id="billing_address_select" name="billing_address_select" checked=True onclick="display_billing()">
                 <label>Is your billing address the same as the job address?</label>
                 <div id="billing_address_form">
                 {% crispy billingaddress %}
@@ -49,7 +29,30 @@
             </form>
         </div>
        
-
+        <script>
+            display_billing()
+            function display_billing(){
+                var check = document.getElementById("billing_address_select");
+                var billing = document.getElementById("billing_address_form");
+                if (check.checked == false){
+                    billing.style.display = "block";
+                    
+                    document.getElementById("billing_line_one").required = true;
+                    document.getElementById("billing_city").required = true;
+                    document.getElementById("billing_county").required = true;
+                    document.getElementById("billing_postcode").required = true;
+                    
+                }
+                else {
+                    billing.style.display = "none";
+                    
+                    document.getElementById("billing_line_one").required = false;
+                    document.getElementById("billing_city").required = false;
+                    document.getElementById("billing_county").required = false;
+                    document.getElementById("billing_postcode").required = false;
+                }
+            }
+        </script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

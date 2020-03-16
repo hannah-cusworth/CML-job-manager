@@ -35,6 +35,22 @@ class AddressForm(forms.ModelForm):
             )
         )
 
+class BillingForm(AddressForm):
+    def __init__(self, *args, **kwargs):
+        super(AddressForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'line_one',
+            'line_two',
+            Row(
+                Column('city', css_class='form-group col-md-6 mb-0'),
+                Column('county', css_class='form-group col-md-4 mb-0'),
+                Column('postcode', css_class='form-group col-md-2 mb-0'),
+                css_class='form-row'
+            )
+        )
+    
 
 
 
