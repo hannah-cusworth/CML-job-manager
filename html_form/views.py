@@ -13,14 +13,14 @@ class FormView(TemplateView):
     
     def get(self, request):
         jobaddressform = AddressForm()
-        billingaddressform = BillingForm(auto_id = 'billing_%s')
+        billingaddressform = AddressForm(auto_id = 'billing_%s')
         clientform = ClientForm()
         jobform = JobForm()
         return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
     
     def post(self, request):
         jobaddressform = AddressForm(request.POST)
-        billingaddressform = BillingForm(request.POST, auto_id = 'billing_%s')
+        billingaddressform = AddressForm(request.POST, auto_id = 'billing_%s')
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
         
@@ -28,33 +28,37 @@ class FormView(TemplateView):
             new_client = clientform.save(commit=False)
             if jobaddressform.is_valid():
                 new_address_job = jobaddressform.save(commit=False)
-
-                new_address_job.client.add(new_client.id)
-                new_client.address.add(new_address_job.id)
-                if jobform.is_valid():
-                    description = jobform.cleaned_data['description']
-                    new_job = jobform.save(commit=False)
-                    new_job.job_address = new_address_job.id
-                    new_job.client_id = new_client.id
-                #check whether billing address is empty 
-                #if so, set the job billing address to the job address
-                    if billingaddressform is None:
-                        new_job.billing_address = new_address_job.id
-                        new_job.save()
-                        new_address_job.save()
-                        new_client_save()
-                        return render(request, "html_form/success.html")
-                    elif billingaddressform.is_valid():
                 
-                        new_address_billing = billingaddressform.save()
-                        new_address_billing.client.add(new_client.id)
-                        new_client.address.add(new_address_billing.id)
-                        new_job.billing_address = new_address_billing.id
-                    
-                        new_job.save()
+                if jobform.is_valid():
+                    new_job = jobform.save(commit=False)
+
+               
+                    if billingaddressform is None:
                         new_address_job.save()
-                        new_client_save()
+                        new_job.billing_address = new_address_job
+
                         return render(request, "html_form/success.html")
+                    if billingaddressform.is_valid():
+                        new_address_job.save()
+                        new_address_billing = billingaddressform.save()
+                        new_job.billing_address = new_address_billing
+                    else:
+                        return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
+
+            
+                    new_client.save()
+
+                    new_job.job_address = new_address_job
+                    new_job.client_id = new_client.id
+                    
+                    new_job.save()
+                        
+                    new_address_billing.client.add(new_client.id)
+                    new_client.address.add(new_address_billing.id)
+                    new_address_job.client.add(new_client.id)
+                    new_client.address.add(new_address_job.id)
+
+                    return render(request, "html_form/success.html")
         
         return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
 

@@ -11,7 +11,7 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ['line_one', 'line_two', 'city', 'county', 'postcode',]
-        exclude = ['client']
+        exclude = ['client', 'creation_date']
         widgets = {
             'county': GBCountySelect()
         }
@@ -59,7 +59,7 @@ class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ['first', 'last', 'email', 'number']
-        exclude = ['address']
+        exclude = ['address', 'creation_date']
         widgets = {
             'number': PhoneNumberInternationalFallbackWidget,
         }
