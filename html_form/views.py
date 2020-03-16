@@ -12,15 +12,15 @@ class FormView(TemplateView):
     template_name = "html_form/form.html"
     
     def get(self, request):
-        jobaddressform = AddressForm()
-        billingaddressform = AddressForm(auto_id = 'billing_%s')
+        jobaddressform = AddressForm(prefix='job')
+        billingaddressform = AddressForm(auto_id = 'billing_%s', prefix="billing")
         clientform = ClientForm()
         jobform = JobForm()
         return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
     
     def post(self, request):
-        jobaddressform = AddressForm(request.POST)
-        billingaddressform = AddressForm(request.POST, auto_id = 'billing_%s')
+        jobaddressform = AddressForm(request.POST, prefix="job")
+        billingaddressform = AddressForm(request.POST, auto_id = 'billing_%s', prefix="billing")
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
         
@@ -33,12 +33,12 @@ class FormView(TemplateView):
                     new_job = jobform.save(commit=False)
 
                
-                    if billingaddressform is None:
+                    if billingaddressform.is_bound == False:
                         new_address_job.save()
                         new_job.billing_address = new_address_job
 
                         return render(request, "html_form/success.html")
-                    if billingaddressform.is_valid():
+                    elif billingaddressform.is_valid():
                         new_address_job.save()
                         new_address_billing = billingaddressform.save()
                         new_job.billing_address = new_address_billing
