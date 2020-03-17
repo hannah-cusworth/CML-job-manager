@@ -22,7 +22,7 @@ def inbox(request):
 
 class JobView(TemplateView):
     template_name = "jobs_home/jobs.html"
-   
+    
     def get(self, request, job_id):
         try:
             job = Job.objects.get(pk=job_id)
@@ -33,19 +33,33 @@ class JobView(TemplateView):
             "address": Address.objects.get(pk=job.job_address_id),
             "client": Client.objects.get(pk=job.client_id)
         }
+   
         return render(request, self.template_name, context)
   
    
     def post(self, request, job_id):
-        post = request.POST
-        keys = post.keys()
+        category = request.POST["card"]
         job = Job.objects.get(pk=job_id)
-        print(job.description)
+        if category == "client_info":
+            category = Client.objects.get(pk=job.client_id)
+        if category == "address_info":
+            category = Address.objects.get(pk=job.job_address_id)
+        if category == "job_info":
+            category = Job.objects.get(pk=job_id)
+
+        post = request.POST 
+        keys = post.keys()  
+
+      
+        
+        
         
         for column in keys:
-            setattr(job, column, post[column])
-            job.save()
-        print(job.description)
+    
+            if column != "card":
+                setattr(category, column, post[column])
+                category.save()
+    
         
         
         return render(request, self.template_name)
