@@ -1,12 +1,100 @@
 <!DOCTYPE html>
     <head>
-        <title>TITLE</title>
+        <title>Job {{job.id}}</title>
         {% load static %}
         <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?{% now 'u' %}">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script> 
+            function edit_content(card)
+            {
+                var x = document.getElementsByClassName(card);
+                var i;
+                var button = document.getElementById(card);
+                if (button.innerText == "Edit")
+                {
+                    for (i =0; i < x.length; i++)
+                        {
+                        x[i].contentEditable = "true";
+                        }
+                    button.innerText = "Save";
+                }
+                else {
+                    for (i =0; i < x.length; i++)
+                        {
+                        x[i].contentEditable = "false";
+                        }
+                    button.innerText = "Edit";
+
+                }   
+            }
+        </script>
+    
     </head>
     <body>
-        <div class="container">
-            <h1>{{job.id}}</h1>
+        <div class="container" id="job_background">
+            <br>
+            <h1>Job {{job.id}}</h1>
+            <br>
+            <div class="card-deck"> 
+
+                
+                <div class="card border-dark mb-3">
+                    <div class="card-header">
+                        <h5>Client</h5>
+                    </div>
+                    <div class="card-body text-dark">
+                        <ul class="list-group list-group-flush text-dark">
+                            <li class="list-group-item">{{client.first}} {{client.last}}</li>
+                            <li class="list-group-item">{{client.number}}</li>
+                            <li class="list-group-item">{{client.email}}</li>
+                            <li class="list-group-item">Link somewhere</li>
+                            
+                        </ul>   
+                    </div>
+                </div>
+                 
+
+                
+                <div class="card border-dark mb-3">
+                    <div class="card-header">
+                        <h5>Address</h5>
+                    </div>
+                    <div class="card-body text-dark">
+                        <ul class="list-group list-group-flush text-dark">
+                            <li class="list-group-item">{{address.line_one}}</li>
+                            <li class="list-group-item">{{address.line_two}}</li>
+                            <li class="list-group-item">{{address.city}}</li>
+                            <li class="list-group-item">{{address.county}}</li>
+                            <li class="list-group-item">{{address.postcode}}</li>
+                            <li class="list-group-item">Link somewhere</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="card" id="job_card">
+                <div class="card-header">
+                    <h5>Job Details</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text job_info" id="description">
+                        {{job.description}}
+                    </p>
+                    <button type="button" onclick="edit_content('job_info')" class="btn btn-warning" id="job_info">Edit</button>
+
+
+                </div>
+
+            </div>
+
+            
+            
         </div>
-    </body>
+        
+
+
+
+            
+                

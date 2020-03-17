@@ -14,7 +14,7 @@
     background-color: #99ccff;
 }
 
-li {
+.navlist {
 
 
     margin: 10px 20px 10px;
@@ -26,4 +26,17 @@ li {
     color: white;
     font-weight: 400px;
 }
+
+#job_background {
+
+    height: 800px;
+    background-color: #79a6d2;
+    
+}
+
+#job_card {
+
+    
+}
+
 
