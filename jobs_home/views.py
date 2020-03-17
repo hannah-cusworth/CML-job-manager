@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from html_form.models import Job, Address, Client
 from django.views.generic import TemplateView 
+from django.template import RequestContext
+
 
 def current(request):
     context = {
@@ -20,7 +22,7 @@ def inbox(request):
 
 class JobView(TemplateView):
     template_name = "jobs_home/jobs.html"
-
+   
     def get(self, request, job_id):
         try:
             job = Job.objects.get(pk=job_id)
@@ -32,5 +34,18 @@ class JobView(TemplateView):
             "client": Client.objects.get(pk=job.client_id)
         }
         return render(request, self.template_name, context)
-    
-    #def post(self, request):
+  
+   
+    def post(self, request, job_id):
+        post = request.POST
+        keys = post.keys()
+        job = Job.objects.get(pk=job_id)
+        print(job.description)
+        
+        for column in keys:
+            setattr(job, column, post[column])
+            job.save()
+        print(job.description)
+        
+        
+        return render(request, self.template_name)

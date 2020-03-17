@@ -2,13 +2,18 @@
     <head>
         <title>Job {{job.id}}</title>
         {% load static %}
+       
         <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?{% now 'u' %}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script> 
             function edit_content(card)
             {
                 var x = document.getElementsByClassName(card);
                 var i;
+                var xhttp = new XMLHttpRequest();
+                var page = '/' + {{job.id}}
+                var changes = {}
                 var button = document.getElementById(card);
                 if (button.innerText == "Edit")
                 {
@@ -16,13 +21,24 @@
                         {
                         x[i].contentEditable = "true";
                         }
-                    button.innerText = "Save";
+                    button.innerText = "Commit";
                 }
                 else {
                     for (i =0; i < x.length; i++)
                         {
                         x[i].contentEditable = "false";
+                        edited = x[i].innerText
+                        id = x[i].id 
+                        changes[id] = edited
                         }
+                   
+
+                    $.ajax({
+                            url: page,
+                            type: "post",
+                            data: changes,
+                            headers: {'X-CSRFToken': '{{ csrf_token }}'}, // for csrf token
+                        });
                     button.innerText = "Edit";
 
                 }   
@@ -31,6 +47,7 @@
     
     </head>
     <body>
+      
         <div class="container" id="job_background">
             <br>
             <h1>Job {{job.id}}</h1>
@@ -82,6 +99,7 @@
                     <p class="card-text job_info" id="description">
                         {{job.description}}
                     </p>
+                   
                     <button type="button" onclick="edit_content('job_info')" class="btn btn-warning" id="job_info">Edit</button>
 
 
