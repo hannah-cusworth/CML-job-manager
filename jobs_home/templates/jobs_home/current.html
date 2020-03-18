@@ -8,29 +8,7 @@ Current Jobs
 
 <h1>Current Jobs</h1>
 <br>
-    <table class="table table-hover">
-        <thead class="thead">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Job Address</th>
-            <th scope="col">Description</th>
-            <th scope="col">Creation</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for job in current_jobs %}
-        <tr>
-            <th scope="row">{{job.id}}</th>
-            <td>{{job.client_id}}</td>
-            <td>{{job.job_address_id}}</td>
-            <td>{{job.description}}</td>
-            <td>{{job.creation_date}}</td>
-        </tr>
-        {% endfor %}
-        </tr>
-        </tbody>
-    </table>
+
 <a href="{% url 'html_form:form' %}">Submit Form</a>
 <br>
 <a href="{% url 'html_form:new' %}">New Form</a>

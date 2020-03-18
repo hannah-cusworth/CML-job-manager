@@ -1,0 +1,29 @@
+<div class="container" id="job_background">
+    <br>
+    <h1>Client {{job.id}}</h1>
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+            <h5>Client</h5>
+        </div>
+        <div class="card-body text-dark">
+            <ul class="list-group list-group-flush text-dark">
+                
+                <li class="list-group-item">Name 
+                    <p class="client_info" id="last">{{client.last}}</p>
+                    <p class="client_info" id="first">{{client.first}}&ensp;</p>
+                </li>
+                <li class="list-group-item">Contact Number 
+                    <p class="client_info" id="number">{{client.number}}</p>
+                </li>
+                <li class="list-group-item">Email 
+                    <p class="client_info" id="email">{{client.email}}</p>
+                </li>
+            
+                <li class="list-group-item ">Link somewhere</li>
+                
+            </ul> 
+            <br>
+            <button type="button" onclick="edit_content('client_info')" class="btn btn-warning" id="client_info">Edit</button>
+
+        </div>
+    </div>

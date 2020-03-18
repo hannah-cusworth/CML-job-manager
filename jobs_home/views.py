@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404
 from html_form.models import Job, Address, Client
 from django.views.generic import TemplateView 
 from django.template import RequestContext
+from jobs_home.forms import SearchForm
 
 
 def current(request):
@@ -11,8 +12,36 @@ def current(request):
     }
     return render(request, "jobs_home/current.html", context)
 
-def archive(request):
-    return render(request, "jobs_home/archive.html")
+class ArchiveView(TemplateView):
+    template_name = "jobs_home/archive.html"
+
+    def get(self, request):
+        searchform = SearchForm()
+        context = {
+            "current_jobs": [job for job in Job.objects.all() if job.status == "AR"],
+            "searchform": SearchForm()
+        }
+        return render(request, self.template_name, context)
+    def post(self, request):
+        category = request.POST.get("category")
+        #attribute = category+ "_icontains"
+        attribute = category
+        searchterm = request.POST.get("search_term")
+        
+        
+        if category == "description": 
+            current_jobs = Job.objects.filter(description_icontains = searchterm )
+        elif category == "postcode" or category == "line_one":
+            current_jobs = Address.objects.filter(attribute = searchterm )
+        else:
+            current_jobs = Client.objects.filter(attribute = searchterm )
+
+        context = {
+            "current_jobs": current_jobs,
+            "searchform": SearchForm()
+        }
+        
+        return render(request, self.template_name, context)
 
 class InboxView(TemplateView):
     template_name = "jobs_home/inbox.html"
@@ -60,18 +89,20 @@ class JobView(TemplateView):
             category = Job.objects.get(pk=job_id)
 
         post = request.POST 
-        keys = post.keys()  
-
-      
-        
-        
+        keys = post.keys()    
         
         for column in keys:
     
             if column != "card":
                 setattr(category, column, post[column])
                 category.save()
-    
-        
         
         return render(request, self.template_name)
+
+def search(searchterm, category):
+   
+    
+
+    current_jobs = db.execute("SELECT * FROM :table WHERE :attribute LIKE :searchterm", {"table": table, "attribute": category, "searchterm": searchterm})
+
+    return current_jobs
