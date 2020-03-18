@@ -24,7 +24,10 @@ class InboxView(TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        print(id)
+        idnum = request.POST.get("idnum")
+        job = Job.objects.get(pk=idnum)
+        job.status="CU"
+        job.save()
         
         return render(request, self.template_name)
 
@@ -46,6 +49,7 @@ class JobView(TemplateView):
   
    
     def post(self, request, job_id):
+        print(request.POST)
         category = request.POST["card"]
         job = Job.objects.get(pk=job_id)
         if category == "client_info":

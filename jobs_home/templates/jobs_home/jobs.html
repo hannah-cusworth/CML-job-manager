@@ -9,15 +9,15 @@
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script> 
-               
+
         <script>
             function edit_content(card)
                 {
                     var x = document.getElementsByClassName(card);
                     var i;
                     var xhttp = new XMLHttpRequest();
-                    var page = '/' + {{job.id}}
-                    var changes = {"card": card,}
+                    var page = '/' + {{job.id}};
+                    var changes = {"card": card,};
                     var button = document.getElementById(card);
                     if (button.innerText == "Edit")
                     {

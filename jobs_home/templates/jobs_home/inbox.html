@@ -6,25 +6,22 @@ Inbox
 
 
 {% block script %}
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"
-  type="text/javascript"></script>
-
-<script type="text/javascript"> 
-function make_current()
-    {
-        var id = this.id; 
-        event.stopPropagation();
-        $.ajax(
-                {
-                    url: "/inbox",
-                    type: "post",
-                    data: id,
-                    headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
-                });
-    }
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script> 
+    function make_current(idnum)
+        {
+            event.stopPropagation();
+            var info = {"idnum": idnum};
+            var row = document.getElementById(idnum);
+            row.style.display = "none";
+            $.ajax(
+                    {
+                        url: "inbox",
+                        type: "post",
+                        data: info,
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                    });
+        }
 </script>
 {% endblock %}
 
@@ -44,18 +41,17 @@ function make_current()
         </thead>
         <tbody>
             {% for job in current_jobs %}
-        <tr onclick="window.open({{job.id}})">
+        <tr id="{{job.id}}" onclick="window.open({{job.id}})">
             <th scope="row">{{job.id}}</th>
             <td>{{job.client.first}} {{job.client.last}}</td>
             <td>{{job.job_address.postcode}}</td>
             <td>{{job.description}}</td>
             <td>{{job.creation_date}}</td>
-            <td> <button class="btn btn-warning" id="{{job.id}}" onclick="make_current()">Submit</button></td>
+            <td> <button class="btn btn-warning" onclick="make_current('{{job.id}}')">Submit</button></td>
         </tr>
         {% endfor %}
         </tr>
         </tbody>
     </table>
-  
 
 {% endblock %}
