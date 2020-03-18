@@ -14,11 +14,19 @@ def current(request):
 def archive(request):
     return render(request, "jobs_home/archive.html")
 
-def inbox(request):
-    context = {
-        "current_jobs": [job for job in Job.objects.all() if job.status == "IN"]
-    }
-    return render(request, "jobs_home/inbox.html", context)
+class InboxView(TemplateView):
+    template_name = "jobs_home/inbox.html"
+
+    def get(self, request):
+        context = {
+            "current_jobs": [job for job in Job.objects.all() if job.status == "IN"]
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        print(id)
+        
+        return render(request, self.template_name)
 
 class JobView(TemplateView):
     template_name = "jobs_home/jobs.html"

@@ -29,14 +29,23 @@
 
 #job_background {
 
-    height: 800px;
+    height: 1200px;
     background-color: #79a6d2;
     
 }
 
-#job_card {
+.list-group-item {
+    font-weight: bold;
 
-    
 }
+.list-group-item p {
+
+    display: inline;
+    font-weight: normal;
+    float: right;
+    margin: 0;
+
+}
+
 
 

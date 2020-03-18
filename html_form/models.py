@@ -8,7 +8,7 @@ from .validators import validate_alpha
 
 
 class Address(models.Model):
-    client = models.ManyToManyField('Client', related_name="client")
+    client = models.ManyToManyField('Client', related_name="owner")
     line_one = models.CharField(max_length=64, )
     line_two = models.CharField(max_length=64, blank=True)
     city = models.CharField(max_length=64)
@@ -75,7 +75,7 @@ class Job(models.Model):
         )
 
     client = models.ForeignKey(
-        Client, on_delete=models.CASCADE
+        Client, on_delete=models.CASCADE, related_name="client"
         )
     
 
