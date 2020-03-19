@@ -24,13 +24,12 @@ class ArchiveView(TemplateView):
         return render(request, self.template_name, context)
     def post(self, request):
         category = request.POST.get("category")
-        #attribute = category+ "_icontains"
-        attribute = category
+        attribute = category + "__icontains"
         searchterm = request.POST.get("search_term")
         
         
         if category == "description": 
-            current_jobs = Job.objects.filter(description_icontains = searchterm )
+            current_jobs = Job.objects.filter(description__icontains = searchterm )
         elif category == "postcode" or category == "line_one":
             current_jobs = Address.objects.filter(attribute = searchterm )
         else:

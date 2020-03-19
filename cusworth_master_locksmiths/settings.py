@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'phonenumber_field',
     'localflavor',
+    #'django_filter',
 ]
 
 MIDDLEWARE = [
