@@ -3,10 +3,115 @@
 {% block title %}
 Archive
 {% endblock %}
+{% block script %}
+<script>
+    function change_search()
+    {
+        var selected = document.getElementById("select").value;
+        var client = document.getElementById("client_form");
+        var job = document.getElementById("job_form");
+        var address = document.getElementById("address_form");
+        var atable = document.getElementById("address_table");
+        var jtable = document.getElementById("job_table");
+        var ctable = document.getElementById("client_table");
+        if (selected == "Client")
+        {
+            address.style.display = "none"
+            job.style.display = "none"
+            client.style.display = "block"
+            atable.style.display = "none"
+            jtable.style.display = "none"
+            ctable.style.display = "block"
+        }
+        else if (selected == "Job")
+        {
+            address.style.display = "none"
+            job.style.display = "block"
+            client.style.display = "none"
+            atable.style.display = "none"
+            jtable.style.display = "block"
+            ctable.style.display = "none"
+        }
+        else 
+        {
+            address.style.display = "block"
+            job.style.display = "none"
+            client.style.display = "none"
+            atable.style.display = "block"
+            jtable.style.display = "none"
+            ctable.style.display = "none"
+        }
+        return selected  
+    }
+</script>
+
+{% endblock %}
 
 {% block body %} 
 <h1>Archive</h1>
 <br>
+<div class="form-group" default="Client">
+    <label for="sel1">Select list:</label>
+    <select onchange="change_search()" class="form-control" id="select">
+      <option>Client</option>
+      <option>Address</option>
+      <option>Job</option>
+    </select>
+  </div>
+
 {% load crispy_forms_tags %}
- {% crispy searchform %}
+ {% crispy jobs.form jobs.form.helper %}
+ {% crispy addresses.form addresses.form.helper %}
+ {% crispy clients.form clients.form.helper %}
+
+ {% include "jobs_home/tables.html" %}
+
+    <table class="table table-hover" id="client_table">
+        <thead class="thead">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Number</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for client in current_clients %}
+        <tr id="{{job.id}}" onclick="window.open({{job.id}})">
+            <th scope="row">{{client.id}}</th>
+            <td>{{client.first}} {{client.last}}</td>
+            <td>{{client.email}}</td>
+            <td>{{client.number}}</td>
+        </tr>
+            {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-hover" id="address_table">
+            <thead class="thead">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Address 1</th>
+                <th scope="col">Address 2</th>
+                <th scope="col">City</th>
+                <th scope="col">County</th>
+                <th scope="col">Postcode</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for address in current_addresses %}
+            <tr id="{{address.id}}" onclick="window.open({{address.id}})">
+                <th scope="row">{{address.id}}</th>
+                <td>{{address.line_one}}}}</td>
+                <td>{{address.line_two}}</td>
+                <td>{{address.city}}</td>
+                <td>{{address.county}}</td>
+                <td>{{address.postcode</td>
+            </tr>
+                {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+
 {% endblock %}

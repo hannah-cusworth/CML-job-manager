@@ -46,6 +46,9 @@
     margin: 0;
 
 }
+#job_form #address_form #job_table #address_table {
+    display: hidden;
+}
 
 
 

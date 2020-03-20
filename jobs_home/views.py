@@ -3,7 +3,10 @@ from django.http import HttpResponse, Http404
 from html_form.models import Job, Address, Client
 from django.views.generic import TemplateView 
 from django.template import RequestContext
-from jobs_home.forms import SearchForm
+from jobs_home.filters import *
+from .forms import *
+
+
 
 
 def current(request):
@@ -16,31 +19,24 @@ class ArchiveView(TemplateView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
-        searchform = SearchForm()
+        clients = Client.objects.all()
+        jobs = Job.objects.all()
+        addresses = Address.objects.all()
+        current_clients = ClientFilter(request.GET, queryset=clients)
+        current_clients.form.helper = ClientFilterFormHelper()
+        current_jobs = JobFilter(request.GET, queryset=jobs)
+        current_jobs.form.helper = JobFilterFormHelper()
+        current_addresses = AddressFilter(request.GET, queryset=addresses)
+        current_addresses.form.helper = AddressFilterFormHelper()
         context = {
-            "current_jobs": [job for job in Job.objects.all() if job.status == "AR"],
-            "searchform": SearchForm()
+            "jobs": current_jobs,
+            "addresses": current_addresses,
+            "clients": current_clients,
         }
         return render(request, self.template_name, context)
-    def post(self, request):
-        category = request.POST.get("category")
-        attribute = category + "__icontains"
-        searchterm = request.POST.get("search_term")
-        
-        
-        if category == "description": 
-            current_jobs = Job.objects.filter(description__icontains = searchterm )
-        elif category == "postcode" or category == "line_one":
-            current_jobs = Address.objects.filter(attribute = searchterm )
-        else:
-            current_jobs = Client.objects.filter(attribute = searchterm )
 
-        context = {
-            "current_jobs": current_jobs,
-            "searchform": SearchForm()
-        }
+
         
-        return render(request, self.template_name, context)
 
 class InboxView(TemplateView):
     template_name = "jobs_home/inbox.html"

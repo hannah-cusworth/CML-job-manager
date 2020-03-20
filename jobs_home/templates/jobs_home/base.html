@@ -2,7 +2,7 @@
     <head>
         <title>{% block title %} {% endblock %}</title>
         {% load static %}
-        {% load crispy_forms_tags %}
+        
         <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?{% now 'u' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
         
@@ -20,34 +20,10 @@
       </div>
     </nav>
     
-    <body>
+    <body onload="change_search()">
         <div class=container>
           {% block body %} {% endblock %}
-          <table class="table table-hover">
-            <thead class="thead">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Job Address</th>
-                <th scope="col">Description</th>
-                <th scope="col">Creation</th>
-                <th scope="col">Click</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for job in current_jobs %}
-            <tr id="{{job.id}}" onclick="window.open({{job.id}})">
-                <th scope="row">{{job.id}}</th>
-                <td>{{job.client.first}} {{job.client.last}}</td>
-                <td>{{job.job_address.postcode}}</td>
-                <td>{{job.description}}</td>
-                <td>{{job.creation_date}}</td>
-                <td> <button class="btn btn-warning" >Submit</button></td>
-            </tr>
-                {% endfor %}
-                </tr>
-                </tbody>
-            </table>
+         
         </div>
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
