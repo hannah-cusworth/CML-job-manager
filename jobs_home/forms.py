@@ -16,7 +16,7 @@ class ClientFilterFormHelper(FormHelper):
             Column('number', css_class="form-group col-md-5 mb-0"),
             Column('email', css_class="form-group col-md-5 mb-0"),  
         ),
-        Submit('submit', 'Submit', css_class='button')
+        Submit('client_btn', 'Submit', css_class='button')
     )
 
 class JobFilterFormHelper(FormHelper):
@@ -32,7 +32,7 @@ class JobFilterFormHelper(FormHelper):
             Column('client_details', css_class="form-group col-md-5 mb-0"),
             Column('address_details', css_class="form-group col-md-5 mb-0"), 
         ),
-        Submit('submit', 'Submit', css_class='button'),
+        Submit('job_btn', 'Submit', css_class='button'),
        
     )
 
@@ -53,6 +53,6 @@ class AddressFilterFormHelper(FormHelper):
             Column('postcode', css_class="form-group col-md-5 mb-0"),
             
         ),
-        Submit('submit', 'Submit', css_class='button'),
+        Submit('address_btn', 'Submit', css_class='button'),
        
     )

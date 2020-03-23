@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'localflavor',
     'django_filters',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [

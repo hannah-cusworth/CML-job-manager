@@ -4,9 +4,13 @@
 Archive
 {% endblock %}
 {% block script %}
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script> 
 <script>
+    
     function change_search()
     {
         var selected = document.getElementById("select").value;
@@ -16,7 +20,7 @@ Archive
         var atable = document.getElementById("address_table");
         var jtable = document.getElementById("job_table");
         var ctable = document.getElementById("client_table");
-        if (selected == "Client")
+        if (selected == 0)
         {
             address.style.display = "none"
             job.style.display = "none"
@@ -25,7 +29,7 @@ Archive
             jtable.style.display = "none"
             ctable.style.display = "block"
         }
-        else if (selected == "Job")
+        else if (selected == 1)
         {
             address.style.display = "none"
             job.style.display = "block"
@@ -45,19 +49,22 @@ Archive
         }
         return selected  
     }
+    
 </script>
 
 {% endblock %}
 
 {% block body %} 
+{{ form.media }}
+
 <h1>Archive</h1>
 <br>
-<div class="form-group" default="Client" label="">
+<div class="form-group" default=1 label="">
     <label for="sel1">Select list:</label>
     <select onchange="change_search()" class="form-control" id="select">
-      <option>Client</option>
-      <option>Address</option>
-      <option>Job</option>
+      <option value=0>Client</option>
+      <option value=1>Address</option>
+      <option value=2>Job</option>
     </select>
   </div>
 

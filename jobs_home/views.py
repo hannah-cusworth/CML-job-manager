@@ -19,10 +19,8 @@ class ArchiveView(ListView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
-       
-        current_clients = ClientFilter(request.GET, queryset=Client.objects.all())
-        current_jobs = JobFilter(request.GET, queryset=Job.objects.all())
-        current_addresses = AddressFilter(request.GET, queryset=Address.objects.all())
+        
+        
         clients = ClientFilter()
         clients.form.helper = ClientFilterFormHelper()
         jobs = JobFilter()
@@ -34,12 +32,28 @@ class ArchiveView(ListView):
             "jobs": jobs,
             "clients": clients,
             "addresses": addresses,
-            "current_clients": current_clients,
-            "current_jobs": current_jobs,
-            "current_addresses": current_addresses,
+            "current_clients": None,
+            "current_jobs": None,
+            "current_addresses": None,
+            "page": 0
 
         }
+#rm first if
+        if 'client_btn' in request.GET:
+            context["current_clients"] = ClientFilter(request.GET, queryset=Client.objects.all())
+            context["page"] = 0
+        if 'job_btn' in request.GET:
+            context["current_jobs"] = JobFilter(request.GET, queryset=Job.objects.all())
+            context["page"] = 1
+        if 'address_btn' in request.GET:
+            context["current_addresses"] = AddressFilter(request.GET, queryset=Address.objects.all())
+            context["page"] = 2
+
         return render(request, self.template_name, context)
+    
+    
+        
+        
     
    
 
