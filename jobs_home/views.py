@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from html_form.models import Job, Address, Client
-from django.views.generic import TemplateView 
+from django.views.generic import TemplateView, ListView 
 from django.template import RequestContext
 from jobs_home.filters import *
 from .forms import *
@@ -15,25 +15,43 @@ def current(request):
     }
     return render(request, "jobs_home/current.html", context)
 
-class ArchiveView(TemplateView):
+class ArchiveView(ListView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
-        clients = Client.objects.all()
-        jobs = Job.objects.all()
-        addresses = Address.objects.all()
-        current_clients = ClientFilter(request.GET, queryset=clients)
-        current_clients.form.helper = ClientFilterFormHelper()
-        current_jobs = JobFilter(request.GET, queryset=jobs)
-        current_jobs.form.helper = JobFilterFormHelper()
-        current_addresses = AddressFilter(request.GET, queryset=addresses)
-        current_addresses.form.helper = AddressFilterFormHelper()
+       
+        current_clients = Client.objects.all()
+        current_jobs = Job.objects.all()
+        current_addresses = Address.objects.all()
+        clients = ClientFilter()
+        clients.form.helper = ClientFilterFormHelper()
+        jobs = JobFilter()
+        jobs.form.helper = JobFilterFormHelper()
+        addresses = AddressFilter()
+        addresses.form.helper = AddressFilterFormHelper()
+     
         context = {
-            "jobs": current_jobs,
-            "addresses": current_addresses,
-            "clients": current_clients,
+            "jobs": jobs,
+            "clients": clients,
+            "addresses": addresses,
+            "current_clients": current_clients,
+            "current_jobs": current_jobs,
+            "current_addresses": current_addresses,
+
         }
         return render(request, self.template_name, context)
+    
+    '''def search(self, request):
+        print("chocolate")
+        context = { 
+            "jobs": Job.objects.all(),
+            "clients": Client.objects.all(),
+            "addresses": Address.objects.all(),
+        }
+
+        return render(request, self.template_name, context)'''
+    
+
 
 
         
@@ -94,10 +112,3 @@ class JobView(TemplateView):
         
         return render(request, self.template_name)
 
-def search(searchterm, category):
-   
-    
-
-    current_jobs = db.execute("SELECT * FROM :table WHERE :attribute LIKE :searchterm", {"table": table, "attribute": category, "searchterm": searchterm})
-
-    return current_jobs
