@@ -81,3 +81,6 @@ class Job(models.Model):
 
     def __str__(self):
         return
+    
+    def client_name(self):
+        return self.first + " " + self.last

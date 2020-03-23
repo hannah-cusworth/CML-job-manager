@@ -4,6 +4,8 @@
 Archive
 {% endblock %}
 {% block script %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 <script>
     function change_search()
     {
@@ -50,7 +52,7 @@ Archive
 {% block body %} 
 <h1>Archive</h1>
 <br>
-<div class="form-group" default="Client">
+<div class="form-group" default="Client" label="">
     <label for="sel1">Select list:</label>
     <select onchange="change_search()" class="form-control" id="select">
       <option>Client</option>
