@@ -20,9 +20,9 @@ class ArchiveView(ListView):
 
     def get(self, request):
        
-        current_clients = Client.objects.all()
-        current_jobs = Job.objects.all()
-        current_addresses = Address.objects.all()
+        current_clients = ClientFilter(request.GET, queryset=Client.objects.all())
+        current_jobs = JobFilter(request.GET, queryset=Job.objects.all())
+        current_addresses = AddressFilter(request.GET, queryset=Address.objects.all())
         clients = ClientFilter()
         clients.form.helper = ClientFilterFormHelper()
         jobs = JobFilter()
@@ -41,16 +41,7 @@ class ArchiveView(ListView):
         }
         return render(request, self.template_name, context)
     
-    '''def search(self, request):
-        print("chocolate")
-        context = { 
-            "jobs": Job.objects.all(),
-            "clients": Client.objects.all(),
-            "addresses": Address.objects.all(),
-        }
-
-        return render(request, self.template_name, context)'''
-    
+   
 
 
 

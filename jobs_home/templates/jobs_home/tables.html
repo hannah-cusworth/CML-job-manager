@@ -11,7 +11,7 @@
     </tr>
     </thead>
     <tbody>
-        {% for job in current_jobs %}
+        {% for job in current_jobs.qs %}
     <tr id="{{job.id}}" onclick="window.open({{job.id}})">
         <th scope="row">{{job.id}}</th>
         <td>{{job.client.first}} {{job.client.last}}</td>
