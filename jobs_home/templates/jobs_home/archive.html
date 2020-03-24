@@ -51,23 +51,28 @@ crossorigin="anonymous"></script>
 {% block body %} 
 
 
-<h1>Archive</h1>
-<br>
-<div class="form-group" label="" >
+
+<div class="form-group" label="" id="selector">
     <label for="sel1">Select list:</label>
     <select onchange="change_search()" class="form-control" id="select">
-      <option value=0>Job</option>
-      <option value=1>Client</option>
-      <option value=2>Address</option>
+        <option selected>---------- Select a Search Category ----------</option>
+        <option value=0>Job</option>
+        <option value=1>Client</option>
+        <option value=2>Address</option>
+      
     </select>
   </div>
 
 <div class="container" id="job-tab" style="{{display_job}}">
+    <h2>Job Search</h2>
+    <br>
     {% crispy jobs.form jobs.form.helper %}
     {% include "jobs_home/tables.html" %}
 </div>
 
 <div class="container" id="address-tab" style="{{display_address}}">
+    <h2>Address Search</h2>
+    <br>
     {% crispy addresses.form addresses.form.helper %}
     <table class="table table-hover" id="address_table">
         <thead class="thead">
@@ -98,8 +103,10 @@ crossorigin="anonymous"></script>
 </div>
 
 <div class="container" id="client-tab" style="{{display_client}}">
-    {% crispy clients.form clients.form.helper %}
+    <h2>Client Search</h2>
+    <br>
 
+    {% crispy clients.form clients.form.helper %}
     <table class="table table-hover" id="client_table">
         <thead class="thead">
         <tr>
