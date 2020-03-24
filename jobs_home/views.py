@@ -93,7 +93,8 @@ class JobView(TemplateView):
         context = {
             "job": job,
             "address": Address.objects.get(pk=job.job_address_id),
-            "client": Client.objects.get(pk=job.client_id)
+            "client": Client.objects.get(pk=job.client_id),
+            "background": "background-color: #79a6d2"
         }
    
         return render(request, self.template_name, context)
@@ -125,16 +126,39 @@ class AddressView(TemplateView):
     template_name = "jobs_home/address.html"
 
     def get(self, request, address_id):
-        return render(request, self.template_name)
+        try:
+            address = Address.objects.get(pk=address_id)
+        except Job.DoesNotExist:
+            raise Http404("Address does not exist")
+        
+        related = address.client.all()
+        print(related)
+
+        context = {
+            "background": "background-color: #ffcc99",
+            "address": address,
+            "related": related,
+        }
+        return render(request, self.template_name, context)
     
     def post(self,request, address_id):
-        return render(request, self.template_name)
+        
+        return render(request, self.template_name, context)
 
 class ClientView(TemplateView):
     template_name = "jobs_home/clients.html"
 
     def get(self, request, client_id):
-        return render(request, self.template_name)
+        try:
+            client = Client.objects.get(pk=client_id)
+        except Job.DoesNotExist:
+            raise Http404("Client does not exist")
+        context = {
+            "background": "background-color: #ff8080",
+            "client": client,
+        }
+        return render(request, self.template_name, context)
+        
     
     def post(self,request, client_id,):
         return render(request, self.template_name)

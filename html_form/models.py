@@ -18,8 +18,8 @@ class Address(models.Model):
         auto_now_add=True
         )
 
-    #def __str__(self):
-        #return f"{client.first} {client.last}\n{self.line_one}\n{self.line_two}\n{self.city}\n{self.county}\n{self.postcode}"
+   # def __str__(self):
+        #return f"{self.line_one}, {self.line_two}, {self.city}, {self.county} {self.postcode}"
 
 
 
@@ -43,7 +43,7 @@ class Client(models.Model):
     address = models.ManyToManyField(Address, related_name="address")
 
     #def __str__(self):
-        #return f"{self.first.capitalize} {self.last.capitalize}\n{self.email}\n{self.number}\n{self.address}"
+        #return f"{self.first.capitalize} {self.last.capitalize}"
 
 
 class Job(models.Model):

@@ -1,0 +1,28 @@
+<div class="card border-dark mb-3">
+    <div class="card-header">
+        <h5>Address</h5>
+    </div>
+    <div class="card-body text-dark">
+        <ul class="list-group list-group-flush text-dark">
+            <li class="list-group-item">Address 1
+                <p class="address_info" id="line_two">{{address.line_one}}</p>
+            </li>
+            <li class="list-group-item">Address 2
+                <p class="address_info" id="line_two">{{address.line_two}}</p>
+            </li>
+            <li class="list-group-item">City
+                <p class="address_info" id ="city">{{address.city}}</p>
+            </li>
+            <li class="list-group-item">County
+                <p class="address_info" id="county">{{address.county}}</p>
+            </li>
+            <li class="list-group-item">Postcode
+                <p class="address_info" id="postcode">{{address.postcode}}</p>
+            </li>
+            <li class="list-group-item">Link somewhere</li>
+        </ul>
+        <br>
+        <button type="button" onclick="edit_content('address_info')" class="btn btn-warning" id="address_info">Edit</button>
+
+    </div>
+</div>

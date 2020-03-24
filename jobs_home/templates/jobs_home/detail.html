@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+    <head>
+        <title> 
+            {% block title %}
+            {% endblock %}
+        </title>
+        {% load static %}
+       
+        <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?{% now 'u' %}">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script> 
+
+        <script>
+            function edit_content(card)
+                {
+                    var x = document.getElementsByClassName(card);
+                    var i;
+                    var xhttp = new XMLHttpRequest();
+                    var page = '/' + {{job.id}};
+                    var changes = {"card": card,};
+                    var button = document.getElementById(card);
+                    if (button.innerText == "Edit")
+                    {
+                        for (i =0; i < x.length; i++)
+                            {
+                            x[i].contentEditable = "true";
+                            }
+                        button.innerText = "Commit";
+                    }
+                    else {
+                        for (i =0; i < x.length; i++)
+                            {
+                            x[i].contentEditable = "false";
+                            edited = x[i].innerText;
+                            id = x[i].id; 
+                            changes[id] = edited;
+                            }
+
+                        $.ajax(
+                            {
+                                url: page,
+                                type: "post",
+                                data: changes,
+                                headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                            });
+                        button.innerText = "Edit";
+
+                    }   
+                }
+        </script>
+    </head>
+
+    <body>
+        <div class="container" id="background" style="{{background}}">
+            <br>
+            <h1>
+                {% block heading %}
+                {% endblock %}
+            </h1>
+            <br>
+            <div class="card-deck"> 
+                {% block cards %}
+                {% endblock %}
+            </div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
