@@ -14,66 +14,91 @@ crossorigin="anonymous"></script>
     function change_search()
     {
         var selected = document.getElementById("select").value;
-        var client = document.getElementById("client_form");
-        var job = document.getElementById("job_form");
-        var address = document.getElementById("address_form");
-        var atable = document.getElementById("address_table");
-        var jtable = document.getElementById("job_table");
-        var ctable = document.getElementById("client_table");
-        if (selected == 0)
+        var client = document.getElementById("client-tab");
+        var job = document.getElementById("job-tab");
+        var address = document.getElementById("address-tab");
+        
+        if (selected == 1)
         {
             address.style.display = "none"
             job.style.display = "none"
             client.style.display = "block"
-            atable.style.display = "none"
-            jtable.style.display = "none"
-            ctable.style.display = "block"
+            
         }
-        else if (selected == 1)
+        else if (selected == 0)
         {
             address.style.display = "none"
             job.style.display = "block"
             client.style.display = "none"
-            atable.style.display = "none"
-            jtable.style.display = "block"
-            ctable.style.display = "none"
+            
         }
         else 
         {
             address.style.display = "block"
             job.style.display = "none"
             client.style.display = "none"
-            atable.style.display = "block"
-            jtable.style.display = "none"
-            ctable.style.display = "none"
         }
+
         return selected  
     }
     
 </script>
 
+{% load crispy_forms_tags %}
+{{ form.media }}
 {% endblock %}
 
 {% block body %} 
-{{ form.media }}
+
 
 <h1>Archive</h1>
 <br>
-<div class="form-group" default=1 label="">
+<div class="form-group" label="" >
     <label for="sel1">Select list:</label>
     <select onchange="change_search()" class="form-control" id="select">
-      <option value=0>Client</option>
-      <option value=1>Address</option>
-      <option value=2>Job</option>
+      <option value=0>Job</option>
+      <option value=1>Client</option>
+      <option value=2>Address</option>
     </select>
   </div>
 
-{% load crispy_forms_tags %}
- {% crispy jobs.form jobs.form.helper %}
- {% crispy addresses.form addresses.form.helper %}
- {% crispy clients.form clients.form.helper %}
+<div class="container" id="job-tab" style="{{display_job}}">
+    {% crispy jobs.form jobs.form.helper %}
+    {% include "jobs_home/tables.html" %}
+</div>
 
- {% include "jobs_home/tables.html" %}
+<div class="container" id="address-tab" style="{{display_address}}">
+    {% crispy addresses.form addresses.form.helper %}
+    <table class="table table-hover" id="address_table">
+        <thead class="thead">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Address 1</th>
+            <th scope="col">Address 2</th>
+            <th scope="col">City</th>
+            <th scope="col">County</th>
+            <th scope="col">Postcode</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for address in current_addresses.qs %}
+        <tr id="{{address.id}}" onclick="window.open({{address.id}})">
+            <th scope="row">{{address.id}}</th>
+            <td>{{address.line_one}}</td>
+            <td>{{address.line_two}}</td>
+            <td>{{address.city}}</td>
+            <td>{{address.county}}</td>
+            <td>{{address.postcode}}</td>
+        </tr>
+            {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+    
+</div>
+
+<div class="container" id="client-tab" style="{{display_client}}">
+    {% crispy clients.form clients.form.helper %}
 
     <table class="table table-hover" id="client_table">
         <thead class="thead">
@@ -97,30 +122,19 @@ crossorigin="anonymous"></script>
             </tbody>
         </table>
 
-        <table class="table table-hover" id="address_table">
-            <thead class="thead">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Address 1</th>
-                <th scope="col">Address 2</th>
-                <th scope="col">City</th>
-                <th scope="col">County</th>
-                <th scope="col">Postcode</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for address in current_addresses.qs %}
-            <tr id="{{address.id}}" onclick="window.open({{address.id}})">
-                <th scope="row">{{address.id}}</th>
-                <td>{{address.line_one}}</td>
-                <td>{{address.line_two}}</td>
-                <td>{{address.city}}</td>
-                <td>{{address.county}}</td>
-                <td>{{address.postcode}}</td>
-            </tr>
-                {% endfor %}
-                </tr>
-                </tbody>
-            </table>
+    
+</div>
+
+
+
+ 
+ 
+
+
+ 
+
+    
+
+        
 
 {% endblock %}

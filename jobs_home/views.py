@@ -35,19 +35,23 @@ class ArchiveView(ListView):
             "current_clients": None,
             "current_jobs": None,
             "current_addresses": None,
-            "page": 0
-
+            "display_job": "display:none",
+            "display_client": "display:none",
+            "display_address": "display:none",
         }
+
 #rm first if
         if 'client_btn' in request.GET:
             context["current_clients"] = ClientFilter(request.GET, queryset=Client.objects.all())
-            context["page"] = 0
-        if 'job_btn' in request.GET:
+            context["display_client"] = "display:block"
+        elif 'job_btn' in request.GET:
             context["current_jobs"] = JobFilter(request.GET, queryset=Job.objects.all())
-            context["page"] = 1
-        if 'address_btn' in request.GET:
+            context["display_job"] = "display:block"
+        elif 'address_btn' in request.GET:
             context["current_addresses"] = AddressFilter(request.GET, queryset=Address.objects.all())
-            context["page"] = 2
+            context["display_address"] = "display:block"
+        else:
+            context["display_job"] = "display:block"
 
         return render(request, self.template_name, context)
     
