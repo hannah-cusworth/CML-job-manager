@@ -87,7 +87,7 @@ crossorigin="anonymous"></script>
         </thead>
         <tbody>
             {% for address in current_addresses.qs %}
-        <tr id="{{address.id}}" onclick="window.open({{address.id}})">
+        <tr id="{{address.id}}" onclick="window.open('address/{{address.id}}')">
             <th scope="row">{{address.id}}</th>
             <td>{{address.line_one}}</td>
             <td>{{address.line_two}}</td>
@@ -118,7 +118,7 @@ crossorigin="anonymous"></script>
         </thead>
         <tbody>
             {% for client in current_clients.qs %}
-        <tr id="{{job.id}}" onclick="window.open({{job.id}})">
+        <tr id="{{job.id}}" onclick="window.open('client/{{client.id}}')">
             <th scope="row">{{client.id}}</th>
             <td>{{client.first}} {{client.last}}</td>
             <td>{{client.email}}</td>

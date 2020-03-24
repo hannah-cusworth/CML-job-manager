@@ -121,3 +121,20 @@ class JobView(TemplateView):
         
         return render(request, self.template_name)
 
+class AddressView(TemplateView):
+    template_name = "jobs_home/address.html"
+
+    def get(self, request, address_id):
+        return render(request, self.template_name)
+    
+    def post(self,request, address_id):
+        return render(request, self.template_name)
+
+class ClientView(TemplateView):
+    template_name = "jobs_home/clients.html"
+
+    def get(self, request, client_id):
+        return render(request, self.template_name)
+    
+    def post(self,request, client_id,):
+        return render(request, self.template_name)
