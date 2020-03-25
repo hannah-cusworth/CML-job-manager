@@ -2,5 +2,17 @@
 
 {% block title %} Client {{client.id}} {% endblock %}
 {% block heading %} Client {{client_id}} {% endblock %}
-{% block body %}
+{% block cards %}
+    {% include "jobs_home/client-card.html" %}
+    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+        <div class="card-header">Related Addresses</div>
+            <div class="card-body">
+                {% for item in related %}
+                    <a href="{% url 'jobs_home:address' item.id %}">
+                        {{item.line_one}}, {{item.line_two}}, {{item.city}}, {{item.county}} {{item.postcode}}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

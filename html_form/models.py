@@ -42,8 +42,8 @@ class Client(models.Model):
         )
     address = models.ManyToManyField(Address, related_name="address")
 
-    #def __str__(self):
-        #return f"{self.first.capitalize} {self.last.capitalize}"
+    def __str__(self):
+        return f"{self.first.capitalize} {self.last.capitalize}"
 
 
 class Job(models.Model):

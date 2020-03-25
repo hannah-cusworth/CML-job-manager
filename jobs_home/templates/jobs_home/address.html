@@ -1,9 +1,18 @@
 {% extends "jobs_home/detail.html" %}
 
-{% block title %} Address {{address_id}} {% endblock %}
+{% block title %} Address {{address.id}} {% endblock %}
 {% block heading %} Address {{address.id}} {% endblock %}
 {% block cards %}
-
     {% include "jobs_home/address-card.html" %}
-    {% include "jobs_home/links-card.html" %}     
+    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+        <div class="card-header">Related Clients</div>
+            <div class="card-body">
+                {% for item in related %}
+                    <a href="{% url 'jobs_home:clients' item.id %}">
+                        {{item.first}} {{item.last}}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>   
 {% endblock %}
