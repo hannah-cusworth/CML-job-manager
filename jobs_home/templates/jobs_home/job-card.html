@@ -1,0 +1,14 @@
+<div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+    <div class="card-header">Related Jobs</div>
+    <div class="card-body">
+        {% for item in jobs %}
+            <a href="{% url 'jobs_home:jobs' item.id %}">
+               Job {item.id} 
+            </a>
+            <p> {{item.creation_date}}</p>
+            <p> {{item.description}}</p>
+            <br>
+        {% endfor %}
+      
+</div>
+

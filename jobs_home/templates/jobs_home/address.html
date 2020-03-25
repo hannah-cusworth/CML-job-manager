@@ -2,8 +2,12 @@
 
 {% block title %} Address {{address.id}} {% endblock %}
 {% block heading %} Address {{address.id}} {% endblock %}
-{% block cards %}
+
+{% block body %}
     {% include "jobs_home/address-card.html" %}
+{% endblock %}
+{% block cards %}
+    
     <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
         <div class="card-header">Related Clients</div>
             <div class="card-body">
@@ -14,5 +18,6 @@
                 {% endfor %}
             </div>
         </div>
-    </div>   
+    </div>
+     
 {% endblock %}

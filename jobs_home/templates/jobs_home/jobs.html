@@ -4,11 +4,13 @@
 {% block heading %} Job {{job.id}} {% endblock %}
 
 {% block cards %}
+
     {% include "jobs_home/client-card.html" %}
     {% include "jobs_home/address-card.html" %}         
 {% endblock %}
            
 {% block body %}
+<div class="card-deck"> 
     <div class="card border-dark" id="job_card">
         <div class="card-header">
             <h5>Job Details</h5>
@@ -22,6 +24,7 @@
             <button type="button" onclick="edit_content('job_info')" class="btn btn-warning" id="job_info">Edit</button>
         </div>
     </div>
+</div>
 {% endblock %}
 
 

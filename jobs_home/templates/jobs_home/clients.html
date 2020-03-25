@@ -1,18 +1,48 @@
 {% extends "jobs_home/detail.html" %}
 
 {% block title %} Client {{client.id}} {% endblock %}
-{% block heading %} Client {{client_id}} {% endblock %}
-{% block cards %}
+{% block heading %} Client {{client.id}} {% endblock %}
+{% block body %}
     {% include "jobs_home/client-card.html" %}
-    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
-        <div class="card-header">Related Addresses</div>
-            <div class="card-body">
-                {% for item in related %}
-                    <a href="{% url 'jobs_home:address' item.id %}">
-                        {{item.line_one}}, {{item.line_two}}, {{item.city}}, {{item.county}} {{item.postcode}}
-                    </a>
-                {% endfor %}
+{% endblock %}
+
+
+{% block cards %}
+<div class="container">
+    <div class="row">
+        <div class="col col-md-3">
+            <div class="card text-white bg-warning mb-3" >
+                <div class="card-header">Related Addresses</div>
+                    <div class="card-body">
+                        {% for item in related %}
+                            <a href="{% url 'jobs_home:address' item.id %}">
+                                {{item.line_one}}, {{item.line_two}}, {{item.city}}, {{item.county}} {{item.postcode}}
+                            </a>
+                        {% endfor %}
+                    </div>
+                
+            </div>
+        </div>
+        <div class="col col-md-9">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Related Jobs</div>
+                <div class="card-body">
+                    {% for item in jobs %}
+                        <a href="{% url 'jobs_home:jobs' item.id %}">
+                           Job {item.id} 
+                        </a>
+                        <p> {{item.creation_date}}</p>
+                        <p> {{item.description}}</p>
+                        <br>
+                    {% endfor %} 
+                </div>
             </div>
         </div>
     </div>
+</div>
+        
+        
+  
+    
+    
 {% endblock %}
