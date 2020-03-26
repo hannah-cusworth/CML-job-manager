@@ -28,7 +28,6 @@ class FormView(TemplateView):
             new_client = clientform.save(commit=False)
             if jobaddressform.is_valid():
                 new_address_job = jobaddressform.save(commit=False)
-                new_address_job.cat = "JOB"
                 
                 if jobform.is_valid():
                     new_job = jobform.save(commit=False)
@@ -37,7 +36,7 @@ class FormView(TemplateView):
                         new_address_job.save()
                         new_client.save()
                         new_address_billing = billingaddressform.save(commit=False)
-                        new_address_billing.cat = "BIL"
+                        
                         if new_address_billing.line_one == "":
                             new_job.billing_address = new_address_job
                         else:

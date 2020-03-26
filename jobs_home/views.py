@@ -131,13 +131,23 @@ class AddressView(TemplateView):
         except Job.DoesNotExist:
             raise Http404("Address does not exist")
         
+        try:
+            jobs_billing = Job.objects.filter(billing_address = address_id)
+        except:
+            jobs_billing = []
+        
+        try:
+            jobs_work = Job.objects.filter(job_address = address_id)
+        except:
+            jobs_work = []
+
 
         context = {
             "background": "background-color: #ffcc99",
             "address": address,
             "related": address.client.all(),
-            "jobs_billing": Job.objects.get(billing_address = address_id),
-            "jobs_work": Job.objects.get(job_address = address_id),
+            "jobs_billing": jobs_billing,
+            "jobs_work": jobs_work,
         }
 
         return render(request, self.template_name, context)
@@ -154,7 +164,11 @@ class ClientView(TemplateView):
             client = Client.objects.get(pk=client_id)
         except Job.DoesNotExist:
             raise Http404("Client does not exist")
-
+        
+        try:
+            jobs = Job.objects.filter(client_id=client_id)
+        except:
+            jobs = []
         
         
 
@@ -162,7 +176,7 @@ class ClientView(TemplateView):
             "background": "background-color: #ff8080",
             "client": client,
             "related": client.address.all(),
-            "jobs": Job.objects.get(client_id=client_id),
+            "jobs": jobs,
         }
             
         return render(request, self.template_name, context)
