@@ -102,24 +102,16 @@ class JobView(TemplateView):
   
    
     def post(self, request, job_id):
-        print(request.POST)
-        category = request.POST["card"]
         job = Job.objects.get(pk=job_id)
-        if category == "client_info":
-            category = Client.objects.get(pk=job.client_id)
-        if category == "address_info":
-            category = Address.objects.get(pk=job.job_address_id)
-        if category == "job_info":
-            category = Job.objects.get(pk=job_id)
-
         post = request.POST 
         keys = post.keys()    
         
         for column in keys:
     
             if column != "card":
-                setattr(category, column, post[column])
-                category.save()
+                setattr(job, column, post[column])
+                job.save()
+               
         
         return render(request, self.template_name)
 
@@ -156,6 +148,16 @@ class AddressView(TemplateView):
     
     def post(self,request, address_id):
         
+        address = Address.objects.get(pk=addrss_id)
+        post = request.POST 
+        keys = post.keys()    
+        
+        for column in keys:
+    
+            if column != "card":
+                setattr(address, column, post[column])
+                address.save()
+        
         return render(request, self.template_name, context)
 
 class ClientView(TemplateView):
@@ -172,7 +174,7 @@ class ClientView(TemplateView):
         except:
             jobs = []
         
-        
+
 
         context = {
             "background": "background-color: #ff8080",
@@ -186,4 +188,14 @@ class ClientView(TemplateView):
         
     
     def post(self,request, client_id,):
+        client = Client.objects.get(pk=client_id)
+        post = request.POST 
+        keys = post.keys()    
+        
+        for column in keys:
+    
+            if column != "card":
+                setattr(client, column, post[column])
+                client.save()
+
         return render(request, self.template_name)
