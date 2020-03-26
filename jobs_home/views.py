@@ -94,7 +94,8 @@ class JobView(TemplateView):
             "job": job,
             "address": Address.objects.get(pk=job.job_address_id),
             "client": Client.objects.get(pk=job.client_id),
-            "background": "background-color: #79a6d2"
+            "background": "background-color: #79a6d2",
+            "click": True,
         }
    
         return render(request, self.template_name, context)
@@ -148,6 +149,7 @@ class AddressView(TemplateView):
             "related": address.client.all(),
             "jobs_billing": jobs_billing,
             "jobs_work": jobs_work,
+            "click": None,
         }
 
         return render(request, self.template_name, context)
@@ -177,6 +179,7 @@ class ClientView(TemplateView):
             "client": client,
             "related": client.address.all(),
             "jobs": jobs,
+            "click": None,
         }
             
         return render(request, self.template_name, context)

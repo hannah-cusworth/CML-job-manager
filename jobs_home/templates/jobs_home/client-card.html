@@ -1,6 +1,11 @@
  
 <div class="card border-dark mb-3">
-    <div class="card-header">
+    <div class="card-header"
+        {% if click %}
+            style="cursor:pointer;"
+            onclick="location.href = '/client/{{client.id}}'"
+        {% endif %}
+    >
         <h5>Client</h5>
     </div>
     <div class="card-body text-dark">
