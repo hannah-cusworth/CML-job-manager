@@ -9,11 +9,8 @@ from .forms import *
 
 
 
-def current(request):
-    context = {
-        "current_jobs": [job for job in Job.objects.all() if job.status == "CU"]
-    }
-    return render(request, "jobs_home/current.html", context)
+
+
 
 class ArchiveView(ListView):
     template_name = "jobs_home/archive.html"
@@ -38,6 +35,7 @@ class ArchiveView(ListView):
             "display_job": "display:none",
             "display_client": "display:none",
             "display_address": "display:none",
+            "button": False,
         }
 
 #rm first if
@@ -45,7 +43,9 @@ class ArchiveView(ListView):
             context["current_clients"] = ClientFilter(request.GET, queryset=Client.objects.all())
             context["display_client"] = "display:block"
         elif 'job_btn' in request.GET:
-            context["current_jobs"] = JobFilter(request.GET, queryset=Job.objects.all())
+            filtered = JobFilter(request.GET, queryset=Job.objects.all())
+            current_jobs = filtered.qs
+            context["current_jobs"] = current_jobs
             context["display_job"] = "display:block"
         elif 'address_btn' in request.GET:
             context["current_addresses"] = AddressFilter(request.GET, queryset=Address.objects.all())
@@ -57,20 +57,29 @@ class ArchiveView(ListView):
     
     
         
+class CurrentView(TemplateView):
+
+    template_name = "jobs_home/current.html"
+    def get(self, request):
         
-    
-   
+        context = {
+            "current_jobs": Job.objects.filter(status="CU"),
+            #"current_jobs":[job for job in Job.objects.all() if job.status == "CU"],
+            "button": True,
+        }
+        #current_jobs =  Job.objects.filter(status="CU")
+        #print(current_jobs.qs)
 
-
-
-        
+        return render (request, self.template_name, context)      
+          
 
 class InboxView(TemplateView):
     template_name = "jobs_home/inbox.html"
 
     def get(self, request):
         context = {
-            "current_jobs": [job for job in Job.objects.all() if job.status == "IN"]
+            "current_jobs": [job for job in Job.objects.all() if job.status == "IN"],
+            "button": True,
         }
         return render(request, self.template_name, context)
 

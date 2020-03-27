@@ -8,16 +8,22 @@
         <th scope="col">Job Address</th>
         <th scope="col">Description</th>
         <th scope="col">Creation</th>
+        {% if button %}
+        <th scope="col">Click</th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
-        {% for job in current_jobs.qs %}
+        {% for job in current_jobs %}
     <tr id="{{job.id}}" onclick="window.open('job/{{job.id}}')">
         <th scope="row">{{job.id}}</th>
         <td>{{job.client.first}} {{job.client.last}}</td>
         <td>{{job.job_address.postcode}}</td>
         <td>{{job.description}}</td>
         <td>{{job.creation_date}}</td>
+        {% if button %}
+        <td> <button class="btn btn-warning" onclick="make_current('{{job.id}}')">Submit</button></td>
+        {% endif %}
     </tr>
         {% endfor %}
         </tr>
