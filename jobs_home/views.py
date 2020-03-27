@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, ListView
 from django.template import RequestContext
 from jobs_home.filters import *
 from .forms import *
+from django.core.paginator import Paginator
 
 
 
@@ -40,35 +41,48 @@ class ArchiveView(ListView):
 
 #rm first if
         if 'client_btn' in request.GET:
-            context["current_clients"] = ClientFilter(request.GET, queryset=Client.objects.all())
+            filtered = ClientFilter(request.GET, queryset=Client.objects.all())
+            page_obj = paginate(filtered.qs,request)
+            context["current_clients"] = page_obj
             context["display_client"] = "display:block"
+
+  
         elif 'job_btn' in request.GET:
             filtered = JobFilter(request.GET, queryset=Job.objects.all())
-            current_jobs = filtered.qs
-            context["current_jobs"] = current_jobs
+            page_obj = paginate(filtered.qs,request)
+            context["current_jobs"] = page_obj
             context["display_job"] = "display:block"
+           
         elif 'address_btn' in request.GET:
-            context["current_addresses"] = AddressFilter(request.GET, queryset=Address.objects.all())
+            filtered = AddressFilter(request.GET, queryset=Address.objects.all())
+            page_obj = paginate(filtered.qs,request)
+            context["current_addresses"] = page_obj
             context["display_address"] = "display:block"
         else:
             context["display_job"] = "display:block"
+            page_obj = None
+        
+        context["page_obj"] = page_obj
 
         return render(request, self.template_name, context)
     
     
         
-class CurrentView(TemplateView):
-
+class CurrentView(ListView):
     template_name = "jobs_home/current.html"
     def get(self, request):
         
+        current_jobs = Job.objects.filter(status="CU")
+
+        paginator = Paginator(current_jobs, 3) 
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         context = {
-            "current_jobs": Job.objects.filter(status="CU"),
-            #"current_jobs":[job for job in Job.objects.all() if job.status == "CU"],
+            "page_obj": page_obj,
+            "current_jobs": page_obj,
             "button": True,
         }
-        #current_jobs =  Job.objects.filter(status="CU")
-        #print(current_jobs.qs)
 
         return render (request, self.template_name, context)      
           
@@ -77,9 +91,14 @@ class InboxView(TemplateView):
     template_name = "jobs_home/inbox.html"
 
     def get(self, request):
+        current_jobs = Job.objects.filter(status="IN")
+        page_obj = paginate(current_jobs, request)
+
         context = {
-            "current_jobs": [job for job in Job.objects.all() if job.status == "IN"],
+            "current_jobs": page_obj,
             "button": True,
+            "page_obj": page_obj
+            
         }
         return render(request, self.template_name, context)
 
@@ -208,3 +227,8 @@ class ClientView(TemplateView):
                 client.save()
 
         return render(request, self.template_name)
+
+def paginate(item, request):
+    paginator = Paginator(item, 3) 
+    page_number = request.GET.get('page')
+    return paginator.get_page(page_number)
