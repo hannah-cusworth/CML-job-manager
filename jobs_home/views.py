@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpRequest
 from html_form.models import Job, Address, Client
 from django.views.generic import TemplateView, ListView 
 from django.template import RequestContext
@@ -17,7 +17,14 @@ class ArchiveView(ListView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
-        
+        try:
+            query = request.META["QUERY_STRING"]
+            if "page=" in query:
+                i = query.find("page=")
+                i -= 1
+                query = query[:i]
+        except:
+            query = None
         
         clients = ClientFilter()
         clients.form.helper = ClientFilterFormHelper()
@@ -37,6 +44,7 @@ class ArchiveView(ListView):
             "display_client": "display:none",
             "display_address": "display:none",
             "button": False,
+            "query": query,
         }
 
 #rm first if
