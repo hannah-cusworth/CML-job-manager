@@ -237,6 +237,6 @@ class ClientView(TemplateView):
         return render(request, self.template_name)
 
 def paginate(item, request):
-    paginator = Paginator(item, 3) 
+    paginator = Paginator(item, 10) 
     page_number = request.GET.get('page')
     return paginator.get_page(page_number)
