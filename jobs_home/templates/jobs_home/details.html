@@ -21,19 +21,7 @@
                     var xhttp = new XMLHttpRequest();
                     var changes = {"card": card,};
                     var button = document.getElementById(card);
-                    if (card == "client_info")
-                    {
-                        var page = '/client/' + {{client.id}};
-                    }
-                    if (card == "address_info")
-                    {
-                        var page = '/address/' + {{address.id}};
-                    }
-                    if (card == "job_info")
-                    {
-                        var page = '/job/' + {{job.id}};
-                    }
-                    
+                    var page = "{{request.get_full_path}}";
                     if (button.innerText == "Edit")
                     {
                         for (i =0; i < x.length; i++)
