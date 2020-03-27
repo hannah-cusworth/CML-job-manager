@@ -8,7 +8,7 @@ Inbox
 {% block script %}
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 <script> 
-    function make_current(idnum)
+    function change_status(idnum)
         {
             event.stopPropagation();
             var info = {"idnum": idnum};
@@ -28,30 +28,6 @@ Inbox
 {% block body %} 
     <h1 id=header>Inbox</h1>
     <br>
-    <table class="table table-hover">
-        <thead class="thead">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Job Address</th>
-            <th scope="col">Description</th>
-            <th scope="col">Creation</th>
-            <th scope="col">Click</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for job in current_jobs %}
-        <tr id="{{job.id}}" onclick="window.open('job/{{job.id}}')">
-            <th scope="row">{{job.id}}</th>
-            <td>{{job.client.first}} {{job.client.last}}</td>
-            <td>{{job.job_address.postcode}}</td>
-            <td>{{job.description}}</td>
-            <td>{{job.creation_date}}</td>
-            <td> <button class="btn btn-warning" onclick="make_current('{{job.id}}')">Submit</button></td>
-        </tr>
-        {% endfor %}
-        </tr>
-        </tbody>
-    </table>
+    {% include "jobs_home/tables.html" %}
 
 {% endblock %}

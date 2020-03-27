@@ -13,12 +13,16 @@
         <div class="navbar-header" id="logo_div">
         </div>
         <ul class="nav navbar-nav">
-          <li class="navlist"><a href="{% url 'jobs_home:inbox' %}">Inbox</a></li>
-          <li class="navlist"><a href="{% url 'jobs_home:current' %}">Current Jobs</a></li>
-          <li class="navlist"><a href="{% url 'jobs_home:archive' %}">Archive</a></li>
+          <li class="navlist navbar-text"><a href="{% url 'jobs_home:inbox' %}">Inbox</a></li>
+          <li class="navlist navbar-text"><a href="{% url 'jobs_home:current' %}">Current Jobs</a></li>
+          <li class="navlist navbar-text"><a href="{% url 'jobs_home:archive' %}">Archive</a></li>
         </ul>
+        <form class="form-inline navbar-text " id="form_btn">
+          <button class="btn btn-primary btn-lg" type="button" onclick="location.href = '/form/new'">New Job</button>
+        </form>
+      </nav>
       </div>
-    </nav>
+     
     
     <body>
         <div class=container>
