@@ -148,7 +148,7 @@ class AddressView(TemplateView):
     
     def post(self,request, address_id):
         
-        address = Address.objects.get(pk=addrss_id)
+        address = Address.objects.get(pk=address_id)
         post = request.POST 
         keys = post.keys()    
         
