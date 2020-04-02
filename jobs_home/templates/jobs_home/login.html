@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+    <head>
+        <title>{% block title %} {% endblock %}</title>
+        {% load static %}
+        
+        <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?{% now 'u' %}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    </head>
+
+    <body class="login-bg">
+       
+       
+        <div class="login">
+            <h1>Sign in</h1>
+            <form class="formgroup" method="post"> 
+                {% csrf_token %}
+
+                <label for="username">Username</label><br>
+                <input class="form-control" type="text" name="username" id="username"><br>
+                <label for="password">Password</label><br>
+                <input class="form-control" type="password" name="password" id="password"><br>
+                
+
+                <input class="btn btn-primary" type="submit" value="Sign In"> 
+
+            </form>
+            <br>
+            <p class="error">{{ error }}</p>
+        </div>
+
+
+            
+            
+
+
+
+
+    </body>

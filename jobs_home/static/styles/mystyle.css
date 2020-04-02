@@ -1,4 +1,28 @@
 
+.error {
+    color: red;
+}
+.login-bg {
+    background-color: #99ccff;
+}
+
+
+ .login h1 {
+    text-align: center;
+ }
+
+ .login {
+
+    width: 270px;
+    height: 350px;
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 25px;
+    margin: 10% auto;
+ }
+
+
+
 
 #logo_div {
     background-image: url("https://cusworth.net/wp-content/uploads/logo-1.png");
@@ -47,6 +71,11 @@
 
 }
 
-#form_btn {
+.nav-buttons {
     float: right;
+    display: inline;
+    padding: 5px;
 }
+ .nav-buttons button{
+    margin: 5px;
+ }

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect 
 from django.http import HttpResponse, Http404, HttpRequest
 from html_form.models import Job, Address, Client
 from django.views.generic import TemplateView, ListView 
@@ -6,14 +6,38 @@ from django.template import RequestContext
 from jobs_home.filters import *
 from .forms import *
 from django.core.paginator import Paginator
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
 
+class LoginView(TemplateView):
+    template_name = "jobs_home/login.html"
 
+    def get(self, request):
+        error = ""
+        context = {
+            "error": error
+        }
+        
+        return render(request, self.template_name, context)
 
+    def post(self, request):
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            error = "Login failed!"
+            context = {
+            "error": error
+            }
+            return render(request, self.template_name, context)
 
-class ArchiveView(ListView):
+class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
@@ -76,7 +100,7 @@ class ArchiveView(ListView):
     
     
         
-class CurrentView(ListView):
+class CurrentView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/current.html"
     def get(self, request):
         
@@ -95,7 +119,7 @@ class CurrentView(ListView):
         return render (request, self.template_name, context)      
           
 
-class InboxView(TemplateView):
+class InboxView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/inbox.html"
 
     def get(self, request):
@@ -118,7 +142,7 @@ class InboxView(TemplateView):
         
         return render(request, self.template_name)
 
-class JobView(TemplateView):
+class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"
     
     def get(self, request, job_id):
@@ -151,7 +175,7 @@ class JobView(TemplateView):
         
         return render(request, self.template_name)
 
-class AddressView(TemplateView):
+class AddressView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/address.html"
 
     def get(self, request, address_id):
@@ -196,7 +220,7 @@ class AddressView(TemplateView):
         
         return render(request, self.template_name, context)
 
-class ClientView(TemplateView):
+class ClientView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/clients.html"
 
     def get(self, request, client_id):
