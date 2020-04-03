@@ -1,5 +1,12 @@
 from crispy_forms.layout import Layout, Row, Column, Submit
 from crispy_forms.helper import FormHelper
+from django import forms 
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=64)
+    password = forms.CharField(max_length=64, widget=forms.PasswordInput)
+
+
 
 class ClientFilterFormHelper(FormHelper):
     form_method="GET"

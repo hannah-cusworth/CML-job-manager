@@ -13,7 +13,7 @@ urlpatterns = [
     path("job/<int:job_id>", JobView.as_view(), name='jobs'),
     path("client/<int:client_id>", ClientView.as_view(), name='clients'),
     path("address/<int:address_id>", AddressView.as_view(), name='address'),
-    path("accounts/login/", auth_views.LoginView.as_view(), name='login'),
-
+    path("login", LoginView.as_view(), name='login'),
+    path("logout", views.logout_view, name='logout'),
 
 ]

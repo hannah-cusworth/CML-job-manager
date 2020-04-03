@@ -6,10 +6,13 @@ from django.template import RequestContext
 from jobs_home.filters import *
 from .forms import *
 from django.core.paginator import Paginator
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+def logout_view(request):
+    logout(request)
+    return redirect("/login")
 
 
 class LoginView(TemplateView):
@@ -18,7 +21,8 @@ class LoginView(TemplateView):
     def get(self, request):
         error = ""
         context = {
-            "error": error
+            "error": error,
+            "form": LoginForm(),
         }
         
         return render(request, self.template_name, context)
@@ -29,11 +33,12 @@ class LoginView(TemplateView):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            return redirect("/")
         else:
             error = "Login failed!"
             context = {
-            "error": error
+            "error": error,
+            "form": LoginForm(request.POST),
             }
             return render(request, self.template_name, context)
 
