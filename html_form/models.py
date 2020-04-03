@@ -4,7 +4,7 @@ from django.core.validators import validate_email
 from phonenumber_field.modelfields import PhoneNumberField
 from localflavor.gb.forms import GBCountySelect, GBPostcodeField
 from .validators import validate_alpha
-
+ 
 
 
 class Address(models.Model):
@@ -13,7 +13,7 @@ class Address(models.Model):
     line_two = models.CharField(max_length=64, blank=True)
     city = models.CharField(max_length=64)
     county = models.CharField(max_length=64)
-    postcode = models.CharField(max_length=64)
+    postcode = models.CharField(max_length=20)
     creation_date = models.DateTimeField(
         auto_now_add=True
         )
@@ -36,7 +36,7 @@ class Client(models.Model):
         max_length=64, 
         validators=[validate_email]
         )
-    number = PhoneNumberField()
+    number = PhoneNumberField(max_length=20)
     creation_date = models.DateTimeField(
         auto_now_add=True
         )

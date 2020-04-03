@@ -7,7 +7,7 @@ from localflavor.gb.forms import GBCountySelect, GBPostcodeField
 
 
 class AddressForm(forms.ModelForm):
-    postcode = GBPostcodeField()
+    postcode = GBPostcodeField(max_length=20)
     class Meta:
         model = Address
         fields = ['line_one', 'line_two', 'city', 'county', 'postcode',]
