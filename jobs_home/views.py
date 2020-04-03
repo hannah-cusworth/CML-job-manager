@@ -78,20 +78,20 @@ class ArchiveView(LoginRequiredMixin, ListView):
 
 #rm first if
         if 'client_btn' in request.GET:
-            filtered = ClientFilter(request.GET, queryset=Client.objects.all())
+            filtered = ClientFilter(request.GET, queryset=Client.objects.all().order_by('id'))
             page_obj = paginate(filtered.qs,request)
             context["current_clients"] = page_obj
             context["display_client"] = "display:block"
 
   
         elif 'job_btn' in request.GET:
-            filtered = JobFilter(request.GET, queryset=Job.objects.all())
+            filtered = JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
             page_obj = paginate(filtered.qs,request)
             context["current_jobs"] = page_obj
             context["display_job"] = "display:block"
            
         elif 'address_btn' in request.GET:
-            filtered = AddressFilter(request.GET, queryset=Address.objects.all())
+            filtered = AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
             page_obj = paginate(filtered.qs,request)
             context["current_addresses"] = page_obj
             context["display_address"] = "display:block"
@@ -109,11 +109,8 @@ class CurrentView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/current.html"
     def get(self, request):
         
-        current_jobs = Job.objects.filter(status="CU")
-
-        paginator = Paginator(current_jobs, 3) 
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        current_jobs = Job.objects.filter(status="CU").order_by('id')
+        page_obj = paginate(current_jobs, request)
 
         context = {
             "page_obj": page_obj,
@@ -128,7 +125,7 @@ class InboxView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/inbox.html"
 
     def get(self, request):
-        current_jobs = Job.objects.filter(status="IN")
+        current_jobs = Job.objects.filter(status="IN").order_by('id')
         page_obj = paginate(current_jobs, request)
 
         context = {
