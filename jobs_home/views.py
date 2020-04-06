@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect 
 from django.http import HttpResponse, Http404, HttpRequest
-from html_form.models import Job, Address, Client
+from html_form.models import Job, Address, Person
 from django.views.generic import TemplateView, ListView 
 from django.template import RequestContext
 from jobs_home.filters import *
@@ -78,7 +78,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
 
 #rm first if
         if 'client_btn' in request.GET:
-            filtered = ClientFilter(request.GET, queryset=Client.objects.all().order_by('id'))
+            filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
             page_obj = paginate(filtered.qs,request)
             context["current_clients"] = page_obj
             context["display_client"] = "display:block"
@@ -155,7 +155,7 @@ class JobView(LoginRequiredMixin, TemplateView):
         context = {
             "job": job,
             "address": Address.objects.get(pk=job.job_address_id),
-            "client": Client.objects.get(pk=job.client_id),
+            "client": Person.objects.get(pk=job.client_id),
             "background": "background-color: #79a6d2",
             "click": True,
         }
@@ -227,7 +227,7 @@ class ClientView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, client_id):
         try:
-            client = Client.objects.get(pk=client_id)
+            client = Person.objects.get(pk=client_id)
         except Job.DoesNotExist:
             raise Http404("Client does not exist")
         
@@ -250,7 +250,7 @@ class ClientView(LoginRequiredMixin, TemplateView):
         
     
     def post(self,request, client_id,):
-        client = Client.objects.get(pk=client_id)
+        client = Person.objects.get(pk=client_id)
         post = request.POST 
         keys = post.keys()    
         

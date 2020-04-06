@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from html_form.forms import *
+from html_form.forms import AddressForm, ClientForm, JobForm 
 from django.forms import ValidationError
 
 #what does this do?

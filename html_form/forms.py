@@ -1,5 +1,5 @@
 from django import forms 
-from html_form.models import Address, Client, Job
+from html_form.models import Address, Person, Job
 from crispy_forms.helper import FormHelper
 from phonenumber_field.widgets import PhoneNumberInternationalFallbackWidget
 from crispy_forms.layout import Layout, Row, Column, Submit
@@ -47,7 +47,7 @@ class AddressForm(forms.ModelForm):
 class ClientForm(forms.ModelForm):
 
     class Meta:
-        model = Client
+        model = Person
         fields = ['first', 'last', 'email', 'number']
         exclude = ['address', 'creation_date']
         widgets = {

@@ -16,7 +16,7 @@ from tempus_dominus.widgets import DatePicker
 class ClientFilter(django_filters.FilterSet):
 
     class Meta:
-        model = Client
+        model = Person
         fields = ['first', 'last', 'email', 'number',]
         filter_overrides = {
             models.CharField: {

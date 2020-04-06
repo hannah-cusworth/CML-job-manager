@@ -37,6 +37,8 @@ class AddressFormTest(SimpleTestCase):
         form = self.create_address_form(postcode="foo")
         self.assertFalse(form.is_valid())
     
+    
+    
 class JobFormTest(SimpleTestCase):
     def create_job_form(self, description="foobar"):
         return JobForm(data={'description': description,})
