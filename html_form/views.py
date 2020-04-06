@@ -1,10 +1,10 @@
 from django.views.generic import TemplateView 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from html_form.forms import AddressForm, ClientForm, JobForm, BillingForm
+from html_form.forms import *
 from django.forms import ValidationError
 
-
+#what does this do?
 def index(request):
         return render(request, "html_form/index.html")
    
