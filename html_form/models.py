@@ -1,8 +1,9 @@
 from django.db import models
 from datetime import datetime
 from django.core.validators import validate_email
+#do i need these two anymore?
 from phonenumber_field.modelfields import PhoneNumberField
-from localflavor.gb.forms import GBCountySelect, GBPostcodeField
+from localflavor.gb.forms import GBCountySelect, GBPostcodeField, GB_REGION_CHOICES
 from .validators import validate_alpha
  
 
@@ -12,7 +13,10 @@ class Address(models.Model):
     line_one = models.CharField(max_length=64, )
     line_two = models.CharField(max_length=64, blank=True)
     city = models.CharField(max_length=64)
-    county = models.CharField(max_length=64)
+    county = models.CharField(
+        max_length=64,
+        choices=GB_REGION_CHOICES,
+        )
     postcode = models.CharField(max_length=20)
     creation_date = models.DateTimeField(
         auto_now_add=True
@@ -42,6 +46,7 @@ class Client(models.Model):
         )
     address = models.ManyToManyField(Address, related_name="address")
 
+   #do i need this
     def __str__(self):
         return f"{self.first.capitalize} {self.last.capitalize}"
 
@@ -78,6 +83,7 @@ class Job(models.Model):
         Client, on_delete=models.CASCADE, related_name="client"
         )
     
+    #do I need this?
 
     def __str__(self):
         return

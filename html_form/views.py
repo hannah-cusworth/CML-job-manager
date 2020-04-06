@@ -12,11 +12,14 @@ class FormView(TemplateView):
     template_name = "html_form/form.html"
     
     def get(self, request):
-        jobaddressform = AddressForm(prefix='job')
-        billingaddressform = AddressForm( prefix="billing")
-        clientform = ClientForm()
-        jobform = JobForm()
-        return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
+        context = {
+            "jobaddress": AddressForm(prefix='job'),
+            "billingaddress": AddressForm( prefix="billing"),
+            "client": ClientForm(),
+            "job": JobForm(),
+        }
+       
+        return render(request, self.template_name, context)
     
     def post(self, request):
         jobaddressform = AddressForm(request.POST, prefix="job")
