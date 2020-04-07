@@ -26,18 +26,13 @@ class FormView(TemplateView):
         billingaddressform = AddressForm(request.POST, prefix="billing")
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
-        #remember to take this out
-        #for item in request.POST.items():
-            #print(item)
-        
+       
         if clientform.is_valid():
             new_client = clientform.save(commit=False)
             if jobaddressform.is_valid():
                 new_address_job = jobaddressform.save(commit=False)
-                
                 if jobform.is_valid():
                     new_job = jobform.save(commit=False)
-
                     if billingaddressform.is_valid():
                         new_address_job.save()
                         new_client.save()
@@ -45,8 +40,10 @@ class FormView(TemplateView):
                         
                         if new_address_billing.line_one == "":
                             new_job.billing_address = new_address_job
+                            new_address_billing.address_type = "BILL"
                         else:
                             new_address_billing.save()
+                            
                             new_job.billing_address = new_address_billing
                             new_address_billing.client.add(new_client.id)
                             new_client.address.add(new_address_billing.id)

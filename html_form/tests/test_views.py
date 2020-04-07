@@ -27,9 +27,10 @@ def check_db_empty():
     if Person.objects.all() or Job.objects.all() or Address.objects.all():
         return False
     else:
-        return 
+        return True
 
-
+'''def fetch_qs():
+    return [client, addresses, job]'''
 
 class FormViewTest(TestCase):
     def setUp(self):
@@ -101,6 +102,24 @@ class FormViewTest(TestCase):
         response = self.client.post(self.view, data=data)
         self.assertTrue(check_db_empty())
     
+    def test_valid_saves_correct_count_of_entries(self):
+        data = create_forms()
+        response = self.client.post(self.view, data=data)
+        client = Person.objects.all()
+        addresses = Address.objects.all()
+        job = Job.objects.all()
+        self.assertEqual(client.count(), 1)
+        self.assertEqual(job.count(), 1)
+        self.assertIn(addresses.count(), [1,2])
+
+    '''def test_client_address_relationships(self):
+        data = create_forms()
+        response = self.client.post(self.view, data=data)
+        client = Person.objects.all()
+        addresses = Address.objects.all()
+        for address in addresses:
+            self.assertIn(client.pk, address.owner.all())
+            self.assertIn(address.pk, client.address.all())'''
     
 
     
