@@ -1,5 +1,6 @@
 from django.test import SimpleTestCase, Client, TestCase
 from html_form.views import *
+from html_form.models import *
 
 def check_context(func, response, *args):
     for arg in args:
@@ -22,6 +23,14 @@ def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", first="fo
     'number':"0303 123 7300",
     'description':description,}  
 
+def check_db_empty():
+    if Person.objects.all() or Job.objects.all() or Address.objects.all():
+        return False
+    else:
+        return 
+
+
+
 class FormViewTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -41,35 +50,61 @@ class FormViewTest(TestCase):
         self.assertTemplateUsed(response, self.form)
         check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job')
 
-    def test_default_form_success(self):
+    def test_default_form_returns_success(self):
         data = create_forms()
         response = self.client.post(self.view, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.success)
+        self.assertFalse(check_db_empty())
 
-    def test_invalid_job_form(self):
+    def test_invalid_job_returns_form(self):
         data = create_forms(description="")
         response = self.client.post(self.view, data=data)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, self.form)
+        self.assertTemplateUsed(response, self.form) 
     
-    def test_invalid_jobaddress_form(self):
+    def test_invalid_job_db_empty(self):
+        data = create_forms(description="")
+        response = self.client.post(self.view, data=data)
+        self.assertTrue(check_db_empty())      
+    
+    def test_invalid_jobaddress_returns_form(self):
         data = create_forms(job_postcode="foo")
         response = self.client.post(self.view, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
     
-    def test_invalid_client_form(self):
+    def test_invalid_jobaddress_db_empty(self):
+        data = create_forms(job_postcode="foo")
+        response = self.client.post(self.view, data=data)
+        self.assertTrue(check_db_empty())    
+    
+    def test_invalid_client_returns_form(self):
         data = create_forms(first="123")
         response = self.client.post(self.view, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
     
-    def test_invalid_billing_form(self):
+    def test_invalid_client_db_empty(self):
+        data = create_forms(first="123")
+        response = self.client.post(self.view, data=data)
+        self.assertTrue(check_db_empty())
+    
+    def test_invalid_billing_returns_form(self):
         data = create_forms(billing_postcode="foo")
         response = self.client.post(self.view, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
+    
+    def test_invalid_billing_db_empty(self):
+        data = create_forms(billing_postcode="foo")
+        response = self.client.post(self.view, data=data)
+        self.assertTrue(check_db_empty())
+    
+    
+
+    
+    
 
 
     

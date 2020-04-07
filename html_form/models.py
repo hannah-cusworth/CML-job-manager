@@ -9,6 +9,12 @@ from .validators import validate_alpha
 
 
 class Address(models.Model):
+    address_type_choices = [
+        ("BILL", 'Billing'),
+        ("JOB", 'Job')
+    ]
+
+
     client = models.ManyToManyField('Person', related_name="owner")
     line_one = models.CharField(max_length=64, )
     line_two = models.CharField(max_length=64, blank=True)
@@ -21,6 +27,11 @@ class Address(models.Model):
     creation_date = models.DateTimeField(
         auto_now_add=True
         )
+    address_type = models.CharField(
+        default = "JOB",
+        max_length = 4,
+        choices = address_type_choices,
+    )
 
    # def __str__(self):
         #return f"{self.line_one}, {self.line_two}, {self.city}, {self.county} {self.postcode}"
