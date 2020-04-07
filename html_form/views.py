@@ -14,7 +14,7 @@ class FormView(TemplateView):
     def get(self, request):
         context = {
             "jobaddress": AddressForm(prefix='job'),
-            "billingaddress": AddressForm( prefix="billing"),
+            "billingaddress": AddressForm(prefix="billing"),
             "client": ClientForm(),
             "job": JobForm(),
         }
@@ -26,6 +26,9 @@ class FormView(TemplateView):
         billingaddressform = AddressForm(request.POST, prefix="billing")
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
+        #remember to take this out
+        #for item in request.POST.items():
+            #print(item)
         
         if clientform.is_valid():
             new_client = clientform.save(commit=False)
