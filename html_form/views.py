@@ -17,16 +17,40 @@ class FormView(TemplateView):
             "billingaddress": AddressForm(prefix="billing"),
             "client": ClientForm(),
             "job": JobForm(),
+            "checkbox": "unbound",
         }
        
         return render(request, self.template_name, context)
     
     def post(self, request):
         jobaddressform = AddressForm(request.POST, prefix="job")
-        billingaddressform = AddressForm(request.POST, prefix="billing")
+        billingaddressform_original = AddressForm(request.POST, prefix="billing")
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
+
+        if billingaddressform_original.empty:
+            billingaddressform = jobaddressform
+            checkbox = "checked"
+        else:
+            billingaddressform = billingaddressform_original
+            checkbox = "foo"
+
        
+        '''if clientform.is_valid() and jobform.is_valid() and jobaddressform.is_valid() and billingaddressform.is_valid():
+            new_client = clientform.save(commit=False)
+            new_job = jobform.save(commit=False)
+            new_address_job = jobaddressform.save(commit=False)
+            new_address_billing = billingaddressform.save(commit=False)'''
+            
+
+        
+        
+        
+        
+        
+        
+        
+        
         if clientform.is_valid():
             new_client = clientform.save(commit=False)
             if jobaddressform.is_valid():
@@ -34,6 +58,9 @@ class FormView(TemplateView):
                 if jobform.is_valid():
                     new_job = jobform.save(commit=False)
                     if billingaddressform.is_valid():
+
+
+
                         new_address_job.save()
                         new_client.save()
                         new_address_billing = billingaddressform.save(commit=False)
@@ -59,7 +86,7 @@ class FormView(TemplateView):
 
                         return render(request, "html_form/success.html")
         
-        return render(request, self.template_name, {'billingaddress': billingaddressform, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform})
+        return render(request, self.template_name, {'billingaddress': billingaddressform_original, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform, "checkbox": checkbox})
 
         
         

@@ -37,6 +37,9 @@ class AddressFormTest(SimpleTestCase):
         form = self.create_address_form(postcode="foo")
         self.assertFalse(form.is_valid())
     
+    def test_empty_all_empty(self):
+        form = self.create_address_form(line_one="")
+    
     
     
 class JobFormTest(SimpleTestCase):

@@ -34,13 +34,12 @@ class AddressForm(forms.ModelForm):
                 css_class='form-row'
             )
         )
-        if self.prefix == 'billing':
-            #can this be condensed
-            self.fields['line_one'].required = False
-            self.fields['city'].required = False
-            self.fields['postcode'].required = False
-            self.fields['county'].required = False
-
+        
+    def empty(self):
+        if self.line_one:
+            return False
+        else:
+            return True
 
 
 

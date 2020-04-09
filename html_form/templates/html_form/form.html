@@ -6,24 +6,27 @@
         <link rel="stylesheet" href="{% static 'form_style/mystyle.css'%}?{% now 'u' %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
      </head>
-     <body id="formBody">
+     <body id="formBody" onload=checkbox_editable()>
         <div class="container">
             <h1>Cusworth Master Locksmiths Form</h1>
             
             <form  method="post">
                 {% csrf_token %}
-                <h2>Personal details</h2>
+                <h2>Contact Information</h2>
                 <br>
                 {% crispy client %} 
                 <h2>Job Details</h2>
                 {% crispy jobaddress %}
                 {{ job|crispy }}
                 <h2>Billing Information</h2>
-                <input type="checkbox" class="form-check-label" id="billing_address_select" name="billing_address_select" checked=True onclick="display_billing()">
+                
+                <input type="checkbox" class="form-check-label" id="billing_address_select" name="billing_address_select" {{checkbox}} onclick="display_billing()">
                 <label>Is your billing address the same as the job address?</label>
+                
                 <div id="billing_address_form">
                 {% crispy billingaddress %}
                 </div>
+                
                 <br>
                 <button type="submit" name="submit" class="btn btn-primary" id='submit'>Submit</button>
             </form>
@@ -31,13 +34,20 @@
        
         <script>
             display_billing()
+            function checkbox_editable(){
+                var check = document.getElementById("billing_address_select")
+                if (checkbox != "unbound"){
+                    check.contentEditable = "false";
+                }
+            }
+                
             function display_billing(){
                 var check = document.getElementById("billing_address_select");
                 var billing = document.getElementById("billing_address_form");
                 if (check.checked == false){
                     billing.style.display = "block";
                     
-                    document.getElementById("id_billing-line_one").innerHTML = true;
+                    document.getElementById("id_billing-line_one").required = true;
                     document.getElementById("id_billing-city").required = true;
                     document.getElementById("id_billing-county").required = true;
                     document.getElementById("id_billing-postcode").required = true;
