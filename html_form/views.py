@@ -40,8 +40,9 @@ class FormView(TemplateView):
                         
                         if new_address_billing.line_one == "":
                             new_job.billing_address = new_address_job
-                            new_address_billing.address_type = "BILL"
+                            
                         else:
+                            new_address_billing.address_type = "BILL"
                             new_address_billing.save()
                             
                             new_job.billing_address = new_address_billing

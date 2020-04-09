@@ -58,8 +58,8 @@ class Person(models.Model):
     address = models.ManyToManyField(Address, related_name="address")
 
    #do i need this
-    def __str__(self):
-        return f"{self.first.capitalize} {self.last.capitalize}"
+    #def __str__(self):
+       # return f"{self.first.capitalize} {self.last.capitalize}"
 
 
 class Job(models.Model):
@@ -96,8 +96,8 @@ class Job(models.Model):
     
     #do I need this?
 
-    def __str__(self):
-        return
+    #def __str__(self):
+        #return
     
-    def client_name(self):
-        return self.first + " " + self.last
+    #def client_name(self):
+        #return self.first + " " + self.last

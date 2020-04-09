@@ -6,16 +6,22 @@ def check_context(func, response, *args):
     for arg in args:
         func.assertIn(arg, response)
 
-def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", first="foo", description="foobar"):   
+def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", first="foo", description="foobar", include_billing=True):   
+    if include_billing:
+        billing = "Derby"
+    else:
+        billing = ""
+        billing_postcode = ""
+        
     return {'job-line_one':"foo",
     'job-line_two': "bar",
     'job-city': "foobar",
     'job-county': "Derby",
     'job-postcode':job_postcode,
-    'billing-line_one':"foo",
-    'billing-line_two':"bar",
-    'billing-city': "foobar",
-    'billing-county':"Derby",
+    'billing-line_one': billing,
+    'billing-line_two': billing,
+    'billing-city': billing,
+    'billing-county': billing,
     'billing-postcode': billing_postcode,
     'first':first,
     'last':"foo",
@@ -29,8 +35,7 @@ def check_db_empty():
     else:
         return True
 
-'''def fetch_qs():
-    return [client, addresses, job]'''
+
 
 class FormViewTest(TestCase):
     def setUp(self):
@@ -38,6 +43,10 @@ class FormViewTest(TestCase):
         self.view = '/form/new/'
         self.form = 'html_form/form.html'
         self.success = 'html_form/success.html'
+        self.person = Person.objects.all()
+        self.addresses = Address.objects.all()
+        self.job = Job.objects.all()
+        
 
     def test_formview_get_status(self):
         response = self.client.get(self.view)
@@ -105,24 +114,43 @@ class FormViewTest(TestCase):
     def test_valid_saves_correct_count_of_entries(self):
         data = create_forms()
         response = self.client.post(self.view, data=data)
-        client = Person.objects.all()
-        addresses = Address.objects.all()
-        job = Job.objects.all()
-        self.assertEqual(client.count(), 1)
-        self.assertEqual(job.count(), 1)
-        self.assertIn(addresses.count(), [1,2])
+        self.assertEqual(self.person.count(), 1)
+        self.assertEqual(self.job.count(), 1)
+        self.assertIn(self.addresses.count(), [1,2])
 
-    '''def test_client_address_relationships(self):
+    def test_valid_include_billing_addresses_types(self):
         data = create_forms()
         response = self.client.post(self.view, data=data)
-        client = Person.objects.all()
-        addresses = Address.objects.all()
-        for address in addresses:
-            self.assertIn(client.pk, address.owner.all())
-            self.assertIn(address.pk, client.address.all())'''
+        self.assertEqual(self.addresses.filter(address_type="JOB").count(), 1)
+        self.assertEqual(self.addresses.filter(address_type="BILL").count(), 1)
     
+    def test_valid_no_billing_addresses_types(self):
+        data = create_forms(include_billing=False)
+        response = self.client.post(self.view, data=data)
+        self.assertEqual(self.addresses.count(), 1)
+        self.assertEqual(self.addresses.filter(address_type="JOB").count(), 1)
+        self.assertEqual(self.addresses.filter(address_type="BILL").count(), 0)
 
+    def test_valid_client_address_relationships(self):
+        data = create_forms()
+        response = self.client.post(self.view, data=data)
+       
+        for address in self.addresses:
+            self.assertIn(self.person.get(), address.client.all())
+            self.assertIn(address, self.person.get().address.all())
     
+    def test_valid_include_billing_job_relationships(self):
+        data = create_forms()
+        response = self.client.post(self.view, data=data)
+        self.assertEqual(self.job.get().job_address, self.addresses.get(address_type="JOB"))
+        self.assertEqual(self.job.get().billing_address, self.addresses.get(address_type="BILL"))
+
+    def test_valid_no_billing_job_relationships(self):
+        data = create_forms(include_billing=False)
+        response = self.client.post(self.view, data=data)
+        self.assertEqual(self.job.get().job_address, self.addresses.get())
+        self.assertEqual(self.job.get().billing_address, self.addresses.get())
+
     
 
 
