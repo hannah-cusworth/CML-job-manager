@@ -19,9 +19,8 @@ class LoginView(TemplateView):
     template_name = "jobs_home/login.html"
 
     def get(self, request):
-        error = ""
         context = {
-            "error": error,
+            "error": "",
             "form": LoginForm(),
         }
         
@@ -35,9 +34,8 @@ class LoginView(TemplateView):
             login(request, user)
             return redirect("/")
         else:
-            error = "Login failed!"
             context = {
-            "error": error,
+            "error": "Login failed!",
             "form": LoginForm(request.POST),
             }
             return render(request, self.template_name, context)
@@ -95,7 +93,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
             page_obj = paginate(filtered.qs,request)
             context["current_addresses"] = page_obj
             context["display_address"] = "display:block"
-        else:
+        else: 
             context["display_job"] = "display:block"
             page_obj = None
         
