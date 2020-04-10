@@ -52,13 +52,13 @@ class FormViewTest(TestCase):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
-        check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job')
+        check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job', 'billing_status')
 
     def test_formview_post_status(self):
         response = self.client.post(self.view)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
-        check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job')
+        check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job', 'billing_status')
 
     def test_default_form_returns_success(self):
         data = create_forms()
