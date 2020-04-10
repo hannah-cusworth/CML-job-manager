@@ -1,12 +1,9 @@
 from django.db import models
 from datetime import datetime
 from django.core.validators import validate_email
-#do i need these two anymore?
 from phonenumber_field.modelfields import PhoneNumberField
-from localflavor.gb.forms import GBCountySelect, GBPostcodeField, GB_REGION_CHOICES
+from localflavor.gb.forms import GB_REGION_CHOICES
 from .validators import validate_alpha
- 
-
 
 class Address(models.Model):
     address_type_choices = [
@@ -14,9 +11,8 @@ class Address(models.Model):
         ("JOB", 'Job')
     ]
 
-
     client = models.ManyToManyField('Person', related_name="owner")
-    line_one = models.CharField(max_length=64, )
+    line_one = models.CharField(max_length=64,)
     line_two = models.CharField(max_length=64, blank=True)
     city = models.CharField(max_length=64)
     county = models.CharField(
@@ -32,9 +28,6 @@ class Address(models.Model):
         max_length = 4,
         choices = address_type_choices,
     )
-
-   # def __str__(self):
-        #return f"{self.line_one}, {self.line_two}, {self.city}, {self.county} {self.postcode}"
 
 
 
@@ -56,10 +49,6 @@ class Person(models.Model):
         auto_now_add=True
         )
     address = models.ManyToManyField(Address, related_name="address")
-
-   #do i need this
-    #def __str__(self):
-       # return f"{self.first.capitalize} {self.last.capitalize}"
 
 
 class Job(models.Model):
@@ -94,10 +83,3 @@ class Job(models.Model):
         Person, on_delete=models.CASCADE, related_name="client"
         )
     
-    #do I need this?
-
-    #def __str__(self):
-        #return
-    
-    #def client_name(self):
-        #return self.first + " " + self.last

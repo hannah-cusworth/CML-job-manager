@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase, Client, TestCase
+from django.test import Client, TestCase
 from html_form.views import *
 from html_form.models import *
 
@@ -29,6 +29,7 @@ def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", first="fo
     'number':"0303 123 7300",
     'description':description,}  
 
+
 def check_db_empty():
     if Person.objects.all() or Job.objects.all() or Address.objects.all():
         return False
@@ -55,7 +56,7 @@ class FormViewTest(TestCase):
         check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job', 'billing_status')
 
     def test_formview_post_status(self):
-        response = self.client.post(self.view)
+        response = self.client.post(self.view, data={'billing-line_one': ""}) #This is just to silence an error caused by calling the .empty method on a nonexistant billing form
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
         check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job', 'billing_status')
@@ -150,6 +151,11 @@ class FormViewTest(TestCase):
         response = self.client.post(self.view, data=data)
         self.assertEqual(self.job.get().job_address, self.addresses.get())
         self.assertEqual(self.job.get().billing_address, self.addresses.get())
+    
+    def test_valid_no_billing_only_one_client_added_to_address(self):
+        data = create_forms(include_billing=False)
+        response = self.client.post(self.view, data=data)
+        self.assertEqual(self.addresses.get().client.count(), 1)
 
     
 

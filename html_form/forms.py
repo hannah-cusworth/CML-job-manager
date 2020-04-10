@@ -76,8 +76,7 @@ class ClientForm(forms.ModelForm):
         )
        
 class JobForm(forms.ModelForm):
-   
-    
+
     class Meta:
         model = Job
         fields = ['description']
