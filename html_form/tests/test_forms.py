@@ -37,8 +37,13 @@ class AddressFormTest(SimpleTestCase):
         form = self.create_address_form(postcode="foo")
         self.assertFalse(form.is_valid())
     
-    def test_empty_all_empty(self):
-        form = self.create_address_form(line_one="")
+    def test_empty_is_empty(self):
+        form = AddressForm(prefix="billing", data={'billing-line_one': ""})
+        self.assertTrue(form.empty())
+    
+    def test_empty_not_empty(self):
+        form = AddressForm(prefix="billing", data={'billing-line_one': "g"})
+        self.assertFalse(form.empty())
     
     
     

@@ -17,7 +17,7 @@ class FormView(TemplateView):
             "billingaddress": AddressForm(prefix="billing"),
             "client": ClientForm(),
             "job": JobForm(),
-            "checkbox": "unbound",
+            "billing_status": "unbound",
         }
        
         return render(request, self.template_name, context)
@@ -28,12 +28,12 @@ class FormView(TemplateView):
         clientform = ClientForm(request.POST)
         jobform = JobForm(request.POST)
 
-        if billingaddressform_original.empty:
+        if billingaddressform_original.empty():
             billingaddressform = jobaddressform
-            checkbox = "checked"
+            billing_status = "unused"
         else:
             billingaddressform = billingaddressform_original
-            checkbox = "foo"
+            billing_status = "used"
 
        
         '''if clientform.is_valid() and jobform.is_valid() and jobaddressform.is_valid() and billingaddressform.is_valid():
@@ -86,7 +86,7 @@ class FormView(TemplateView):
 
                         return render(request, "html_form/success.html")
         
-        return render(request, self.template_name, {'billingaddress': billingaddressform_original, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform, "checkbox": checkbox})
+        return render(request, self.template_name, {'billingaddress': billingaddressform_original, 'jobaddress': jobaddressform, 'client': clientform, 'job': jobform, "billing_status": billing_status})
 
         
         

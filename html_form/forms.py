@@ -36,7 +36,7 @@ class AddressForm(forms.ModelForm):
         )
         
     def empty(self):
-        if self.line_one:
+        if self.data['billing-line_one']:
             return False
         else:
             return True
