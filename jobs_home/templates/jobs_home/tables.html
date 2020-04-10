@@ -21,7 +21,7 @@
         <td>{{job.job_address.postcode}}</td>
         <td>{{job.description}}</td>
         <td>{{job.creation_date}}</td>
-        {% if button %}
+        {% if include_button %}
         <td> <button class="btn btn-warning" onclick="change_status('{{job.id}}')">Submit</button></td>
         {% endif %}
     </tr>

@@ -4,7 +4,7 @@ from html_form.models import Job, Address, Person
 from django.views.generic import TemplateView, ListView 
 from django.template import RequestContext
 from jobs_home.filters import *
-from .forms import *
+from jobs_home.forms import *
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -38,7 +38,46 @@ class LoginView(TemplateView):
             "error": "Login failed!",
             "form": LoginForm(request.POST),
             }
-            return render(request, self.template_name, context)
+            return render(request, self.template_name, context)   
+          
+class InboxView(LoginRequiredMixin, TemplateView):
+    template_name = "jobs_home/inbox.html"
+
+    def get(self, request):
+        current_jobs = Job.objects.filter(status="IN").order_by('id')
+        page_obj = paginate(current_jobs, request)
+
+        context = {
+            "current_jobs": page_obj,
+            "page_obj": page_obj, 
+            "include_button": True,
+             
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        idnum = request.POST.get("idnum")
+        job = Job.objects.get(pk=idnum)
+        job.status="CU"
+        job.save()
+        
+        return render(request, self.template_name)
+
+class CurrentView(LoginRequiredMixin, ListView):
+    template_name = "jobs_home/current.html"
+    def get(self, request):
+        
+        current_jobs = Job.objects.filter(status="CU").order_by('id')
+        page_obj = paginate(current_jobs, request)
+
+        context = {
+            "page_obj": page_obj,
+            "current_jobs": page_obj,
+            "include_button": True,
+        }
+
+        return render(request, self.template_name, context)   
 
 class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
@@ -73,8 +112,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
             "button": False,
             "query": query,
         }
-
-#rm first if
+    #rm first if
         if 'client_btn' in request.GET:
             filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
             page_obj = paginate(filtered.qs,request)
@@ -101,47 +139,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
 
         return render(request, self.template_name, context)
     
-    
-        
-class CurrentView(LoginRequiredMixin, ListView):
-    template_name = "jobs_home/current.html"
-    def get(self, request):
-        
-        current_jobs = Job.objects.filter(status="CU").order_by('id')
-        page_obj = paginate(current_jobs, request)
-
-        context = {
-            "page_obj": page_obj,
-            "current_jobs": page_obj,
-            "button": True,
-        }
-
-        return render (request, self.template_name, context)      
-          
-
-class InboxView(LoginRequiredMixin, TemplateView):
-    template_name = "jobs_home/inbox.html"
-
-    def get(self, request):
-        current_jobs = Job.objects.filter(status="IN").order_by('id')
-        page_obj = paginate(current_jobs, request)
-
-        context = {
-            "current_jobs": page_obj,
-            "button": True,
-            "page_obj": page_obj
-            
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        idnum = request.POST.get("idnum")
-        job = Job.objects.get(pk=idnum)
-        job.status="CU"
-        job.save()
-        
-        return render(request, self.template_name)
-
+ 
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"
     
