@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import django-heroku
+import django_heroku
 
 db_password = os.environ.get('db_password')
 secret_key = os.environ.get('secret_key')
