@@ -86,17 +86,17 @@ WSGI_APPLICATION = 'cusworth_master_locksmiths.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {'default':'dj_database_url.parse(postgres://nvqccgfklbjzlb:368663d0bedf9fb5703e00955e28728456784682144a1042cca9a66e9ea3dca6@ec2-54-217-204-34.eu-west-1.compute.amazonaws.com:5432/dag5v6pdavt4qi')}
-)
-    
-    ''''default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'cml_demo',
-        'USER': 'hannah',
-        'PASSWORD': db_password,
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+DATABASES = {'default':dj_database_url.parse('postgres://nvqccgfklbjzlb:368663d0bedf9fb5703e00955e28728456784682144a1042cca9a66e9ea3dca6@ec2-54-217-204-34.eu-west-1.compute.amazonaws.com:5432/dag5v6pdavt4qi')}
+
+
+''''default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'cml_demo',
+    'USER': 'hannah',
+    'PASSWORD': db_password,
+    'HOST': 'localhost',
+    'PORT': '5432',
+}
 }'''
 
 
