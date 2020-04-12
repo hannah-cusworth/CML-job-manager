@@ -4,6 +4,25 @@
 {% block title %}
 Current Jobs
 {% endblock %}
+{% block script %}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script> 
+    function change_status(idnum)
+        {
+            event.stopPropagation();
+            var info = {"idnum": idnum};
+            var row = document.getElementById(idnum);
+            row.style.display = "none";
+            $.ajax(
+                    {
+                        url: "current",
+                        type: "post",
+                        data: info,
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                    });
+        }
+</script>
+{% endblock %}
 
 {% block body %}
 

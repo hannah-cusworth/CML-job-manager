@@ -1,6 +1,6 @@
 from django.test import Client, TestCase
 from html_form.views import *
-from html_form.models import *
+from html_form.models import * 
 
 def check_context(func, response, *args):
     for arg in args:

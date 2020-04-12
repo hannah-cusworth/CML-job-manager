@@ -51,6 +51,7 @@ class InboxView(LoginRequiredMixin, TemplateView):
             "current_jobs": page_obj,
             "page_obj": page_obj, 
             "include_button": True,
+            "button_label": "Move to Current"
              
         }
 
@@ -75,9 +76,18 @@ class CurrentView(LoginRequiredMixin, ListView):
             "page_obj": page_obj,
             "current_jobs": page_obj,
             "include_button": True,
+            "button_label": "Move to Archive",
         }
 
         return render(request, self.template_name, context)   
+    
+    def post(self, request):
+        idnum = request.POST.get("idnum")
+        job = Job.objects.get(pk=idnum)
+        job.status="AR"
+        job.save()
+        
+        return render(request, self.template_name)
 
 class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
@@ -183,22 +193,16 @@ class AddressView(LoginRequiredMixin, TemplateView):
             raise Http404("Address does not exist")
         
         try:
-            jobs_billing = Job.objects.filter(billing_address = address_id)
+            jobs = Job.objects.filter(client_id=client_id)
         except:
-            jobs_billing = []
-        
-        try:
-            jobs_work = Job.objects.filter(job_address = address_id)
-        except:
-            jobs_work = []
+            jobs = []
 
 
         context = {
             "background": "background-color: #ffcc99",
             "address": address,
             "related": address.client.all(),
-            "jobs_billing": jobs_billing,
-            "jobs_work": jobs_work,
+            "jobs": jobs,
             "click": None,
         }
 

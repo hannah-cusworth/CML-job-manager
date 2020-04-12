@@ -112,7 +112,7 @@ class ArchiveViewTest():
         self.assertTemplateUsed(response, self.template)
 
 class DetailViewTest(TestCase):
-    def setUpDatabase(data):
+    def setUpDatabase():
         address = Address(line_one="foo", city="bar", county="Derby", postcode="baz")
         person = Person(first="foo", last="bar", email="baz", number="123")
         address.save()

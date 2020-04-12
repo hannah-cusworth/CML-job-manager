@@ -33,7 +33,8 @@ class ClientFilter(django_filters.FilterSet):
 class JobFilter(django_filters.FilterSet):
     client_details = django_filters.CharFilter(method='client_name_search', label="Client Details")
     address_details = django_filters.CharFilter(method='address_search', label="Address Details")
-    creation_date = django_filters.DateFilter(field_name='creation_date', label="Date Created", widget=DatePicker)
+    #widget not displaying correctly
+    #creation_date = django_filters.DateFilter(field_name='creation_date', label="Date Created", widget=DatePicker)
     
     
     class Meta:

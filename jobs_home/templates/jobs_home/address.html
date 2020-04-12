@@ -7,47 +7,38 @@
     {% include "jobs_home/address-card.html" %}
 {% endblock %}
 {% block cards %}
-<div class="container">
-    <div class="row">
-        <div class="col col-md-3">
-            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">Related Clients</div>
-                <div class="card-body">
-                    {% for item in related %}
-                        <a href="{% url 'jobs_home:clients' item.id %}">
-                            {{item.first}} {{item.last}}
-                        </a>
-                        <br>
-                    {% endfor %}
-                </div>
-            </div>
+<div class="card-deck">
+   
+    <div class="card border-dark mb-3">
+        <div class="card-header">Related Clients</div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush text-dark">
+            {% for item in related %}
+            <li class="list-group-item">
+                <a href="{% url 'jobs_home:clients' item.id %}">
+                    {{item.first}} {{item.last}}
+                </a>
+                <br>
+            </li>
+            {% endfor %}
+        </ul>
         </div>
-        <div class="col col-md-9">
-            <div class="card bg-info text-white mb-3">
-                <div class="card-header">Related Jobs</div>
-                <div class="card-body">
-                    <div style="float:left;">
-                        <h5>Work</h5>
-                        {% for item in jobs_work %}
-                            <a href="{% url 'jobs_home:jobs' item.id %}">
-                            Job {{item.id}} 
-                            </a>
-                            <p> {{item.creation_date}}<br />{{item.description}}</p>
-                            <br>
-                        {% endfor %}
-                    </div>
-                    <div>
-                        <h5>Billing</h5>
-                        {% for item in jobs %}
-                        <a href="{% url 'jobs_home:jobs' item.id %}">
-                        Job {{item.id}} 
-                        </a>
-                        <p> {{item.creation_date}}<br />{{item.description}}</p>
-                        <br>
-                        {% endfor %} 
-                    </div>    
-                </div>
-            </div>
+    </div>
+        
+    <div class="card border-dark mb-3">
+        <div class="card-header">Related Jobs</div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush text-dark">
+            {% for item in jobs %}
+            <li class="list-group-item">
+                <a href="{% url 'jobs_home:jobs' item.id %}" style="display:inline">
+                    Job {{item.id}}
+                </a>
+                <p> {{item.creation_date}} </br> {{item.description}}</p>
+                <br>
+            </li>
+            {% endfor %} 
+        </ul>
         </div>
     </div>
 </div>

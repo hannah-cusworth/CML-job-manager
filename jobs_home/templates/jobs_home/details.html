@@ -27,6 +27,7 @@
                         for (i =0; i < x.length; i++)
                             {
                             x[i].contentEditable = "true";
+                            x[i].style.color = "red";
                             }
                         button.innerText = "Commit";
                     }
@@ -34,6 +35,7 @@
                         for (i =0; i < x.length; i++)
                             {
                             x[i].contentEditable = "false";
+                            x[i].style.color = "black";
                             edited = x[i].innerText;
                             id = x[i].id; 
                             changes[id] = edited;
