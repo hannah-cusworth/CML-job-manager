@@ -1,1 +1,1 @@
-web: gunicorn myapp.wsgi
+web: gunicorn cusworth_master_locksmiths.wsgi
