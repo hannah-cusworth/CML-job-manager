@@ -1,0 +1,7 @@
+gunicorn 
+django-crispy-forms
+django-localflavor
+django-filter
+django-phonenumber-field[phonenumbers]
+django
+django-heroku
