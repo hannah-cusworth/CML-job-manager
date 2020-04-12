@@ -6,3 +6,4 @@ django-phonenumber-field[phonenumbers]
 django
 django-heroku
 django-tempus-dominus
+dj_database_url

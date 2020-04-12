@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 db_password = os.environ.get('db_password')
 secret_key = os.environ.get('secret_key')
@@ -85,16 +86,18 @@ WSGI_APPLICATION = 'cusworth_master_locksmiths.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+DATABASES = {'default':'dj_database_url.parse(postgres://nvqccgfklbjzlb:368663d0bedf9fb5703e00955e28728456784682144a1042cca9a66e9ea3dca6@ec2-54-217-204-34.eu-west-1.compute.amazonaws.com:5432/dag5v6pdavt4qi')}
+)
+    
+    ''''default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'cml_demo',
         'USER': 'hannah',
         'PASSWORD': db_password,
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
-}
+}'''
 
 
 # Password validation
