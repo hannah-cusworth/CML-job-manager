@@ -8,6 +8,7 @@ from jobs_home.forms import *
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 
 def logout_view(request):
@@ -193,7 +194,7 @@ class AddressView(LoginRequiredMixin, TemplateView):
             raise Http404("Address does not exist")
         
         try:
-            jobs = Job.objects.filter(client_id=client_id)
+            jobs = Job.objects.filter(Q(job_address_id=address_id)|Q(billing_address_id=address_id))
         except:
             jobs = []
 

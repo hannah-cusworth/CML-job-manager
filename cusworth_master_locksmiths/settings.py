@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import django-heroku
 
+db_password = os.environ.get('db_password')
+secret_key = os.environ.get('secret_key')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'bl&3i3e425+!h9kp=xm)!9nu5b@b0@*d52!owbzaez66o9@8vv'
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         #   NOTE TO SELF: HERE I HAVE DIRECTLY INCLUDED MY PASSWORD AND NAME DEETS - WHEN SWITCHING
         #   TO REAL DATABASE WILL NEED TO WRITE A BASH FILE
-        'NAME': 'cmltest_db',
+        'NAME': 'cml_demo',
         'USER': 'hannah',
-        'PASSWORD':'Bewick25',
+        'PASSWORD': db_password,
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -143,4 +146,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #added UK region
 PHONENUMBER_DEFAULT_REGION = 'GB'
 
-
+# Activate Django-Heroku.
+django_heroku.settings(locals())
