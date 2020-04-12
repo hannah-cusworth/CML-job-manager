@@ -1,0 +1,82 @@
+
+
+.error {
+    color: red;
+}
+.login-bg {
+    background-color: #99ccff;
+}
+
+
+ .login h1 {
+    text-align: center;
+ }
+
+ .login {
+
+    width: 270px;
+    height: 350px;
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 25px;
+    margin: 10% auto;
+ }
+
+
+
+
+#logo_div {
+    background-image: url("https://cusworth.net/wp-content/uploads/logo-1.png");
+    width: 247px;
+    height: 75px;
+    margin: 5px;
+    
+}
+
+#navbar {
+
+    height: 75px;
+    background-color: #99ccff;
+}
+
+.navlist {
+
+
+    margin: 10px 20px 10px;
+    font-weight: 550; 
+}
+
+.thead {
+    background-color: black;
+    color: white;
+    font-weight: 400px;
+}
+
+#background {
+
+    height: 100%;
+   
+    
+}
+
+.list-group-item {
+    font-weight: bold;
+
+}
+.list-group-item p {
+
+    display: inline;
+    font-weight: normal;
+    float: right;
+    margin: 0;
+
+}
+
+.nav-buttons {
+    float: right;
+    display: inline;
+    padding: 5px;
+}
+ .nav-buttons button{
+    margin: 5px;
+ }

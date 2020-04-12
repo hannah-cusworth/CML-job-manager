@@ -33,7 +33,7 @@ class JobFilterFormHelper(FormHelper):
     layout = Layout(
         Row(
             Column('description', css_class="form-group col-md-5 mb-0"),
-            Column('creation_date', css_class="form-group col-md-5 mb-0"),    
+            #Column('creation_date', css_class="form-group col-md-5 mb-0"),    
         ),
         Row(
             Column('client_details', css_class="form-group col-md-5 mb-0"),
