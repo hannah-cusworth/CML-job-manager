@@ -88,8 +88,6 @@ WSGI_APPLICATION = 'cusworth_master_locksmiths.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        #   NOTE TO SELF: HERE I HAVE DIRECTLY INCLUDED MY PASSWORD AND NAME DEETS - WHEN SWITCHING
-        #   TO REAL DATABASE WILL NEED TO WRITE A BASH FILE
         'NAME': 'cml_demo',
         'USER': 'hannah',
         'PASSWORD': db_password,
