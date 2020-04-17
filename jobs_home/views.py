@@ -69,7 +69,7 @@ class InboxView(LoginRequiredMixin, TemplateView):
 class CurrentView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/current.html"
     def get(self, request):
-        
+         
         current_jobs = Job.objects.filter(status="CU").order_by('id')
         page_obj = paginate(current_jobs, request)
 
@@ -258,6 +258,11 @@ class ClientView(LoginRequiredMixin, TemplateView):
         for column in keys:
     
             if column != "card":
+                print(post[column])
+                try:
+                    post[colum].strip("&nbsp;") #contenteditable spaces are different
+                except:
+                    print(bob)
                 setattr(client, column, post[column])
                 client.save()
 
