@@ -15,16 +15,18 @@ class ClientFilterFormHelper(FormHelper):
 
     layout = Layout(
         Row(
-            Column('first', css_class="form-group col-md-5 mb-0"),
-            Column('last', css_class="form-group col-md-5 mb-0"),
+            Column('first', css_class="form-group col-md-6 mb-0"),
+            Column('last', css_class="form-group col-md-6 mb-0"),
         ),
             
         Row(
-            Column('number', css_class="form-group col-md-5 mb-0"),
-            Column('email', css_class="form-group col-md-5 mb-0"),  
+            Column('number', css_class="form-group col-md-6 mb-0"),
+            Column('email', css_class="form-group col-md-6 mb-0"),  
         ),
+        Row(
         Submit('client_btn', 'Submit', css_class='button')
-    )
+        )
+    )   
 
 class JobFilterFormHelper(FormHelper):
     form_method="GET"
@@ -32,14 +34,16 @@ class JobFilterFormHelper(FormHelper):
     
     layout = Layout(
         Row(
-            Column('description', css_class="form-group col-md-5 mb-0"),
+            Column('description', css_class="form-group col-md-12 mb-0"),
             #Column('creation_date', css_class="form-group col-md-5 mb-0"),    
         ),
         Row(
-            Column('client_details', css_class="form-group col-md-5 mb-0"),
-            Column('address_details', css_class="form-group col-md-5 mb-0"), 
+            Column('client_details', css_class="form-group col-md-6 mb-0"),
+            Column('address_details', css_class="form-group col-md-6 mb-0"), 
         ),
-        Submit('job_btn', 'Submit', css_class='button'),
+        Row(
+        Submit('client_btn', 'Submit', css_class='button ')
+        )
        
     )
 
@@ -51,15 +55,17 @@ class AddressFilterFormHelper(FormHelper):
     }
     layout = Layout(
         Row(
-            Column('line_one', css_class="form-group col-md-5 mb-0"),
-            Column('city', css_class="form-group col-md-5 mb-0"),
+            Column('line_one', css_class="form-group col-md-6 mb-0"),
+            Column('city', css_class="form-group col-md-6 mb-0"),
         ),
             
         Row(
-            Column('county', css_class="form-group col-md-5 mb-0"),
-            Column('postcode', css_class="form-group col-md-5 mb-0"),
+            Column('county', css_class="form-group col-md-6 mb-0"),
+            Column('postcode', css_class="form-group col-md-6 mb-0"),
             
         ),
-        Submit('address_btn', 'Submit', css_class='button'),
+        Row(
+            Column(Submit('client_btn', 'Submit', css_class='button'))
+        )
        
     )

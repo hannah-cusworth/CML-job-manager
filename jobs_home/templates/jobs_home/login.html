@@ -1,6 +1,6 @@
 <!DOCTYPE html>
     <head>
-        <title>{% block title %} {% endblock %}</title>
+        <title>{% block title %}Login{% endblock %}</title>
         {% load static %}
         {% load crispy_forms_tags %}
         
@@ -23,7 +23,17 @@
 
             </form>
             <br>
+            
+            
             <p class="error">{{ error }}</p>
+
+
+
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            <span style="font-weight:bold">Demo account:</span> demo / foobar
+            
         </div>
 
 

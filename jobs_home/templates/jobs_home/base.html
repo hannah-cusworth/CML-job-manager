@@ -8,23 +8,24 @@
         
         {% block script %}{% endblock %}
     </head>
-    <nav class="navbar navbar-light" id="navbar">
+    
+    <nav class="navbar navbar-default" id="navbar">
       <div class="container-fluid">
-        <div class="navbar-header" id="logo_div">
+        <div class="navbar-header">
+          <p class="navbar-brand" style="color:black">Cusworth Master Locksmiths</p>
         </div>
-        <ul class="nav navbar-nav">
-          <li class="navlist navbar-text"><a href="{% url 'jobs_home:inbox' %}">Inbox</a></li>
-          <li class="navlist navbar-text"><a href="{% url 'jobs_home:current' %}">Current Jobs</a></li>
-          <li class="navlist navbar-text"><a href="{% url 'jobs_home:archive' %}">Search</a></li>
+        <ul class="nav navbar-nav ">
+          <li ><a href="{% url 'html_form:new' %}">New Job</a></li>
+          <li><a href="{% url 'jobs_home:inbox' %}">Inbox</a></li>
+          <li><a href="{% url 'jobs_home:current' %}">Current Jobs</a></li>
+          <li><a href="{% url 'jobs_home:archive' %}">Search</a></li>
         </ul>
-        
-        <div class="nav-buttons">
-          <button class="btn btn-primary btn-lg" type="button" onclick="location.href = '/form/new'">New Job</button>
-          <button class=" btn btn-success" type="button" onclick="location.href ='/logout'">Log Out</button>
-        </div>
-        
-      </nav>
+        <ul class="nav navbar-nav navbar-right">
+          <li><button class=" navbar-btn btn btn-success" id="logout_btn" type="button" onclick="location.href ='/logout'">Log Out</button></li>
+        </ul>
       </div>
+    </nav>
+      
      
     
     <body>

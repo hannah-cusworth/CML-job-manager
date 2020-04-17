@@ -1,4 +1,7 @@
-
+.alert{
+    margin:auto;
+    width: 230px;
+}
 
 .error {
     color: red;
@@ -19,11 +22,16 @@
     background-color: white;
     padding: 20px 40px;
     border-radius: 25px;
-    margin: 10% auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    margin-bottom: 20px;
  }
 
 
-
+#logout_btn {
+    margin-right: 8px;
+}
 
 #logo_div {
     background-image: url("https://cusworth.net/wp-content/uploads/logo-1.png");
@@ -35,16 +43,11 @@
 
 #navbar {
 
-    height: 75px;
+    
     background-color: #99ccff;
 }
 
-.navlist {
 
-
-    margin: 10px 20px 10px;
-    font-weight: 550; 
-}
 
 .thead {
     background-color: black;

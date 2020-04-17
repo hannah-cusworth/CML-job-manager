@@ -67,13 +67,17 @@ crossorigin="anonymous"></script>
     <h2>Job Search</h2>
     <br>
     {% crispy jobs.form jobs.form.helper %}
+    <br>
     {% include "jobs_home/tables.html" %}
+    <br>
 </div>
 
 <div class="container" id="address-tab" style="{{display_address}}">
     <h2>Address Search</h2>
     <br>
     {% crispy addresses.form addresses.form.helper %}
+    <br>
+    
     <table class="table table-hover" id="address_table">
         <thead class="thead">
         <tr>
@@ -108,6 +112,7 @@ crossorigin="anonymous"></script>
     <br>
 
     {% crispy clients.form clients.form.helper %}
+    <br>
     <table class="table table-hover" id="client_table">
         <thead class="thead">
         <tr>
