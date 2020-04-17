@@ -2,7 +2,9 @@
     margin:auto;
     width: 230px;
 }
-
+.description_col {
+    max-width: 50%;
+}
 .error {
     color: red;
 }

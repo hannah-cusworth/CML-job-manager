@@ -42,7 +42,7 @@ class JobFilterFormHelper(FormHelper):
             Column('address_details', css_class="form-group col-md-6 mb-0"), 
         ),
         Row(
-        Submit('client_btn', 'Submit', css_class='button ')
+        Submit('job_btn', 'Submit', css_class='button ')
         )
        
     )
@@ -65,7 +65,7 @@ class AddressFilterFormHelper(FormHelper):
             
         ),
         Row(
-            Column(Submit('client_btn', 'Submit', css_class='button'))
+            Column(Submit('address_btn', 'Submit', css_class='button'))
         )
        
     )
