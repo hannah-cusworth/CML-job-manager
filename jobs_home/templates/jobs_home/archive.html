@@ -67,17 +67,21 @@ crossorigin="anonymous"></script>
     <h2>Job Search</h2>
     <br>
     {% crispy jobs.form jobs.form.helper %}
+    {% if current_jobs %}
     <br>
     {% include "jobs_home/tables.html" %}
     <br>
+    {% endif %}
 </div>
+
 
 <div class="container" id="address-tab" style="{{display_address}}">
     <h2>Address Search</h2>
     <br>
     {% crispy addresses.form addresses.form.helper %}
     <br>
-    
+    {% if current_address %}
+    <div class="table-responsive">
     <table class="table table-hover" id="address_table">
         <thead class="thead">
         <tr>
@@ -103,8 +107,9 @@ crossorigin="anonymous"></script>
             </tr>
             </tbody>
         </table>
+    </div>
         {% include 'jobs_home/pagination.html' %}
-    
+        {% endif %}    
 </div>
 
 <div class="container" id="client-tab" style="{{display_client}}">
@@ -113,6 +118,8 @@ crossorigin="anonymous"></script>
 
     {% crispy clients.form clients.form.helper %}
     <br>
+    {% if current_clients %}
+    <div class="table-responsive">
     <table class="table table-hover" id="client_table">
         <thead class="thead">
         <tr>
@@ -134,7 +141,9 @@ crossorigin="anonymous"></script>
             </tr>
             </tbody>
         </table>
+    </div>
         {% include 'jobs_home/pagination.html' %}
+    {% endif %}
     
 </div>
 
