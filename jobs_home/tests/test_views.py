@@ -118,6 +118,8 @@ def create_object_set():
     person = Person(first="foo", last="bar", email="baz", number="123")
     address.save()
     person.save()
+    address.client.add(person.pk)
+    person.address.add(address.pk)
     job = Job(description="foo", client=person, job_address=address, billing_address=address)
     job.save()
 
@@ -138,6 +140,7 @@ class JobViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
         self.job_id = Job.objects.first().pk
+        self.job = Job.objects.get(pk=self.job_id)
         self.view = '/job/' + str(self.job_id)
         self.not_found = '/job/' + str(Job.objects.last().pk + 1)
         self.template = 'jobs_home/jobs.html'
@@ -153,18 +156,21 @@ class JobViewTest(DetailViewTest):
     
     def test_jobview_404(self):
         response = self.client.get(self.not_found)
-        self.assertRaisesMessage(Http404, "Job does not exist")
+        self.assertEqual(response.status_code, 404)
+        #nb assertRaiseError can't be used to test 404 error
     
     def test_jobview_context(self):
         response = self.client.get(self.view)
-        #self.assertEqual(response.context['job'], Job.objects.get(pk=self.job_id))
-        #self.assert
+        self.assertEqual(response.context['job'], self.job)
+        self.assertEqual(response.context['address'], Address.objects.get(pk=self.job.job_address_id))
+        self.assertEqual(response.context['client'], Person.objects.get(pk=self.job.client_id))
         
 
 class ClientViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
         self.client_id = Person.objects.first().pk
+        self.person = Person.objects.get(pk=self.client_id)
         self.view = '/client/' + str(self.client_id)
         self.not_found = '/client/' + str(Person.objects.last().pk + 1)
         self.template = 'jobs_home/clients.html'
@@ -180,13 +186,18 @@ class ClientViewTest(DetailViewTest):
     def test_clientview_404(self):
         response = self.client.get(self.not_found)
         self.assertEqual(response.status_code, 404)
-        self.assertRaisesMessage(Http404, "Client does not exist")
-
+        
+    def test_clientview_context(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.context['client'], self.person)
+        self.assertQuerysetEqual(response.context['related'].order_by('id'), self.person.address.all().order_by('id'), transform= lambda x:x)
+        self.assertQuerysetEqual(response.context['jobs'].order_by('id'), Job.objects.filter(client_id = self.person.pk).order_by('id'), transform= lambda x: x)
 
 class AddressViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
         self.address_id = Address.objects.first().pk
+        self.address = Address.objects.get(pk=self.address_id)
         self.view = '/address/' + str(self.address_id)
         self.not_found = '/address/' + str(Address.objects.last().pk + 1)
         self.template = 'jobs_home/address.html'
@@ -202,5 +213,12 @@ class AddressViewTest(DetailViewTest):
     def test_addressview_404(self):
         response = self.client.get(self.not_found)
         self.assertEqual(response.status_code, 404)
+    
+    def test_addressview_context(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.context['address'], self.address)
+        #by default transforms first item to a str using repr(). Overriden this with lambda so that it will literally compare the qs
+        self.assertQuerysetEqual(response.context['related'], self.address.client.all().order_by('pk'), transform=lambda x: x)
+        self.assertQuerysetEqual(response.context['jobs'].order_by('pk'), Job.objects.filter(job_address=self.address_id).order_by('pk'), transform=lambda x:x)
     
            
