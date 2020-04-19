@@ -2,6 +2,7 @@ from django.test import Client, TestCase, SimpleTestCase, TransactionTestCase
 from jobs_home.views import *
 from django.contrib.auth.models import User
 from jobs_home.forms import *
+from jobs_home.filters import *
 
 # Templates
 template_base = 'jobs_home/base.html'
@@ -131,17 +132,32 @@ class CurrentViewTest(ListViewTest):
         self.assertEqual(self.job.status, "AR")
 
 
-class ArchiveViewTest():
+class ArchiveViewTest(TestCase):
 
     def setUp(self):
         self.client = Client()
         self.view = '/archive'
         self.template = 'jobs_home/archive.html'
+        log_in(self.client)
 
-    def test_loginview_get_status(self):
+    def test_archiveview_get_status(self):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.template)
+    
+    def test_archiveview_get_context(self):
+        context = ArchiveView.get_context(self)
+        self.assertIsInstance(context["job_search"], JobFilter)
+        self.assertEqual(context["address_search"], ClientFilter)
+        self.assertEqual(context["client_search"], AddressFilter)
+
+
+
+
+
+
+
+
 
 dataset_size = 20
 

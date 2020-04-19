@@ -9,7 +9,7 @@ class LoginForm(forms.Form):
 
 
 class ClientFilterFormHelper(FormHelper):
-    form_method="POST"
+    form_method="GET"
     form_id="client_form"
    
 
@@ -29,7 +29,7 @@ class ClientFilterFormHelper(FormHelper):
     )   
 
 class JobFilterFormHelper(FormHelper):
-    form_method="POST"
+    form_method="GET"
     form_id="job_form"
     
     layout = Layout(
@@ -48,7 +48,7 @@ class JobFilterFormHelper(FormHelper):
     )
 
 class AddressFilterFormHelper(FormHelper):
-    form_method="POST"
+    form_method="GET"
     form_id="address_form"
     labels={
         "line_one": "Address 1",

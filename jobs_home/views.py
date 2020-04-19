@@ -97,46 +97,44 @@ class CurrentView(LoginRequiredMixin, ListView):
 
 class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
-
+   
     def get(self, request):
-       
-        context = self.get_context()
-    
-        return render(request, self.template_name, context)
-    
-    def post(self, request):
-
         context = self.get_context()
 
-        if 'client_btn' in request.POST:
+        if 'client_btn' in request.GET:
             page_obj = self.filter_client(request)
             context["client_results"] = page_obj
 
-        if 'address_btn' in request.POST:
+        if 'address_btn' in request.GET:
             page_obj = self.filter_address(request)
             context["address_results"] = page_obj
 
-        if 'job_btn' in request.POST:
+        if 'job_btn' in request.GET:
             page_obj = self.filter_job(request)
             context["job_results"] = page_obj
-
-        context["page_obj"] = page_obj
+        
+        try:
+            context["page_obj"] = page_obj
+        except:
+            pass
+        
+        context["query"] = self.get_query(request)
 
         return render(request, self.template_name, context)
            
     
     def filter_client(self, request):
-        filtered = ClientFilter(request.POST, queryset=Person.objects.all().order_by('id'))
+        filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
 
 
     def filter_address(self, request):
-        filtered = AddressFilter(request.POST, queryset=Address.objects.all().order_by('id'))
+        filtered = AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
         
 
     def filter_job(self, request):
-        filtered = JobFilter(request.POST, queryset=Job.objects.all().order_by('id'))
+        filtered = JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
         
     def get_context(self):
@@ -151,28 +149,20 @@ class ArchiveView(LoginRequiredMixin, ListView):
             "job_search": job_search,
             "client_search": client_search,
             "address_search": address_search,
-            "job_results": None,
-            "address_results": None,
-            "client_results": None,
         }
 
         return context
 
-
-
-       
-         
-        ''' #QUery string
-         #"button": False,
-            #"query": query,
+    def get_query(self, request):
         try:
             query = request.META["QUERY_STRING"]
             if "page=" in query:
                 i = query.find("page=")
                 i -= 1
                 query = query[:i]
+            return query
         except:
-            query = None '''
+            return None
         
 
     
