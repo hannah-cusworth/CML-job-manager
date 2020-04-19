@@ -8,7 +8,7 @@ template_base = 'jobs_home/base.html'
 template_pagination = 'jobs_home/pagination.html'
 template_tables = 'jobs_home/tables.html'
 template_client_card = 'jobs_home/client-card.html'
-template_address_card = 'jobs_home/client-card.html'
+template_address_card = 'jobs_home/address-card.html'
 template_detail = 'jobs_home/details.html'
 
 
@@ -121,6 +121,8 @@ class DetailViewTest(TestCase):
         job = Job(description="foo", client=person, job_address=address, billing_address=address)
         job.save()
     
+    
+    
     def test_data(self):
         self.assertEqual(Address.objects.get().line_one, "foo")
         self.assertEqual(Person.objects.get().email, "baz")
@@ -142,6 +144,31 @@ class JobViewTest(DetailViewTest):
         self.assertTemplateUsed(response, template_client_card)
         self.assertTemplateUsed(response, template_address_card)
 
-#class ClientViewTest():
+class ClientViewTest(DetailViewTest):
+    def setUp(self):
+        self.client = Client()
+        self.view = '/client/' + str(Person.objects.get().pk)
+        self.template = 'jobs_home/clients.html'
+        log_in(self.client)
+    
+    def test_clientview_get_status(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.template)
+        self.assertTemplateUsed(response, template_detail)
+        self.assertTemplateUsed(response, template_client_card)
 
-#class AddressViewTest():
+
+class AddressViewTest(DetailViewTest):
+    def setUp(self):
+        self.client = Client()
+        self.view = '/address/' + str(Address.objects.get().pk)
+        self.template = 'jobs_home/address.html'
+        log_in(self.client)
+    
+    def test_addressview_get_status(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.template)
+        self.assertTemplateUsed(response, template_detail)
+        self.assertTemplateUsed(response, template_address_card)
