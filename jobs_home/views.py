@@ -159,6 +159,7 @@ class JobView(LoginRequiredMixin, TemplateView):
             job = Job.objects.get(pk=job_id)
         except Job.DoesNotExist:
             raise Http404("Job does not exist")
+
         context = {
             "job": job,
             "address": Address.objects.get(pk=job.job_address_id),
@@ -190,7 +191,8 @@ class AddressView(LoginRequiredMixin, TemplateView):
     def get(self, request, address_id):
         try:
             address = Address.objects.get(pk=address_id)
-        except Job.DoesNotExist:
+
+        except Address.DoesNotExist:
             raise Http404("Address does not exist")
         
         try:
@@ -229,15 +231,13 @@ class ClientView(LoginRequiredMixin, TemplateView):
     def get(self, request, client_id):
         try:
             client = Person.objects.get(pk=client_id)
-        except Job.DoesNotExist:
+        except Person.DoesNotExist:
             raise Http404("Client does not exist")
         
         try:
             jobs = Job.objects.filter(client_id=client_id)
         except:
             jobs = []
-        
-
 
         context = {
             "background": "background-color: #ff8080",
