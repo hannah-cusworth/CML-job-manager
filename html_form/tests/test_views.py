@@ -6,7 +6,7 @@ def check_context(func, response, *args):
     for arg in args:
         func.assertIn(arg, response)
 
-def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", first="foo", description="foobar", include_billing=True):   
+def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", number="0303 123 7300", description="foobar", include_billing=True):   
     if include_billing:
         billing = "Derby"
     else:
@@ -23,10 +23,10 @@ def create_forms(job_postcode="SW1A 1AA", billing_postcode="SW1A 1AA", first="fo
     'billing-city': billing,
     'billing-county': billing,
     'billing-postcode': billing_postcode,
-    'first':first,
+    'first':"baz",
     'last':"foo",
     'email':"a@a.com",
-    'number':"0303 123 7300",
+    'number': number,
     'description':description,}  
 
 
@@ -91,13 +91,13 @@ class FormViewTest(TestCase):
         self.assertTrue(check_db_empty())    
     
     def test_invalid_client_returns_form(self):
-        data = create_forms(first="123")
+        data = create_forms(number="123")
         response = self.client.post(self.view, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
     
     def test_invalid_client_db_empty(self):
-        data = create_forms(first="123")
+        data = create_forms(number="123")
         response = self.client.post(self.view, data=data)
         self.assertTrue(check_db_empty())
     
