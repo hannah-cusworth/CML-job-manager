@@ -51,18 +51,20 @@ class InboxView(LoginRequiredMixin, TemplateView):
         context = {
             "current_jobs": page_obj,
             "page_obj": page_obj, 
-            "include_button": True,
-            "button_label": "Move to Current"
-             
+            "include_button": True,                 ###???
+            "button_label": "Move to Current"       ### move this      
         }
 
         return render(request, self.template_name, context)
 
     def post(self, request):
-        idnum = request.POST.get("idnum")
-        job = Job.objects.get(pk=idnum)
-        job.status="CU"
-        job.save()
+        id_num = request.POST.get("id")
+        try:
+            job = Job.objects.get(pk=id_num)
+            job.status="CU"
+            job.save()
+        except:
+            pass
         
         return render(request, self.template_name)
 
@@ -83,10 +85,13 @@ class CurrentView(LoginRequiredMixin, ListView):
         return render(request, self.template_name, context)   
     
     def post(self, request):
-        idnum = request.POST.get("idnum")
-        job = Job.objects.get(pk=idnum)
-        job.status="AR"
-        job.save()
+        id_num = request.POST.get("id")
+        try:
+            job = Job.objects.get(pk=id_num)
+            job.status="AR"
+            job.save()
+        except:
+            pass
         
         return render(request, self.template_name)
 
@@ -150,7 +155,6 @@ class ArchiveView(LoginRequiredMixin, ListView):
 
         return render(request, self.template_name, context)
     
- 
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"
     
@@ -161,10 +165,10 @@ class JobView(LoginRequiredMixin, TemplateView):
             raise Http404("Job does not exist")
 
         context = {
-            "job": job,
+            "job": job,                                                 #!!!
             "address": Address.objects.get(pk=job.job_address_id),
             "client": Person.objects.get(pk=job.client_id),
-            "background": "background-color: #79a6d2",
+            "background": "background-color: #79a6d2",                  #!!!
             "click": True,
         }
    
@@ -177,11 +181,8 @@ class JobView(LoginRequiredMixin, TemplateView):
         keys = post.keys()    
         
         for column in keys:
-    
-            #if column != "card":
             setattr(job, column, post[column])
             job.save()
-        
         
         return render(request, self.template_name)
 
@@ -200,13 +201,12 @@ class AddressView(LoginRequiredMixin, TemplateView):
         except:
             jobs = []
 
-
         context = {
-            "background": "background-color: #ffcc99",
+            "background": "background-color: #ffcc99",      #!!!
             "address": address,
             "related": address.client.all(),
             "jobs": jobs,
-            "click": None,
+            "click": None,                                  #!!!
         }
 
         return render(request, self.template_name, context)
@@ -218,8 +218,6 @@ class AddressView(LoginRequiredMixin, TemplateView):
         keys = post.keys()    
         
         for column in keys:
-    
-            if column != "card":
                 setattr(address, column, post[column])
                 address.save()
         
@@ -240,11 +238,11 @@ class ClientView(LoginRequiredMixin, TemplateView):
             jobs = []
 
         context = {
-            "background": "background-color: #ff8080",
+            "background": "background-color: #ff8080",                  #!!!
             "client": client,
             "related": client.address.all(),
             "jobs": jobs,
-            "click": None,
+            "click": None,                                              #!!!
         }
             
         return render(request, self.template_name, context)
@@ -256,9 +254,6 @@ class ClientView(LoginRequiredMixin, TemplateView):
         keys = post.keys()    
         
         for column in keys:
-    
-            if column != "card":
-                
                 post[column].strip("&nbsp;") #contenteditable spaces are different
                 setattr(client, column, post[column])
                 client.save()

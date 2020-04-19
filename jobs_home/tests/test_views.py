@@ -66,11 +66,20 @@ def check_templates(self, response):
         self.assertTemplateUsed(response, template_pagination)
         self.assertTemplateUsed(response, template_tables)
 
-class InboxViewTest(TestCase):
+class ListViewTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+            create_object_set()
+
+
+class InboxViewTest(ListViewTest):
     def setUp(self):
         self.client = Client()
         self.view = '/inbox'
         self.template = 'jobs_home/inbox.html'
+        self.job = Job.objects.get()
+        self.job_id = self.job.pk
         log_in(self.client)
 
     def test_inboxview_get_status(self):
@@ -80,13 +89,25 @@ class InboxViewTest(TestCase):
     
     def test_inboxview_get_context(self):
         response = self.client.get(self.view)
-        self.assertTrue(response.context["include_button"])
+        self.assertTrue(response.context["include_button"])     #?
+    
+    def test_inboxview_post_status(self):
+        response = self.client.post(self.view)
+        self.assertEqual(response.status_code, 200)
+        check_templates(self, response)
+
+    def test_inboxview_post_changejobstatus(self):
+        response = self.client.post(self.view, data={"id": self.job_id})
+        self.job.refresh_from_db()
+        self.assertEqual(self.job.status, "CU")
 
 
-class CurrentViewTest(TestCase):
+class CurrentViewTest(ListViewTest):
     def setUp(self):
         self.client = Client()
         self.view = '/'
+        self.job = Job.objects.get()
+        self.job_id = self.job.pk
         self.template = 'jobs_home/current.html'
         log_in(self.client)
 
@@ -98,6 +119,17 @@ class CurrentViewTest(TestCase):
     def test_currentview_get_context(self):
         response = self.client.get(self.view)
         self.assertTrue(response.context["include_button"])
+    
+    def test_currentview_post_status(self):
+        response = self.client.post(self.view)
+        self.assertEqual(response.status_code, 200)
+        check_templates(self, response)
+
+    def test_currentview_post_changejobstatus(self):
+        response = self.client.post(self.view, data={"id": self.job_id})
+        self.job.refresh_from_db()
+        self.assertEqual(self.job.status, "AR")
+
 
 class ArchiveViewTest():
 
@@ -145,14 +177,17 @@ class JobViewTest(DetailViewTest):
         self.not_found = '/job/' + str(Job.objects.last().pk + 1)
         self.template = 'jobs_home/jobs.html'
         log_in(self.client)
-        
-    def test_jobview_get_status(self):
-        response = self.client.get(self.view)
-        self.assertEqual(response.status_code, 200)
+    
+    def check_templates(self, response):
         self.assertTemplateUsed(response, self.template)
         self.assertTemplateUsed(response, template_detail)
         self.assertTemplateUsed(response, template_client_card)
         self.assertTemplateUsed(response, template_address_card)
+
+    def test_jobview_get_status(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.check_templates(response)
     
     def test_jobview_404(self):
         response = self.client.get(self.not_found)
@@ -173,13 +208,18 @@ class JobViewTest(DetailViewTest):
         self.assertTemplateUsed(response, template_client_card)
         self.assertTemplateUsed(response, template_address_card)
     
+    def test_jobview_post_status(self):
+        response = self.client.post(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.check_templates(response)
+    
     def test_jobview_post_edit(self):
         new_text = "edit"
         response = self.client.post(self.view, data={'description': new_text})
         self.job.refresh_from_db()          #NB you have to refresh, v imp
         self.assertEqual(self.job.description, new_text)
         
-        
+    
 
 class ClientViewTest(DetailViewTest):
     def setUp(self):
@@ -191,12 +231,16 @@ class ClientViewTest(DetailViewTest):
         self.template = 'jobs_home/clients.html'
         log_in(self.client)
     
-    def test_clientview_get_status(self):
-        response = self.client.get(self.view)
-        self.assertEqual(response.status_code, 200)
+    def check_templates(self, response):
         self.assertTemplateUsed(response, self.template)
         self.assertTemplateUsed(response, template_detail)
         self.assertTemplateUsed(response, template_client_card)
+    
+    def test_clientview_get_status(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.check_templates(response)
+        
 
     def test_clientview_404(self):
         response = self.client.get(self.not_found)
@@ -207,6 +251,11 @@ class ClientViewTest(DetailViewTest):
         self.assertEqual(response.context['client'], self.person)
         self.assertQuerysetEqual(response.context['related'].order_by('id'), self.person.address.all().order_by('id'), transform= lambda x:x)
         self.assertQuerysetEqual(response.context['jobs'].order_by('id'), Job.objects.filter(client_id = self.person.pk).order_by('id'), transform= lambda x: x)
+
+    def test_clientview_post_status(self):
+        response = self.client.post(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.check_templates(response)
 
     def test_clientview_post_edit(self):
         new_text = "edit"
@@ -224,12 +273,15 @@ class AddressViewTest(DetailViewTest):
         self.template = 'jobs_home/address.html'
         log_in(self.client)
     
-    def test_addressview_get_status(self):
-        response = self.client.get(self.view)
-        self.assertEqual(response.status_code, 200)
+    def check_templates(self, response):
         self.assertTemplateUsed(response, self.template)
         self.assertTemplateUsed(response, template_detail)
         self.assertTemplateUsed(response, template_address_card)
+    
+    def test_addressview_get_status(self):
+        response = self.client.get(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.check_templates(response)
     
     def test_addressview_404(self):
         response = self.client.get(self.not_found)
@@ -242,6 +294,11 @@ class AddressViewTest(DetailViewTest):
         self.assertQuerysetEqual(response.context['related'], self.address.client.all().order_by('pk'), transform=lambda x: x)
         self.assertQuerysetEqual(response.context['jobs'].order_by('pk'), Job.objects.filter(job_address=self.address_id).order_by('pk'), transform=lambda x:x)
     
+    def test_addressview_post_status(self):
+        response = self.client.post(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.check_templates(response)
+
     def test_addressview_post_edit(self):
         new_text = "edit"
         response = self.client.post(self.view, data={'line_one': new_text})
