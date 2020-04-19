@@ -78,8 +78,8 @@ class CurrentView(LoginRequiredMixin, ListView):
         context = {
             "page_obj": page_obj,
             "current_jobs": page_obj,
-            "include_button": True,
-            "button_label": "Move to Archive",
+            "include_button": True,                     ###!!
+            "button_label": "Move to Archive",             ##!!
         }
 
         return render(request, self.template_name, context)   
@@ -99,6 +99,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
+        ###QUery string
         try:
             query = request.META["QUERY_STRING"]
             if "page=" in query:
@@ -108,23 +109,30 @@ class ArchiveView(LoginRequiredMixin, ListView):
         except:
             query = None
         
+        #Forms 
         clients = ClientFilter()
         clients.form.helper = ClientFilterFormHelper()
         jobs = JobFilter()
         jobs.form.helper = JobFilterFormHelper()
         addresses = AddressFilter()
         addresses.form.helper = AddressFilterFormHelper()
-     
+
+        print(request.GET)
+
         context = {
+            #these are teh filter forms
             "jobs": jobs,
             "clients": clients,
             "addresses": addresses,
+
             "current_clients": None,
             "current_jobs": None,
             "current_addresses": None,
+
             "display_job": "display:none",
             "display_client": "display:none",
             "display_address": "display:none",
+
             "button": False,
             "query": query,
         }

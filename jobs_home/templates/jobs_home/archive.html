@@ -43,120 +43,116 @@ crossorigin="anonymous"></script>
     }
     
 </script>
-
 {% load crispy_forms_tags %}
 {{ form.media }}
 {% endblock %}
 
+
 {% block body %} 
-
-<h1>Archive</h1>
-<br>
-<div class="form-group" label="" id="selector">
-    <label for="sel1">Select list:</label>
-    <select onchange="change_search()" class="form-control" id="select">
-        <option selected>---------- Select a Search Category ----------</option>
-        <option value=0>Job</option>
-        <option value=1>Client</option>
-        <option value=2>Address</option>
-      
-    </select>
-  </div>
-
-<div class="container" id="job-tab" style="{{display_job}}">
-    <h2>Job Search</h2>
+    <!-- Title and selector --->
+    <h1>Archive</h1>
     <br>
-    {% crispy jobs.form jobs.form.helper %}
-    {% if current_jobs %}
-    <br>
-    {% include "jobs_home/tables.html" %}
-    <br>
-    {% endif %}
-</div>
-
-
-<div class="container" id="address-tab" style="{{display_address}}">
-    <h2>Address Search</h2>
-    <br>
-    {% crispy addresses.form addresses.form.helper %}
-    <br>
-    {% if current_address %}
-    <div class="table-responsive">
-    <table class="table table-hover" id="address_table">
-        <thead class="thead">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Address 1</th>
-            <th scope="col">Address 2</th>
-            <th scope="col">City</th>
-            <th scope="col">County</th>
-            <th scope="col">Postcode</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for address in current_addresses %}
-        <tr id="{{address.id}}" onclick="window.open('address/{{address.id}}')">
-            <th scope="row">{{address.id}}</th>
-            <td>{{address.line_one}}</td>
-            <td>{{address.line_two}}</td>
-            <td>{{address.city}}</td>
-            <td>{{address.county}}</td>
-            <td>{{address.postcode}}</td>
-        </tr>
-            {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    </div>
-        {% include 'jobs_home/pagination.html' %}
-        {% endif %}    
-</div>
-
-<div class="container" id="client-tab" style="{{display_client}}">
-    <h2>Client Search</h2>
-    <br>
-
-    {% crispy clients.form clients.form.helper %}
-    <br>
-    {% if current_clients %}
-    <div class="table-responsive">
-    <table class="table table-hover" id="client_table">
-        <thead class="thead">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Number</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for client in current_clients %}
-        <tr id="{{job.id}}" onclick="window.open('client/{{client.id}}')">
-            <th scope="row">{{client.id}}</th>
-            <td>{{client.first}} {{client.last}}</td>
-            <td>{{client.email}}</td>
-            <td>{{client.number}}</td>
-        </tr>
-            {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    </div>
-        {% include 'jobs_home/pagination.html' %}
-    {% endif %}
-    
-</div>
-
-
-
- 
- 
-
-
- 
-
-    
-
+    <div class="form-group" label="" id="selector">
+        <label for="sel1">Select list:</label>
+        <select onchange="change_search()" class="form-control" id="select">
+            <option selected>---------- Select a Search Category ----------</option>
+            <option value=0>Job</option>
+            <option value=1>Client</option>
+            <option value=2>Address</option>
         
+        </select>
+    </div>
+
+    <!-- Job Tab-->
+    <div class="container" id="job-tab" style="{{display_job}}">
+        <h2>Job Search</h2>
+        <br>
+        {% crispy jobs.form jobs.form.helper %}
+
+        <!-- Table -->
+        {% if current_jobs %}
+            <br>
+            {% include "jobs_home/tables.html" %}
+            <br>
+            {% include 'jobs_home/pagination.html' %}
+        {% endif %}
+
+    </div>
+
+
+    <!-- Address Tab -->
+    <div class="container" id="address-tab" style="{{display_address}}">
+        <h2>Address Search</h2>
+        <br>
+        {% crispy addresses.form addresses.form.helper %}
+        <br>
+
+        <!-- Table -->
+        {% if current_address %}
+            <div class="table-responsive">
+                <table class="table table-hover" id="address_table">
+                    <thead class="thead">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Address 1</th>
+                            <th scope="col">Address 2</th>
+                            <th scope="col">City</th>
+                            <th scope="col">County</th>
+                            <th scope="col">Postcode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for address in current_addresses %}
+                            <tr id="{{address.id}}" onclick="window.open('address/{{address.id}}')">
+                                <th scope="row">{{address.id}}</th>
+                                <td>{{address.line_one}}</td>
+                                <td>{{address.line_two}}</td>
+                                <td>{{address.city}}</td>
+                                <td>{{address.county}}</td>
+                                <td>{{address.postcode}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% include 'jobs_home/pagination.html' %}
+        {% endif %}    
+    </div>
+
+    
+    <!-- Client Tab -->
+    <div class="container" id="client-tab" style="{{display_client}}">
+        <h2>Client Search</h2>
+        <br>
+        {% crispy clients.form clients.form.helper %}
+        <br>
+
+        <!-- Table-->
+        {% if current_clients %}
+            <div class="table-responsive">
+                <table class="table table-hover" id="client_table">
+                    <thead class="thead">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in current_clients %}
+                            <tr id="{{job.id}}" onclick="window.open('client/{{client.id}}')">
+                                <th scope="row">{{client.id}}</th>
+                                <td>{{client.first}} {{client.last}}</td>
+                                <td>{{client.email}}</td>
+                                <td>{{client.number}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% include 'jobs_home/pagination.html' %}
+        {% endif %}   
+    </div>
 
 {% endblock %}
