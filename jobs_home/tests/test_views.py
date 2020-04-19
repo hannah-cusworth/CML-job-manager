@@ -1,4 +1,4 @@
-from django.test import Client, TestCase, SimpleTestCase
+from django.test import Client, TestCase, SimpleTestCase, TransactionTestCase
 from jobs_home.views import *
 from django.contrib.auth.models import User
 from jobs_home.forms import *
@@ -111,28 +111,35 @@ class ArchiveViewTest():
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.template)
 
+dataset_size = 20
+
+def create_object_set():
+    address = Address(line_one="foo", city="bar", county="Derby", postcode="baz")
+    person = Person(first="foo", last="bar", email="baz", number="123")
+    address.save()
+    person.save()
+    job = Job(description="foo", client=person, job_address=address, billing_address=address)
+    job.save()
 
 class DetailViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        address = Address(line_one="foo", city="bar", county="Derby", postcode="baz")
-        person = Person(first="foo", last="bar", email="baz", number="123")
-        address.save()
-        person.save()
-        job = Job(description="foo", client=person, job_address=address, billing_address=address)
-        job.save()
+        for i in range(0 ,dataset_size):
+            create_object_set()
+        
+        
        
     def test_data(self):
-        self.assertEqual(Address.objects.get().line_one, "foo")
-        self.assertEqual(Person.objects.get().email, "baz")
-        self.assertEqual(Job.objects.get().client, Person.objects.get())
-
+        self.assertEqual(Job.objects.all().count(), dataset_size)
+        self.assertEqual(Address.objects.all().count(), dataset_size)
+        self.assertEqual(Person.objects.all().count(), dataset_size)
 
 class JobViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
-        self.view = '/job/' + str(Job.objects.get().pk)
-        self.not_found = '/job/' + str(Job.objects.get().pk + 1)
+        self.job_id = Job.objects.first().pk
+        self.view = '/job/' + str(self.job_id)
+        self.not_found = '/job/' + str(Job.objects.last().pk + 1)
         self.template = 'jobs_home/jobs.html'
         log_in(self.client)
         
@@ -144,17 +151,22 @@ class JobViewTest(DetailViewTest):
         self.assertTemplateUsed(response, template_client_card)
         self.assertTemplateUsed(response, template_address_card)
     
-    def test_job_404(self):
+    def test_jobview_404(self):
         response = self.client.get(self.not_found)
-        self.assertEqual(response.status_code, 404)
         self.assertRaisesMessage(Http404, "Job does not exist")
+    
+    def test_jobview_context(self):
+        response = self.client.get(self.view)
+        #self.assertEqual(response.context['job'], Job.objects.get(pk=self.job_id))
+        #self.assert
         
 
 class ClientViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
-        self.view = '/client/' + str(Person.objects.get().pk)
-        self.not_found = '/client/' + str(Person.objects.get().pk + 1)
+        self.client_id = Person.objects.first().pk
+        self.view = '/client/' + str(self.client_id)
+        self.not_found = '/client/' + str(Person.objects.last().pk + 1)
         self.template = 'jobs_home/clients.html'
         log_in(self.client)
     
@@ -165,7 +177,7 @@ class ClientViewTest(DetailViewTest):
         self.assertTemplateUsed(response, template_detail)
         self.assertTemplateUsed(response, template_client_card)
 
-    def test_client_404(self):
+    def test_clientview_404(self):
         response = self.client.get(self.not_found)
         self.assertEqual(response.status_code, 404)
         self.assertRaisesMessage(Http404, "Client does not exist")
@@ -174,8 +186,9 @@ class ClientViewTest(DetailViewTest):
 class AddressViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
-        self.view = '/address/' + str(Address.objects.get().pk)
-        self.not_found = '/address/' + str(Address.objects.get().pk + 1)
+        self.address_id = Address.objects.first().pk
+        self.view = '/address/' + str(self.address_id)
+        self.not_found = '/address/' + str(Address.objects.last().pk + 1)
         self.template = 'jobs_home/address.html'
         log_in(self.client)
     
@@ -186,8 +199,8 @@ class AddressViewTest(DetailViewTest):
         self.assertTemplateUsed(response, template_detail)
         self.assertTemplateUsed(response, template_address_card)
     
-    def test_address_404(self):
+    def test_addressview_404(self):
         response = self.client.get(self.not_found)
         self.assertEqual(response.status_code, 404)
-       
+    
            
