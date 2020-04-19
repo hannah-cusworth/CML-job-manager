@@ -99,7 +99,67 @@ class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
 
     def get(self, request):
-        ###QUery string
+       
+        context = self.get_context()
+
+        if 'client_btn' in request.GET:
+            page_obj = self.filter_client(request)
+            context["client_results"] = page_obj
+
+        if 'address_btn' in request.GET:
+            page_obj = self.filter_address(request)
+            context["address_results"] = page_obj
+
+        if 'job_btn' in request.GET:
+            page_obj = self.filter_job(request)
+            context["job_results"] = page_obj
+
+        context["page_obj"] = page_obj
+    
+        return render(request, self.template_name, context)
+
+           
+    
+    def filter_client(self, request):
+        filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
+        return paginate(filtered.qs,request)
+
+
+    def filter_address(self, request):
+        filtered = AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
+        return paginate(filtered.qs,request)
+        
+
+    def filter_job(self, request):
+        filtered = JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
+        return paginate(filtered.qs,request)
+        
+    def get_context(self):
+        client_search = ClientFilter()
+        client_search.form.helper = ClientFilterFormHelper()
+        job_search = JobFilter()
+        job_search.form.helper = JobFilterFormHelper()
+        address_search = AddressFilter()
+        address_search.form.helper = AddressFilterFormHelper()
+
+        context = {
+            "job_search": job_search,
+            "client_search": client_search,
+            "address_search": address_search,
+            "job_results": None,
+            "address_results": None,
+            "client_results": None,
+        }
+
+        return context
+
+
+
+       
+         
+        ''' #QUery string
+         #"button": False,
+            #"query": query,
         try:
             query = request.META["QUERY_STRING"]
             if "page=" in query:
@@ -107,61 +167,9 @@ class ArchiveView(LoginRequiredMixin, ListView):
                 i -= 1
                 query = query[:i]
         except:
-            query = None
+            query = None '''
         
-        #Forms 
-        clients = ClientFilter()
-        clients.form.helper = ClientFilterFormHelper()
-        jobs = JobFilter()
-        jobs.form.helper = JobFilterFormHelper()
-        addresses = AddressFilter()
-        addresses.form.helper = AddressFilterFormHelper()
 
-        print(request.GET)
-
-        context = {
-            #these are teh filter forms
-            "jobs": jobs,
-            "clients": clients,
-            "addresses": addresses,
-
-            "current_clients": None,
-            "current_jobs": None,
-            "current_addresses": None,
-
-            "display_job": "display:none",
-            "display_client": "display:none",
-            "display_address": "display:none",
-
-            "button": False,
-            "query": query,
-        }
-    #rm first if
-        if 'client_btn' in request.GET:
-            filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
-            page_obj = paginate(filtered.qs,request)
-            context["current_clients"] = page_obj
-            context["display_client"] = "display:block"
-
-  
-        elif 'job_btn' in request.GET:
-            filtered = JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
-            page_obj = paginate(filtered.qs,request)
-            context["current_jobs"] = page_obj
-            context["display_job"] = "display:block"
-           
-        elif 'address_btn' in request.GET:
-            filtered = AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
-            page_obj = paginate(filtered.qs,request)
-            context["current_addresses"] = page_obj
-            context["display_address"] = "display:block"
-        else: 
-            context["display_job"] = "display:block"
-            page_obj = None
-        
-        context["page_obj"] = page_obj
-
-        return render(request, self.template_name, context)
     
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"

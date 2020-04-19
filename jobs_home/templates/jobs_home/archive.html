@@ -64,31 +64,30 @@ crossorigin="anonymous"></script>
     </div>
 
     <!-- Job Tab-->
-    <div class="container" id="job-tab" style="{{display_job}}">
+    <div class="container" id="job-tab" {% if job_results %} style="display:block" {% endif %}>
         <h2>Job Search</h2>
         <br>
-        {% crispy jobs.form jobs.form.helper %}
+        {% crispy job_search.form job_search.form.helper %}
 
         <!-- Table -->
-        {% if current_jobs %}
+        {% if job_results %}
             <br>
             {% include "jobs_home/tables.html" %}
             <br>
-            {% include 'jobs_home/pagination.html' %}
         {% endif %}
 
     </div>
 
 
     <!-- Address Tab -->
-    <div class="container" id="address-tab" style="{{display_address}}">
+    <div class="container" id="address-tab" {% if address_results %} style="display:block" {% endif %}>
         <h2>Address Search</h2>
         <br>
-        {% crispy addresses.form addresses.form.helper %}
+        {% crispy address_search.form address_search.form.helper %}
         <br>
 
         <!-- Table -->
-        {% if current_address %}
+        {% if address_results %}
             <div class="table-responsive">
                 <table class="table table-hover" id="address_table">
                     <thead class="thead">
@@ -102,7 +101,7 @@ crossorigin="anonymous"></script>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for address in current_addresses %}
+                        {% for address in address_results %}
                             <tr id="{{address.id}}" onclick="window.open('address/{{address.id}}')">
                                 <th scope="row">{{address.id}}</th>
                                 <td>{{address.line_one}}</td>
@@ -121,14 +120,14 @@ crossorigin="anonymous"></script>
 
     
     <!-- Client Tab -->
-    <div class="container" id="client-tab" style="{{display_client}}">
+    <div class="container" id="client-tab" {% if client_results %} style="display:block" {% endif %}>
         <h2>Client Search</h2>
         <br>
-        {% crispy clients.form clients.form.helper %}
+        {% crispy client_search.form client_search.form.helper %}
         <br>
 
         <!-- Table-->
-        {% if current_clients %}
+        {% if client_results %}
             <div class="table-responsive">
                 <table class="table table-hover" id="client_table">
                     <thead class="thead">
@@ -140,7 +139,7 @@ crossorigin="anonymous"></script>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for client in current_clients %}
+                        {% for client in client_results %}
                             <tr id="{{job.id}}" onclick="window.open('client/{{client.id}}')">
                                 <th scope="row">{{client.id}}</th>
                                 <td>{{client.first}} {{client.last}}</td>

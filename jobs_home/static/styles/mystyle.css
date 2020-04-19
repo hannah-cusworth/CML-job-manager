@@ -3,6 +3,10 @@
     width:1100px;
 }
 
+#job-tab, #address-tab, #client-tab{
+    display: none;
+}
+
 .alert{
     margin:auto;
     width: 230px;
