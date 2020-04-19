@@ -49,7 +49,7 @@ class InboxView(LoginRequiredMixin, TemplateView):
         page_obj = paginate(current_jobs, request)
 
         context = {
-            "current_jobs": page_obj,
+            "job_results": page_obj,
             "page_obj": page_obj, 
             "include_button": True,                 ###???
             "button_label": "Move to Current"       ### move this      
@@ -76,7 +76,7 @@ class CurrentView(LoginRequiredMixin, ListView):
         page_obj = paginate(current_jobs, request)
 
         context = {
-            "page_obj": page_obj,
+            "job_results": page_obj,
             "current_jobs": page_obj,
             "include_button": True,                     ###!!
             "button_label": "Move to Archive",             ##!!

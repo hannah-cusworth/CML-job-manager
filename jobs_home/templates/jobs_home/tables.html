@@ -15,7 +15,7 @@
     </tr>
     </thead>
     <tbody>
-        {% for job in current_jobs %}
+        {% for job in job_results %}
     <tr id="{{job.id}}" onclick="window.open('job/{{job.id}}')">
         <th scope="row">{{job.id}}</th>
         <td>{{job.client.first}} {{job.client.last}}</td>
@@ -30,7 +30,8 @@
         </tr>
         </tbody>
     </table>
-</div> 
+</div>
+<br>
     {% include 'jobs_home/pagination.html' %}
   
 
