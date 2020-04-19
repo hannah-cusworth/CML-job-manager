@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.validators import validate_email
 from phonenumber_field.modelfields import PhoneNumberField
 from localflavor.gb.forms import GB_REGION_CHOICES
-from .validators import validate_alpha
+
 
 class Address(models.Model):
     address_type_choices = [
@@ -34,11 +34,11 @@ class Address(models.Model):
 class Person(models.Model):
     first = models.CharField(
         max_length=64,
-        validators=[validate_alpha],
+        validators=[],
         )
     last = models.CharField(
         max_length=64,
-        validators=[validate_alpha],
+        validators=[],
         )
     email = models.EmailField(
         max_length=64, 

@@ -92,11 +92,5 @@ class ClientFormTest(SimpleTestCase):
         form = self.create_client_form(number="123")
         self.assertFalse(form.is_valid())
 
-    def test_first_alpha(self):
-        form = self.create_client_form(first="123")
-        self.assertFalse(form.is_valid())
-
-    def test_last_alpha(self):
-        form = self.create_client_form(last="123")
-        self.assertFalse(form.is_valid())
+   
 
