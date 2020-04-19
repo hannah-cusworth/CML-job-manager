@@ -112,19 +112,26 @@ class ArchiveViewTest():
         self.assertTemplateUsed(response, self.template)
 
 class DetailViewTest(TestCase):
-    def setUpDatabase():
+    @classmethod
+    def setUpTestData(cls):
         address = Address(line_one="foo", city="bar", county="Derby", postcode="baz")
         person = Person(first="foo", last="bar", email="baz", number="123")
         address.save()
         person.save()
-        job = Job(description="foo", client=client, job_address=address, billing_address=address)
+        job = Job(description="foo", client=person, job_address=address, billing_address=address)
         job.save()
+    
+    def test_data(self):
+        self.assertEqual(Address.objects.get().line_one, "foo")
+        self.assertEqual(Person.objects.get().email, "baz")
+        self.assertEqual(Job.objects.get().client, Person.objects.get())
+
 
 class JobViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
-        self.view = '/job/' + Job.objects.get().pk
-        self.tempate = 'jobs_home/jobs.html'
+        self.view = '/job/' + str(Job.objects.get().pk)
+        self.template = 'jobs_home/jobs.html'
         log_in(self.client)
         
     def test_jobview_get_status(self):
