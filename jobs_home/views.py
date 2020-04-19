@@ -101,37 +101,42 @@ class ArchiveView(LoginRequiredMixin, ListView):
     def get(self, request):
        
         context = self.get_context()
+    
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
 
-        if 'client_btn' in request.GET:
+        context = self.get_context()
+
+        if 'client_btn' in request.POST:
             page_obj = self.filter_client(request)
             context["client_results"] = page_obj
 
-        if 'address_btn' in request.GET:
+        if 'address_btn' in request.POST:
             page_obj = self.filter_address(request)
             context["address_results"] = page_obj
 
-        if 'job_btn' in request.GET:
+        if 'job_btn' in request.POST:
             page_obj = self.filter_job(request)
             context["job_results"] = page_obj
 
         context["page_obj"] = page_obj
-    
-        return render(request, self.template_name, context)
 
+        return render(request, self.template_name, context)
            
     
     def filter_client(self, request):
-        filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
+        filtered = ClientFilter(request.POST, queryset=Person.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
 
 
     def filter_address(self, request):
-        filtered = AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
+        filtered = AddressFilter(request.POST, queryset=Address.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
         
 
     def filter_job(self, request):
-        filtered = JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
+        filtered = JobFilter(request.POST, queryset=Job.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
         
     def get_context(self):
