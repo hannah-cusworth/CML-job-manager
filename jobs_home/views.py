@@ -178,10 +178,10 @@ class JobView(LoginRequiredMixin, TemplateView):
         
         for column in keys:
     
-            if column != "card":
-                setattr(job, column, post[column])
-                job.save()
-               
+            #if column != "card":
+            setattr(job, column, post[column])
+            job.save()
+        
         
         return render(request, self.template_name)
 
@@ -223,7 +223,7 @@ class AddressView(LoginRequiredMixin, TemplateView):
                 setattr(address, column, post[column])
                 address.save()
         
-        return render(request, self.template_name, context)
+        return render(request, self.template_name,)
 
 class ClientView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/clients.html"
@@ -258,11 +258,8 @@ class ClientView(LoginRequiredMixin, TemplateView):
         for column in keys:
     
             if column != "card":
-                print(post[column])
-                try:
-                    post[colum].strip("&nbsp;") #contenteditable spaces are different
-                except:
-                    print(bob)
+                
+                post[column].strip("&nbsp;") #contenteditable spaces are different
                 setattr(client, column, post[column])
                 client.save()
 

@@ -159,11 +159,26 @@ class JobViewTest(DetailViewTest):
         self.assertEqual(response.status_code, 404)
         #nb assertRaiseError can't be used to test 404 error
     
-    def test_jobview_context(self):
+    def test_jobview_get_context(self):
         response = self.client.get(self.view)
         self.assertEqual(response.context['job'], self.job)
         self.assertEqual(response.context['address'], Address.objects.get(pk=self.job.job_address_id))
         self.assertEqual(response.context['client'], Person.objects.get(pk=self.job.client_id))
+    
+    def test_jobview_post_status(self):
+        response = self.client.post(self.view)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, self.template)
+        self.assertTemplateUsed(response, template_detail)
+        self.assertTemplateUsed(response, template_client_card)
+        self.assertTemplateUsed(response, template_address_card)
+    
+    def test_jobview_post_edit(self):
+        new_text = "edit"
+        response = self.client.post(self.view, data={'description': new_text})
+        self.job.refresh_from_db()          #NB you have to refresh, v imp
+        self.assertEqual(self.job.description, new_text)
+        
         
 
 class ClientViewTest(DetailViewTest):
@@ -193,6 +208,12 @@ class ClientViewTest(DetailViewTest):
         self.assertQuerysetEqual(response.context['related'].order_by('id'), self.person.address.all().order_by('id'), transform= lambda x:x)
         self.assertQuerysetEqual(response.context['jobs'].order_by('id'), Job.objects.filter(client_id = self.person.pk).order_by('id'), transform= lambda x: x)
 
+    def test_clientview_post_edit(self):
+        new_text = "edit"
+        response = self.client.post(self.view, data={'first': new_text})
+        self.person.refresh_from_db()          
+        self.assertEqual(self.person.first, new_text)
+
 class AddressViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
@@ -220,5 +241,11 @@ class AddressViewTest(DetailViewTest):
         #by default transforms first item to a str using repr(). Overriden this with lambda so that it will literally compare the qs
         self.assertQuerysetEqual(response.context['related'], self.address.client.all().order_by('pk'), transform=lambda x: x)
         self.assertQuerysetEqual(response.context['jobs'].order_by('pk'), Job.objects.filter(job_address=self.address_id).order_by('pk'), transform=lambda x:x)
+    
+    def test_addressview_post_edit(self):
+        new_text = "edit"
+        response = self.client.post(self.view, data={'line_one': new_text})
+        self.address.refresh_from_db()          #NB you have to refresh, v imp
+        self.assertEqual(self.address.line_one, new_text)
     
            
