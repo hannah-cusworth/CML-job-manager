@@ -11,8 +11,7 @@ class LoginForm(forms.Form):
 class ClientFilterFormHelper(FormHelper):
     form_method="GET"
     form_id="client_form"
-   
-
+    
     layout = Layout(
         Row(
             Column('first', css_class="form-group col-md-6 mb-0"),
@@ -53,6 +52,7 @@ class AddressFilterFormHelper(FormHelper):
     labels={
         "line_one": "Address 1",
     }
+    
     layout = Layout(
         Row(
             Column('line_one', css_class="form-group col-md-6 mb-0"),

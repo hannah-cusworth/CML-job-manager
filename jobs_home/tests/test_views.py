@@ -15,6 +15,12 @@ template_detail = 'jobs_home/details.html'
 
 #by default transforms first item to a str using repr(). Overriden this with lambda so that it will literally compare the qs
 no_transform = lambda x:x
+dataset_size = 20
+
+def log_in(client): 
+    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    client.force_login(user)
+
 
 class CreateData():
 
@@ -53,6 +59,21 @@ class CreateData():
         object_set["job_2"]  = Job(description="job_2", client=object_set["person"], job_address=object_set["address"], billing_address=object_set["address"])
         object_set["job_2"].save()
         return object_set
+    
+    def create_object_set_jobfilter_clientname():
+        attributes = ["first", "last"]
+        for attribute in attributes:
+            object_set = CreateData.create_object_set()
+            setattr(object_set["person"], attribute, "qwerty")
+            object_set["person"].save()
+    
+    def create_object_set_jobfilter_addressdetails():
+        attributes = ["line_one", "city", "county", "postcode"]
+        for attribute in attributes:
+            object_set = CreateData.create_object_set()
+            setattr(object_set["address"], attribute, "qwerty")
+            object_set["address"].save()
+        
 
 
 class LoginViewTest(TestCase):
@@ -98,21 +119,17 @@ class LoginViewTest(TestCase):
     
     ##make sure to test detail views authentication######
 
-def log_in(client): 
-    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-    client.force_login(user)
-def check_templates(self, response):
-        self.assertTemplateUsed(response, self.template)
-        self.assertTemplateUsed(response, template_base)
-        self.assertTemplateUsed(response, template_pagination)
-        self.assertTemplateUsed(response, template_tables)
-
 class ListViewTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
             CreateData.create_object_set()
-
+    
+    def check_templates(self, response):
+        self.assertTemplateUsed(response, self.template)
+        self.assertTemplateUsed(response, template_base)
+        self.assertTemplateUsed(response, template_pagination)
+        self.assertTemplateUsed(response, template_tables)
 
 class InboxViewTest(ListViewTest):
     def setUp(self):
@@ -126,7 +143,7 @@ class InboxViewTest(ListViewTest):
     def test_inboxview_get_status(self):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
-        check_templates(self, response)
+        self.check_templates(response)
     
     def test_inboxview_get_context(self):
         response = self.client.get(self.view)
@@ -135,13 +152,12 @@ class InboxViewTest(ListViewTest):
     def test_inboxview_post_status(self):
         response = self.client.post(self.view)
         self.assertEqual(response.status_code, 200)
-        check_templates(self, response)
+        self.check_templates(response)
 
     def test_inboxview_post_changejobstatus(self):
         response = self.client.post(self.view, data={"id": self.job_id})
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, "CU")
-
 
 class CurrentViewTest(ListViewTest):
     def setUp(self):
@@ -155,7 +171,7 @@ class CurrentViewTest(ListViewTest):
     def test_loginview_get_status(self):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
-        check_templates(self, response)
+        self.check_templates(response)
     
     def test_currentview_get_context(self):
         response = self.client.get(self.view)
@@ -164,7 +180,7 @@ class CurrentViewTest(ListViewTest):
     def test_currentview_post_status(self):
         response = self.client.post(self.view)
         self.assertEqual(response.status_code, 200)
-        check_templates(self, response)
+        self.check_templates(response)
 
     def test_currentview_post_changejobstatus(self):
         response = self.client.post(self.view, data={"id": self.job_id})
@@ -185,25 +201,12 @@ class ArchiveViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.template)
     
-    def test_archiveview_get_context(self):
+    '''def test_archiveview_get_context(self):
         context = ArchiveView.get_context(self)
         self.assertIsInstance(context["job_search"], JobFilter)
         self.assertEqual(context["address_search"], AddressFilter)
-        self.assertEqual(context["client_search"], ClientFilter)
+        self.assertEqual(context["client_search"], ClientFilter)'''
     
-    
-
-
-
-
-
-
-
-
-
-dataset_size = 20
-
-
 
 
 class DetailViewTest(TestCase):
@@ -310,7 +313,7 @@ class ClientViewTest(DetailViewTest):
         client_id = object_set["person"].pk
         response = self.client.get("/client/" + str(client_id))
         self.assertQuerysetEqual(response.context['related'].order_by('pk'), Address.objects.filter(client=client_id).order_by('pk'), transform=no_transform)
-    
+
     def test_clientview_post_status(self):
         response = self.client.post(self.view)
         self.assertEqual(response.status_code, 200)
@@ -321,6 +324,7 @@ class ClientViewTest(DetailViewTest):
         response = self.client.post(self.view, data={'first': new_text})
         self.person.refresh_from_db()          
         self.assertEqual(self.person.first, new_text)
+    
 
 class AddressViewTest(DetailViewTest):
     def setUp(self):
