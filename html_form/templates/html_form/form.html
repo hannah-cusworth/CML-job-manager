@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-    <head>
-        <title>New Form</title>
-        {% load static %}
-        {% load crispy_forms_tags %}
-        <link rel="stylesheet" href="{% static 'form_style/mystyle.css'%}?{% now 'u' %}">
-        <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-     </head>
-     <body id="formBody" onload=hide_checkbox()>
+{% extends "html_form/base.html" %}
+
+{% block body %}
+    {% load crispy_forms_tags %}
+     <body onload=hide_checkbox()>
         <div class="container">
-            <h1>Cusworth Master Locksmiths Form</h1>
-            
+            <h1>Cusworth Master Locksmiths</h1>
+            <br>
             <form  method="post">
                 {% csrf_token %}
                 <h2>Contact Information</h2>
@@ -25,57 +20,13 @@
                     <label>Is your billing address the same as the job address?</label>
                 </div>
                 <div id="billing_address_form">
-                {% crispy billingaddress %}
+                    {% crispy billingaddress %}
                 </div>
-                
                 <br>
                 <button type="submit" name="submit" class="btn btn-primary" id='submit'>Submit</button>
             </form>
         </div>
-       
-        <script>
-            function hide_checkbox(){
-                var check_div = document.getElementById("checkbox");
-                var check = document.getElementById("billing_address_select");
-                var header = document.getElementById("billing_header");
-                var status = "{{billing_status}}";
-                
-                if (status != "unbound"){
-                    check_div.style.display = "none";
-                }
-                if (status == "unused"){
-                    header.style.display = "none";
-                    check.checked = true;
-                    
-                }
-                display_billing()
-            }
-             
-            function display_billing(){
-                var check = document.getElementById("billing_address_select");
-                var billing = document.getElementById("billing_address_form");
-                if (check.checked == false){
-                    billing.style.display = "block";
-                    
-                    document.getElementById("id_billing-line_one").required = true;
-                    document.getElementById("id_billing-city").required = true;
-                    document.getElementById("id_billing-county").required = true;
-                    document.getElementById("id_billing-postcode").required = true;
-                    
-                }
-                else {
-                    billing.style.display = "none";
-                    
-                    document.getElementById("id_billing-line_one").required = false;
-                    document.getElementById("id_billing-city").required = false;
-                    document.getElementById("id_billing-county").required = false;
-                    document.getElementById("id_billing-postcode").required = false;
-                }
-            }
-        </script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-
-    </body>
+    <body>
+{% endblock %}
+    
      

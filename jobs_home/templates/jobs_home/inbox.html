@@ -1,32 +1,30 @@
 {% extends "jobs_home/base.html" %}
 
-{% block title %}
-Inbox
-{% endblock %}
+    {% block title %}
+        Inbox
+    {% endblock %}
+    {% block script %}
+        <script>
+            function change_status(idnum)
+            {
+                event.stopPropagation();
+                var info = {"idnum": idnum};
+                var row = document.getElementById(idnum);
+                row.style.display = "none";
+                
+                $.ajax(
+                        {
+                            url: "inbox",
+                            type: "post",
+                            data: info,
+                            headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                        });
+            }
+        </script>
+    {% endblock %}
 
-
-{% block script %}
-
-<script>  
-    function change_status(id)
-        {
-            event.stopPropagation();
-            var row = document.getElementById(id);
-            row.style.display = "none";
-            $.ajax(
-                    {
-                        url: "inbox",
-                        type: "post",
-                        data: {"id": id},
-                        headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
-                    });
-        }
-</script>
-{% endblock %}
-
-{% block body %} 
-    <h1 id=header>Inbox</h1>
-    <br>
-    {% include "jobs_home/tables.html" %}
-
-{% endblock %}
+    {% block body %} 
+        <h1 id=header>Inbox</h1><br>
+        {% include "jobs_home/tables.html" %}
+        <span id="url" style="display:none">{{ request.path }}</span>
+    {% endblock %}

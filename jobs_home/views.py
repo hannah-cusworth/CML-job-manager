@@ -15,6 +15,11 @@ def logout_view(request):
     logout(request)
     return redirect("/login")
 
+def paginate(item, request):
+    paginator = Paginator(item, 10) 
+    page_number = request.GET.get('page')
+    return paginator.get_page(page_number)
+
 
 class LoginView(TemplateView):
     template_name = "jobs_home/login.html"
@@ -163,9 +168,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
             return query
         except:
             return None
-        
-
-    
+            
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"
     
@@ -271,7 +274,4 @@ class ClientView(LoginRequiredMixin, TemplateView):
 
         return render(request, self.template_name)
 
-def paginate(item, request):
-    paginator = Paginator(item, 10) 
-    page_number = request.GET.get('page')
-    return paginator.get_page(page_number)
+

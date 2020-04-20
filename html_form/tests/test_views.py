@@ -44,15 +44,16 @@ class FormViewTest(TestCase):
         self.view = '/form/new/'
         self.form = 'html_form/form.html'
         self.success = 'html_form/success.html'
+        self.base = 'html_form/base.html'
         self.person = Person.objects.all()
         self.addresses = Address.objects.all()
         self.job = Job.objects.all()
         
-
     def test_formview_get_status(self):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.form)
+        self.assertTemplateUsed(response, self.base)
         check_context(self, response.context, 'jobaddress', 'billingaddress', 'client', 'job', 'billing_status')
 
     def test_formview_post_status(self):

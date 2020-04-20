@@ -21,7 +21,6 @@ def log_in(client):
     user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
     client.force_login(user)
 
-
 class CreateData():
 
     def create_object_set():
@@ -187,7 +186,6 @@ class CurrentViewTest(ListViewTest):
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, "AR")
 
-
 class ArchiveViewTest(TestCase):
 
     def setUp(self):
@@ -271,7 +269,6 @@ class JobViewTest(DetailViewTest):
         self.job.refresh_from_db()          #NB you have to refresh, v imp
         self.assertEqual(self.job.description, new_text)
          
-
 class ClientViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
@@ -325,7 +322,6 @@ class ClientViewTest(DetailViewTest):
         self.person.refresh_from_db()          
         self.assertEqual(self.person.first, new_text)
     
-
 class AddressViewTest(DetailViewTest):
     def setUp(self):
         self.client = Client()
@@ -379,4 +375,7 @@ class AddressViewTest(DetailViewTest):
         self.address.refresh_from_db()          #NB you have to refresh, v imp
         self.assertEqual(self.address.line_one, new_text)
     
-           
+'''class PaginationTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):'''
+        

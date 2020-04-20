@@ -1,38 +1,34 @@
 {% extends "jobs_home/base.html" %}
 
+    {% block title %}
+        Current Jobs
+    {% endblock %}
 
-{% block title %}
-Current Jobs
-{% endblock %}
-{% block script %}
+    {% block script %}
+        <script>
+            function change_status(idnum)
+            {
+                event.stopPropagation();
+                var info = {"idnum": idnum};
+                var row = document.getElementById(idnum);
+                row.style.display = "none";
+                
+                $.ajax(
+                        {
+                            url: "",
+                            type: "post",
+                            data: info,
+                            headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                        });
+            }
+        </script>
+    {% endblock %}
 
-<script> 
-    function change_status(idnum)
-        {
-            event.stopPropagation();
-            var info = {"idnum": idnum};
-            var row = document.getElementById(idnum);
-            row.style.display = "none";
-            $.ajax(
-                    {
-                        url: "",
-                        type: "post",
-                        data: info,
-                        headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
-                    });
-        }
-</script>
-{% endblock %}
-
-{% block body %}
-
-<h1>Current Jobs</h1>
-<br>
-{% include "jobs_home/tables.html" %}
-
-
-
-{% endblock %}
+    {% block body %}
+        <h1>Current Jobs</h1><br>
+        {% include "jobs_home/tables.html" %}
+        <span id="url" style="display:none">{{ request.path }}</span>
+    {% endblock %}
 
 
 
