@@ -5,23 +5,21 @@
     {% endblock %}
 
     {% block script %}
-        <script>
-            function change_status(idnum)
+    <script>  
+        function change_status(id)
             {
                 event.stopPropagation();
-                var info = {"idnum": idnum};
-                var row = document.getElementById(idnum);
+                var row = document.getElementById(id);
                 row.style.display = "none";
-                
                 $.ajax(
                         {
                             url: "",
                             type: "post",
-                            data: info,
+                            data: {"id": id},
                             headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
                         });
             }
-        </script>
+    </script>
     {% endblock %}
 
     {% block body %}
