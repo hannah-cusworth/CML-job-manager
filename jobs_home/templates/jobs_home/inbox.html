@@ -5,7 +5,7 @@
     {% endblock %}
     {% block script %}
     <script>  
-        function change_status(id)
+        function change_status(id, status)
             {
                 event.stopPropagation();
                 var row = document.getElementById(id);
@@ -14,7 +14,7 @@
                         {
                             url: "inbox",
                             type: "post",
-                            data: {"id": id},
+                            data: {"id": id, "status": status},
                             headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
                         });
             }

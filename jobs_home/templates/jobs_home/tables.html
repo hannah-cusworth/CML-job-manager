@@ -23,8 +23,13 @@
         <td>{{job.description}}</td>
         <td>{{job.creation_date}}</td>
         {% if include_button %}
-        <td> <button class="btn btn-warning" onclick="change_status('{{job.id}}')">{{button_label}}</button></td>
+            <td> 
+                <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 1)">{{button_label_one}}</button>
+                <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">{{button_label_two}}</button>
+            </td>
+            
         {% endif %}
+        
     </tr>
         {% endfor %}
         </tr>

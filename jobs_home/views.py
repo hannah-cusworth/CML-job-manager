@@ -56,21 +56,31 @@ class InboxView(LoginRequiredMixin, TemplateView):
         context = {
             "job_results": page_obj,
             "page_obj": page_obj, 
-            "include_button": True,                 ###???
-            "button_label": "Move to Current"       ### move this      
+            "include_button": True,                       ###???
+            "button_label_one": "Move to Current",       ### move this 
+            "button_label_two": "Delete",    
         }
 
         return render(request, self.template_name, context)
 
     def post(self, request):
         id_num = request.POST.get("id")
-        try:
-            job = Job.objects.get(pk=id_num)
-            job.status="CU"
-            job.save()
-        except:
-            pass
+        status = request.POST.get("status")
         
+        # Move to Current
+        if int(status) == 1:
+            try:
+                job = Job.objects.get(pk=id_num)
+                job.status="CU"
+                job.save()
+            except:
+                pass
+        # Delete Job
+        if int(status) == 2:
+            pass
+            #try:
+             #   job = Job.objects.get(pk=id_num)
+
         return render(request, self.template_name)
 
 class CurrentView(LoginRequiredMixin, ListView):
@@ -84,20 +94,32 @@ class CurrentView(LoginRequiredMixin, ListView):
             "job_results": page_obj,
             "current_jobs": page_obj,
             "include_button": True,                     ###!!
-            "button_label": "Move to Archive",             ##!!
+            "button_label_one": "Move to Archive",             ##!!
+            "button_label_two": "Move to Inbox"
         }
 
         return render(request, self.template_name, context)   
     
     def post(self, request):
         id_num = request.POST.get("id")
-        try:
-            job = Job.objects.get(pk=id_num)
-            job.status="AR"
-            job.save()
-        except:
-            pass
-        
+        status = request.POST.get("status")
+        # Move to Archive
+        if int(status) == 1:
+            try:
+                job = Job.objects.get(pk=id_num)
+                job.status="AR"
+                job.save()
+            except:
+                pass
+        # Move to Inbox
+        if int(status) == 2:
+            try:
+                job = Job.objects.get(pk=id_num)
+                job.status="IN"
+                job.save()
+            except:
+               pass
+
         return render(request, self.template_name)
 
 class ArchiveView(LoginRequiredMixin, ListView):
