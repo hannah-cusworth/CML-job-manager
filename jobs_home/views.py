@@ -56,7 +56,6 @@ class InboxView(LoginRequiredMixin, TemplateView):
         context = {
             "job_results": page_obj,
             "page_obj": page_obj, 
-            "include_button": True,                       ###???
             "button_label_one": "Move to Current",       ### move this 
             "button_label_two": "Delete",    
         }
@@ -92,8 +91,7 @@ class CurrentView(LoginRequiredMixin, ListView):
 
         context = {
             "job_results": page_obj,
-            "current_jobs": page_obj,
-            "include_button": True,                     ###!!
+            "current_jobs": page_obj,                    
             "button_label_one": "Move to Archive",             ##!!
             "button_label_two": "Move to Inbox"
         }
@@ -176,6 +174,8 @@ class ArchiveView(LoginRequiredMixin, ListView):
             "job_search": job_search,
             "client_search": client_search,
             "address_search": address_search,
+            "button_label_one": "Move to Current",             ##!!
+            "button_label_two": "Move to Inbox"
         }
 
         return context
@@ -190,6 +190,25 @@ class ArchiveView(LoginRequiredMixin, ListView):
             return query
         except:
             return None
+    
+    def post(self, request):
+        id_num = request.POST.get("id")
+        status = request.POST.get("status")
+        # Move to Current
+        if int(status) == 1:
+            try:
+                job = Job.objects.get(pk=id_num)
+                job.status="CU"
+                job.save()
+            except:
+                pass
+        # Delete
+        if int(status) == 2:
+            pass
+            #try:
+             #   job = Job.objects.get(pk=id_num)
+
+        return render(request, self.template_name)
             
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"

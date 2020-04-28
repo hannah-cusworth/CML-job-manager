@@ -39,8 +39,24 @@ crossorigin="anonymous"></script>
             client.style.display = "none"
         }
 
-        return selected  
+        return selected 
     }
+          
+    function change_status(id, status)
+        {
+            event.stopPropagation();
+            var row = document.getElementById(id);
+            row.style.display = "none";
+            $.ajax(
+                    {
+                        url: "",
+                        type: "post",
+                        data: {"id": id, "status": status},
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                    });
+        }
+    
+    
     
 </script>
 {% load crispy_forms_tags %}

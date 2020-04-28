@@ -9,9 +9,7 @@
         <th scope="col">Address</th>
         <th scope="col" width="50%" >Description</th>
         <th scope="col">Creation</th>
-        {% if include_button %}
         <th scope="col"></th>
-        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -22,14 +20,10 @@
         <td>{{job.job_address.postcode}}</td>
         <td>{{job.description}}</td>
         <td>{{job.creation_date}}</td>
-        {% if include_button %}
             <td> 
                 <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 1)">{{button_label_one}}</button>
                 <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">{{button_label_two}}</button>
-            </td>
-            
-        {% endif %}
-        
+            </td>  
     </tr>
         {% endfor %}
         </tr>
