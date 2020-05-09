@@ -1,3 +1,9 @@
+#home_link {
+    float: left;
+    padding: 30px;
+}
+
+
 .button_column{
     background-color: white;
 }

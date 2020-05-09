@@ -123,7 +123,7 @@ crossorigin="anonymous"></script>
                     </thead>
                     <tbody>
                         {% for address in address_results %}
-                            <tr id="{{address.id}}" onclick="window.open('address/{{address.id}}')">
+                            <tr id="{{address.id}}" onclick="location.href ='address/{{address.id}}'">
                                 <th scope="row">{{address.id}}</th>
                                 <td>{{address.line_one}}</td>
                                 <td>{{address.line_two}}</td>
@@ -163,7 +163,7 @@ crossorigin="anonymous"></script>
                     </thead>
                     <tbody>
                         {% for client in client_results %}
-                            <tr id="{{job.id}}" onclick="window.open('client/{{client.id}}')">
+                            <tr id="{{job.id}}" onclick="location.href = 'client/{{client.id}}'">
                                 <th scope="row">{{client.id}}</th>
                                 <td>{{client.first}} {{client.last}}</td>
                                 <td>{{client.email}}</td>
