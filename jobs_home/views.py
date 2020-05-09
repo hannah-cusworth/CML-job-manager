@@ -56,7 +56,7 @@ class InboxView(LoginRequiredMixin, TemplateView):
         context = {
             "job_results": page_obj,
             "page_obj": page_obj, 
-            "button_label_one": "Move to Current",       ### move this 
+            "button_label_one": "Move to Current",       
             "button_label_two": "Delete",    
         }
 
@@ -67,18 +67,18 @@ class InboxView(LoginRequiredMixin, TemplateView):
         status = request.POST.get("status")
         
         # Move to Current
+        try: 
+            job = Job.objects.get(pk=id_num)
+        except:
+            return render(request, self.template_name)
+
         if int(status) == 1:
-            try:
-                job = Job.objects.get(pk=id_num)
-                job.status="CU"
-                job.save()
-            except:
-                pass
+            job.status="CU"
+            job.save()
+    
         # Delete Job
         if int(status) == 2:
-            pass
-            #try:
-             #   job = Job.objects.get(pk=id_num)
+            job.delete()
 
         return render(request, self.template_name)
 
@@ -92,7 +92,7 @@ class CurrentView(LoginRequiredMixin, ListView):
         context = {
             "job_results": page_obj,
             "current_jobs": page_obj,                    
-            "button_label_one": "Move to Archive",             ##!!
+            "button_label_one": "Move to Archive",            
             "button_label_two": "Move to Inbox"
         }
 

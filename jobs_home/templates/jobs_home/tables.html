@@ -14,15 +14,20 @@
     </thead>
     <tbody>
         {% for job in job_results %}
-    <tr id="{{job.id}}" onclick="window.open('job/{{job.id}}')">
+    <tr id="{{job.id}}" >
         <th scope="row">{{job.id}}</th>
-        <td>{{job.client.first}} {{job.client.last}}</td>
-        <td>{{job.job_address.postcode}}</td>
-        <td>{{job.description}}</td>
-        <td>{{job.creation_date}}</td>
-            <td> 
+            <td onclick="location.href ='job/{{job.id}}'">{{job.client.first}} {{job.client.last}}</td>
+            <td onclick="location.href ='job/{{job.id}}'">{{job.job_address.postcode}}</td>
+            <td onclick="location.href ='job/{{job.id}}'">{{job.description}}</td>
+            <td onclick="location.href ='job/{{job.id}}'">{{job.creation_date}}</td>
+        
+            <td class="button_column"> 
                 <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 1)">{{button_label_one}}</button>
-                <button {% if 'Delete' == button_label_two %}id="danger"{% endif %}class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">{{button_label_two}}</button>
+                {% if 'Delete' == button_label_two %}
+            <button class="btn btn-danger table-btn"  data-toggle="modal" data-target="#delete_modal" onclick="pass_id('{{job.id}}')">{{button_label_two}}</button>
+                {% else %}
+                    <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">{{button_label_two}}</button>
+                {% endif %}
             </td>  
     </tr>
         {% endfor %}

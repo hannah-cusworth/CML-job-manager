@@ -1,7 +1,5 @@
-#danger{
-    background-color: red;
-    color: white;
-    height:35px;
+.button_column{
+    background-color: white;
 }
 
 #job-tab, #address-tab, #client-tab{
