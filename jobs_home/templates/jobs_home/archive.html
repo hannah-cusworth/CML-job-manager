@@ -68,8 +68,11 @@ crossorigin="anonymous"></script>
     <!-- Title and selector --->
     <h1>Archive</h1>
     <br>
+    {% if not page_obj and query %}
+        <p class="no_results">Your search has returned no results.</p>
+    {% endif %}
     <div class="form-group" label="" id="selector">
-        <label for="sel1">Select list:</label>
+        <label for="sel1">To search, please select a category:</label>
         <select onchange="change_search()" class="form-control" id="select">
             <option selected>---------- Select a Search Category ----------</option>
             <option value=0>Job</option>
@@ -83,6 +86,7 @@ crossorigin="anonymous"></script>
     <div class="container" id="job-tab" {% if job_results %} style="display:block" {% endif %}>
         <h2>Job Search</h2>
         <br>
+
         {% crispy job_search.form job_search.form.helper %}
 
         <!-- Table -->
@@ -103,6 +107,7 @@ crossorigin="anonymous"></script>
         <br>
 
         <!-- Table -->
+
         {% if address_results %}
             <div class="table-responsive">
                 <table class="table table-hover" id="address_table">

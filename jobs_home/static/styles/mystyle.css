@@ -2,6 +2,10 @@
     background-color: white;
 }
 
+.no_results{
+    color: red;
+}
+
 #job-tab, #address-tab, #client-tab{
     display: none;
 }

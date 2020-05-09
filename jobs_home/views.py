@@ -174,8 +174,8 @@ class ArchiveView(LoginRequiredMixin, ListView):
             "job_search": job_search,
             "client_search": client_search,
             "address_search": address_search,
-            "button_label_one": "Move to Current",             ##!!
-            "button_label_two": "Move to Inbox"
+            "button_label_one": "Move to Current",             
+            "button_label_two": "Move to Inbox",
         }
 
         return context
