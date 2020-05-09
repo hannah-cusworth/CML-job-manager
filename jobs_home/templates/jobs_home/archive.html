@@ -41,20 +41,6 @@ crossorigin="anonymous"></script>
 
         return selected 
     }
-          
-    function change_status(id, status)
-        {
-            event.stopPropagation();
-            var row = document.getElementById(id);
-            row.style.display = "none";
-            $.ajax(
-                    {
-                        url: "/archive",
-                        type: "post",
-                        data: {"id": id, "status": status},
-                        headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
-                    });
-        }
     
     
     
@@ -64,7 +50,8 @@ crossorigin="anonymous"></script>
 {% endblock %}
 
 
-{% block body %} 
+{% block body %}
+    
     <!-- Title and selector --->
     <h1>Archive</h1>
     <br>

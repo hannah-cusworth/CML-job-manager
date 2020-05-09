@@ -21,12 +21,21 @@
             <td onclick="location.href ='job/{{job.id}}'">{{job.description}}</td>
             <td onclick="location.href ='job/{{job.id}}'">{{job.creation_date}}</td>
         
-            <td class="button_column"> 
-                <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 1)">{{button_label_one}}</button>
-                {% if 'Delete' == button_label_two %}
-                    <button class="btn btn-danger table-btn"  data-toggle="modal" data-target="#delete_modal" onclick="pass_id('{{job.id}}')">{{button_label_two}}</button>
-                {% elif button_label_two %}
-                    <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">{{button_label_two}}</button>
+            <td class="button_column">
+                {% if job.status == "IN" %}
+                    <p class="status {{job.id}}" style="color:blue">Inbox</p>
+                    <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">Move to Current</button>
+                    <button class="btn btn-danger table-btn"  data-toggle="modal" data-target="#delete_modal" onclick="pass_id('{{job.id}}')">Delete</button>
+
+                {% elif job.status == "CU" %}
+                    <p class="status {{job.id}}" style="color:green">Current</p>
+                    <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 1)">Move to Inbox</button>  
+                    <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 3)">Move to Archive</button>    
+                        
+                {% else %}
+                    <p class="status {{job.id}}">Archived</p>
+                    <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">Move to Current</button>
+                    <button class="btn btn-danger table-btn"  data-toggle="modal" data-target="#delete_modal" onclick="pass_id('{{job.id}}')">Delete</button>
                 {% endif %}
             </td>  
     </tr>

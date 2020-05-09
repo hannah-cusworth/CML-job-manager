@@ -8,6 +8,33 @@
       <link rel="stylesheet" href="{% static 'styles/mystyle.css' %}?{% now 'u' %}">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">        
       {% block script %}{% endblock %}
+      <script>
+        function change_status(id, status)
+          {
+              event.stopPropagation();
+              if (("{{request.path}}" == "/archive") & (status != 4)){
+                
+              else{
+                var row = document.getElementById(id);
+                row.style.display = "none";
+              
+              }
+
+              $.ajax(
+                      {
+                          url: "{{request.path.full}}",
+                          type: "post",
+                          data: {"id": id, "status": status},
+                          headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
+                      });
+          }
+        function pass_id(id)
+          {
+              var myfunc = "change_status(" + id + ", 4)"
+              document.getElementById("final_delete_button").setAttribute( "onClick", myfunc);
+              
+          }
+      </script>
   </head>
     
   <nav class="navbar fixed-top navbar-expand-lg navbar-light" id="navbar">
@@ -31,6 +58,7 @@
   </nav>
 
   <body id="base_body">
+    {% include "jobs_home/delete_modal.html" %}
     <div class="container"><br>
       {% block body %}
       {% endblock %}

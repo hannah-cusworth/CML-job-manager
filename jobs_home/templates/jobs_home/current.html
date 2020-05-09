@@ -4,23 +4,7 @@
         Current Jobs
     {% endblock %}
 
-    {% block script %}
-    <script>  
-        function change_status(id, status)
-            {
-                event.stopPropagation();
-                var row = document.getElementById(id);
-                row.style.display = "none";
-                $.ajax(
-                        {
-                            url: "",
-                            type: "post",
-                            data: {"id": id, "status": status},
-                            headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
-                        });
-            }
-    </script>
-    {% endblock %}
+    
 
     {% block body %}
         <h1>Current Jobs</h1><br>

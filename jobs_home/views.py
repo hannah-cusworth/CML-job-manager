@@ -16,9 +16,29 @@ def logout_view(request):
     return redirect("/login")
 
 def paginate(item, request):
-    paginator = Paginator(item, 10) 
+    paginator = Paginator(item, 5) 
     page_number = request.GET.get('page')
     return paginator.get_page(page_number)
+
+def change_job_status(job, status):
+    # Move to Inbox
+    if int(status) == 1:
+        job.status = "IN"
+        job.save()
+
+    # Move to Current
+    if int(status) == 2:
+        job.status="CU"
+        job.save()
+
+    # Move to Archive
+    if int(status) == 3:
+        job.status="AR"
+        job.save()
+
+    # Delete Job
+    if int(status) == 4:
+        job.delete()
 
 
 class LoginView(TemplateView):
@@ -65,20 +85,11 @@ class InboxView(LoginRequiredMixin, TemplateView):
     def post(self, request):
         id_num = request.POST.get("id")
         status = request.POST.get("status")
-        
-        # Move to Current
         try: 
             job = Job.objects.get(pk=id_num)
+            change_job_status(job, status)
         except:
-            return render(request, self.template_name)
-
-        if int(status) == 1:
-            job.status="CU"
-            job.save()
-    
-        # Delete Job
-        if int(status) == 2:
-            job.delete()
+            pass
 
         return render(request, self.template_name)
 
@@ -101,24 +112,14 @@ class CurrentView(LoginRequiredMixin, ListView):
     def post(self, request):
         id_num = request.POST.get("id")
         status = request.POST.get("status")
-        # Move to Archive
-        if int(status) == 1:
-            try:
-                job = Job.objects.get(pk=id_num)
-                job.status="AR"
-                job.save()
-            except:
-                pass
-        # Move to Inbox
-        if int(status) == 2:
-            try:
-                job = Job.objects.get(pk=id_num)
-                job.status="IN"
-                job.save()
-            except:
-               pass
+        try: 
+            job = Job.objects.get(pk=id_num)
+            change_job_status(job, status)
+        except:
+            pass
 
         return render(request, self.template_name)
+
 
 class ArchiveView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/archive.html"
@@ -175,7 +176,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
             "client_search": client_search,
             "address_search": address_search,
             "button_label_one": "Move to Current",             
-            "button_label_two": None,
+            "button_label_two": "Delete",
         }
 
         return context
@@ -194,15 +195,11 @@ class ArchiveView(LoginRequiredMixin, ListView):
     def post(self, request):
         id_num = request.POST.get("id")
         status = request.POST.get("status")
-        # Move to Current
-        if int(status) == 1:
-            try:
-                job = Job.objects.get(pk=id_num)
-                job.status="CU"
-                job.save()
-            except:
-                pass
-        
+        try: 
+            job = Job.objects.get(pk=id_num)
+            change_job_status(job, status)
+        except:
+            pass
 
         return render(request, self.template_name)
             

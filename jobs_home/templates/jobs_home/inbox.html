@@ -3,33 +3,10 @@
     {% block title %}
         Inbox
     {% endblock %}
-    {% block script %}
-    <script>  
-        function change_status(id, status)
-            {
-                event.stopPropagation();
-                var row = document.getElementById(id);
-                row.style.display = "none";
-                $.ajax(
-                        {
-                            url: "inbox",
-                            type: "post",
-                            data: {"id": id, "status": status},
-                            headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
-                        });
-            }
-        function pass_id(id)
-            {
-                var myfunc = "change_status(" + id + ", 2)"
-                document.getElementById("final_delete_button").setAttribute( "onClick", myfunc);
-                
-            }
-    </script>
-    {% endblock %}
+    
 
     {% block body %} 
         <h1 id=header>Inbox</h1><br>
-        {% include "jobs_home/delete_modal.html" %}
         {% include "jobs_home/tables.html" %}
     {% endblock %}
 
