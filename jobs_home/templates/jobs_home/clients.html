@@ -18,7 +18,7 @@
                         {% for item in related %}
                         <li class="list-group-item">
                             <a href="{% url 'jobs_home:address' item.id %}">
-                                {{item.line_one}}, {{item.line_two}}, {{item.city}}, {{item.county}} {{item.postcode}}
+                                {{item.line_one}}, {% if item.line_two %} {{item.line_two}},{% endif %} {{item.city}}, {{item.county}} {{item.postcode}}
                             </a>
                             <br>
                         </li>
