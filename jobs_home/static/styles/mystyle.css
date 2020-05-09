@@ -1,5 +1,8 @@
-
-
+#danger{
+    background-color: red;
+    color: white;
+    height:35px;
+}
 
 #job-tab, #address-tab, #client-tab{
     display: none;

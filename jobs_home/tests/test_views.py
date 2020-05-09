@@ -84,17 +84,21 @@ class LoginViewTest(TestCase):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.success_data = {'username': 'john', 'password': 'johnpassword'}
         self.fail_data = {'username': "foo", "password": "bar"}
+        self.data_with_space = {'username': ' john ', 'password': 'johnpassword'}
 
     def test_loginview_get_status(self):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, self.template)
         self.assertEqual(response.context["error"], "")
-        self.assertIsInstance(response.context["form"], LoginForm)
-        
+        self.assertIsInstance(response.context["form"], LoginForm) 
 
     def test_loginview_post_status_success(self):
         response = self.client.post(self.view, data=self.success_data)
+        self.assertRedirects(response, '/')
+    
+    def test_loginview_username_strips_spaces(self):
+        response = self.client.post(self.view, data=self.data_with_space)
         self.assertRedirects(response, '/')
         
     def test_loginview_post_status_failure(self):
@@ -116,7 +120,8 @@ class LoginViewTest(TestCase):
         response = self.client.get('/archive')
         self.assertRedirects(response, '/login?next=/archive')
     
-    ##make sure to test detail views authentication######
+    # Tests for detail views without logins with their 
+    # respective test classes as they require db setup
 
 class ListViewTest(TestCase):
 
@@ -146,15 +151,16 @@ class InboxViewTest(ListViewTest):
     
     def test_inboxview_get_context(self):
         response = self.client.get(self.view)
-        self.assertTrue(response.context["include_button"])     #?
+        self.assertTrue(response.context["button_label_one"])
+        self.assertTrue(response.context["button_label_two"])     
     
     def test_inboxview_post_status(self):
-        response = self.client.post(self.view)
+        response = self.client.post(self.view, data={"status": 1})
         self.assertEqual(response.status_code, 200)
         self.check_templates(response)
 
     def test_inboxview_post_changejobstatus(self):
-        response = self.client.post(self.view, data={"id": self.job_id})
+        response = self.client.post(self.view, data={"id": self.job_id, "status": 1})
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, "CU")
 
@@ -174,15 +180,16 @@ class CurrentViewTest(ListViewTest):
     
     def test_currentview_get_context(self):
         response = self.client.get(self.view)
-        self.assertTrue(response.context["include_button"])
+        self.assertTrue(response.context["button_label_one"])
+        self.assertTrue(response.context["button_label_two"]) 
     
     def test_currentview_post_status(self):
-        response = self.client.post(self.view)
+        response = self.client.post(self.view, data={"status": 1})
         self.assertEqual(response.status_code, 200)
         self.check_templates(response)
 
-    def test_currentview_post_changejobstatus(self):
-        response = self.client.post(self.view, data={"id": self.job_id})
+    def test_currentview_post_changejobstatus_to_archive(self):
+        response = self.client.post(self.view, data={"id": self.job_id, "status": 1})
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, "AR")
 
@@ -238,6 +245,11 @@ class JobViewTest(DetailViewTest):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.check_templates(response)
+
+    def test_addressview_without_login(self):
+        logout(self.client)
+        response = self.client.get(self.view)
+        self.assertRedirects(response, '/login?next='+self.view)
     
     def test_jobview_404(self):
         response = self.client.get(self.not_found)
@@ -288,6 +300,11 @@ class ClientViewTest(DetailViewTest):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.check_templates(response)
+    
+    def test_clientview_without_login(self):
+        logout(self.client)
+        response = self.client.get(self.view)
+        self.assertRedirects(response, '/login?next='+self.view)
         
     def test_clientview_404(self):
         response = self.client.get(self.not_found)
@@ -341,6 +358,11 @@ class AddressViewTest(DetailViewTest):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, 200)
         self.check_templates(response)
+    
+    def test_addressview_without_login(self):
+        logout(self.client)
+        response = self.client.get(self.view)
+        self.assertRedirects(response, '/login?next='+self.view)
     
     def test_addressview_404(self):
         response = self.client.get(self.not_found)
