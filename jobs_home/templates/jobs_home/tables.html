@@ -9,7 +9,7 @@
         <th scope="col">Address</th>
         <th scope="col" width="50%" >Description</th>
         <th scope="col">Creation</th>
-        <th scope="col"></th>
+        <th scope="col" width="14%"></th>
     </tr>
     </thead>
     <tbody>
@@ -24,8 +24,8 @@
             <td class="button_column"> 
                 <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 1)">{{button_label_one}}</button>
                 {% if 'Delete' == button_label_two %}
-            <button class="btn btn-danger table-btn"  data-toggle="modal" data-target="#delete_modal" onclick="pass_id('{{job.id}}')">{{button_label_two}}</button>
-                {% else %}
+                    <button class="btn btn-danger table-btn"  data-toggle="modal" data-target="#delete_modal" onclick="pass_id('{{job.id}}')">{{button_label_two}}</button>
+                {% elif button_label_two %}
                     <button class="btn btn-warning table-btn" onclick="change_status('{{job.id}}', 2)">{{button_label_two}}</button>
                 {% endif %}
             </td>  

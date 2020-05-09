@@ -175,7 +175,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
             "client_search": client_search,
             "address_search": address_search,
             "button_label_one": "Move to Current",             
-            "button_label_two": "Move to Inbox",
+            "button_label_two": None,
         }
 
         return context
@@ -202,11 +202,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
                 job.save()
             except:
                 pass
-        # Delete
-        if int(status) == 2:
-            pass
-            #try:
-             #   job = Job.objects.get(pk=id_num)
+        
 
         return render(request, self.template_name)
             
