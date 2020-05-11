@@ -73,7 +73,7 @@ crossorigin="anonymous"></script>
     <div class="container" id="job-tab" {% if job_results %} style="display:block" {% endif %}>
         <h2>Job Search</h2>
         <br>
-
+        
         {% crispy job_search.form job_search.form.helper %}
 
         <!-- Table -->

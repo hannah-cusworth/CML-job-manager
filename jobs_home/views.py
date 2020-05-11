@@ -3,8 +3,8 @@ from django.http import HttpResponse, Http404, HttpRequest
 from html_form.models import Job, Address, Person
 from django.views.generic import TemplateView, ListView 
 from django.template import RequestContext
-from jobs_home.filters import *
-from jobs_home.forms import *
+import jobs_home.filters as filters
+import jobs_home.forms as forms
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,6 +14,7 @@ from django.db.models import Q
 def logout_view(request):
     logout(request)
     return redirect("/login")
+
 
 def paginate(item, request):
     paginator = Paginator(item, 5) 
@@ -47,7 +48,7 @@ class LoginView(TemplateView):
     def get(self, request):
         context = {
             "error": "",
-            "form": LoginForm(),
+            "form": forms.LoginForm(),
         }
         
         return render(request, self.template_name, context)
@@ -62,7 +63,7 @@ class LoginView(TemplateView):
         else:
             context = {
             "error": "Login failed!",
-            "form": LoginForm(request.POST),
+            "form": forms.LoginForm(request.POST),
             }
             return render(request, self.template_name, context)   
           
@@ -150,33 +151,31 @@ class ArchiveView(LoginRequiredMixin, ListView):
            
     
     def filter_client(self, request):
-        filtered = ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
+        filtered = filters.ClientFilter(request.GET, queryset=Person.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
 
 
     def filter_address(self, request):
-        filtered = AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
+        filtered = filters.AddressFilter(request.GET, queryset=Address.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
         
 
     def filter_job(self, request):
-        filtered = JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
+        filtered = filters.JobFilter(request.GET, queryset=Job.objects.all().order_by('id'))
         return paginate(filtered.qs,request)
         
     def get_context(self):
-        client_search = ClientFilter()
-        client_search.form.helper = ClientFilterFormHelper()
-        job_search = JobFilter()
-        job_search.form.helper = JobFilterFormHelper()
-        address_search = AddressFilter()
-        address_search.form.helper = AddressFilterFormHelper()
+        client_search = filters.ClientFilter()
+        client_search.form.helper = forms.ClientFilterFormHelper()
+        job_search = filters.JobFilter()
+        job_search.form.helper = forms.JobFilterFormHelper()
+        address_search = filters.AddressFilter()
+        address_search.form.helper = forms.AddressFilterFormHelper()
 
         context = {
             "job_search": job_search,
             "client_search": client_search,
             "address_search": address_search,
-            "button_label_one": "Move to Current",             
-            "button_label_two": "Delete",
         }
 
         return context
@@ -193,15 +192,15 @@ class ArchiveView(LoginRequiredMixin, ListView):
             return None
     
     def post(self, request):
-        id_num = request.POST.get("id")
+        '''id_num = request.POST.get("id")
         status = request.POST.get("status")
         try: 
             job = Job.objects.get(pk=id_num)
             change_job_status(job, status)
         except:
-            pass
+            pass'''
 
-        return render(request, self.template_name)
+        return render(request, self.template_name, context)
             
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"
@@ -254,7 +253,7 @@ class AddressView(LoginRequiredMixin, TemplateView):
             "address": address,
             "related": address.client.all(),
             "jobs": jobs,
-            "click": None,                                  #!!!
+            "click": None,                                 
         }
 
         return render(request, self.template_name, context)

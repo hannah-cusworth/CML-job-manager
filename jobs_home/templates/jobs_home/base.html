@@ -11,23 +11,18 @@
       <script>
         function change_status(id, status)
           {
-              event.stopPropagation();
-              if (("{{request.path}}" == "/archive") & (status != 4)){
-                
-              else{
-                var row = document.getElementById(id);
-                row.style.display = "none";
-              
-              }
 
               $.ajax(
                       {
-                          url: "{{request.path.full}}",
+                          url: "/",
                           type: "post",
                           data: {"id": id, "status": status},
                           headers: {'X-CSRFToken': '{{ csrf_token }}'}, 
                       });
+
+              $("#table_jobs").load(" #table_jobs");
           }
+
         function pass_id(id)
           {
               var myfunc = "change_status(" + id + ", 4)"
