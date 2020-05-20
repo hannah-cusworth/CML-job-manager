@@ -1,9 +1,8 @@
 import django_filters
-from html_form.models import *
+from html_form.models import Address, Person, Job
 from django import forms 
 from crispy_forms.layout import Layout, Row, Column, Submit
 from crispy_forms.helper import FormHelper
-from .forms import *
 from django.db.models import Q
 #from tempus_dominus.widgets import DatePicker
 
