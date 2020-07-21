@@ -139,6 +139,7 @@ class InboxViewTest(ListViewTest):
     def setUp(self):
         self.client = Client()
         self.view = '/inbox'
+        self.post_view = '/'
         self.template = 'jobs_home/inbox.html'
         self.job = Job.objects.get()
         self.job_id = self.job.pk
@@ -153,14 +154,9 @@ class InboxViewTest(ListViewTest):
         response = self.client.get(self.view)
         self.assertTrue(response.context["button_label_one"])
         self.assertTrue(response.context["button_label_two"])     
-    
-    def test_inboxview_post_status(self):
-        response = self.client.post(self.view, data={"status": 1})
-        self.assertEqual(response.status_code, 200)
-        self.check_templates(response)
 
     def test_inboxview_post_changejobstatus(self):
-        response = self.client.post(self.view, data={"id": self.job_id, "status": 1})
+        response = self.client.post(self.post_view, data={"id": self.job_id, "status": 2})
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, "CU")
 
@@ -189,7 +185,7 @@ class CurrentViewTest(ListViewTest):
         self.check_templates(response)
 
     def test_currentview_post_changejobstatus_to_archive(self):
-        response = self.client.post(self.view, data={"id": self.job_id, "status": 1})
+        response = self.client.post(self.view, data={"id": self.job_id, "status": 3})
         self.job.refresh_from_db()
         self.assertEqual(self.job.status, "AR")
 
