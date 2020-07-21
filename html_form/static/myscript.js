@@ -3,6 +3,7 @@ function hide_checkbox(){
     var check = document.getElementById("billing_address_select");
     var header = document.getElementById("billing_header");
     var status = "{{billing_status}}";
+    console.log(status)
     
     if (status != "unbound"){
         check_div.style.display = "display";
