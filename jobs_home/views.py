@@ -83,17 +83,6 @@ class InboxView(LoginRequiredMixin, TemplateView):
 
         return render(request, self.template_name, context)
 
-    def post(self, request):
-        id_num = request.POST.get("id")
-        status = request.POST.get("status")
-        try: 
-            job = Job.objects.get(pk=id_num)
-            change_job_status(job, status)
-        except:
-            pass
-
-        return render(request, self.template_name)
-
 class CurrentView(LoginRequiredMixin, ListView):
     template_name = "jobs_home/current.html"
     def get(self, request):
@@ -191,16 +180,7 @@ class ArchiveView(LoginRequiredMixin, ListView):
         except:
             return None
     
-    def post(self, request):
-        '''id_num = request.POST.get("id")
-        status = request.POST.get("status")
-        try: 
-            job = Job.objects.get(pk=id_num)
-            change_job_status(job, status)
-        except:
-            pass'''
-
-        return render(request, self.template_name, context)
+    
             
 class JobView(LoginRequiredMixin, TemplateView):
     template_name = "jobs_home/jobs.html"
